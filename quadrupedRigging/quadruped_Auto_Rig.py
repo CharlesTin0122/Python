@@ -186,7 +186,7 @@ topJoint = [L_frontFemurJnt,L_hindFemurJnt,R_frontFemurJnt,R_hindFemurJnt]
 for jnt in topJoint:
 	pm.joint(jnt,zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='yup')
 
-#create IK joint
+#create Rename Function
 
 def renameChildJoint(jnt,oldStr,newStr):
 	pm.select(jnt,r=True,hi=True)
@@ -196,20 +196,35 @@ def renameChildJoint(jnt,oldStr,newStr):
 		jnt.rename(newName)
 	return childjntList
 
+#create IK,FK Joint
+L_hindLeg_FkJntList = pm.duplicate(L_hindFemurJnt,n='L_hindFemur_FK_JNT')
+L_hindLeg_FkJntChild = renameChildJoint(L_hindLeg_FkJntList[0],'_JNT','_FK_JNT')
+L_hindLeg_FkJntList.append(L_hindLeg_FkJntChild)
+
+L_frontLeg_FkJntList = pm.duplicate(L_frontFemurJnt,n='L_frontFemur_FK_JNT')
+L_frontLeg_FkJntChild = renameChildJoint(L_frontLeg_FkJntList[0],'_JNT','_FK_JNT')
+L_frontLeg_FkJntList.append(L_frontLeg_FkJntChild)
+
+R_frontLeg_FkJntList = pm.duplicate(R_frontFemurJnt,n='R_frontFemur_FK_JNT')
+R_frontLeg_FkJntChild = renameChildJoint(R_frontLeg_FkJntList[0],'_JNT','_FK_JNT')
+R_frontLeg_FkJntList.append(R_frontLeg_FkJntChild)
+
+R_hindLeg_FkJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_FK_JNT')
+R_hindLeg_FkJntChild = renameChildJoint(R_hindLeg_FkJntList[0],'_JNT','_FK_JNT')
+R_hindLeg_FkJntList.append(R_hindLeg_FkJntChild)
 
 L_hindLeg_IkJntList = pm.duplicate(L_hindFemurJnt,n='L_hindFemur_IK_JNT')
 L_hindLeg_IkJntChild = renameChildJoint(L_hindLeg_IkJntList[0],'_JNT','_IK_JNT')
 L_hindLeg_IkJntList.append(L_hindLeg_IkJntChild)
 
-L_frontLeg_IKJntList = pm.duplicate(L_frontFemurJnt,n='L_frontFemur_IK_JNT')
-L_frontLeg_IKJntChild = renameChildJoint(L_frontLeg_IKJntList[0],'_JNT','_IK_JNT')
-L_frontLeg_IKJntList.append(L_frontLeg_IKJntChild)
+L_frontLeg_IkJntList = pm.duplicate(L_frontFemurJnt,n='L_frontFemur_IK_JNT')
+L_frontLeg_IkJntChild = renameChildJoint(L_frontLeg_IkJntList[0],'_JNT','_IK_JNT')
+L_frontLeg_IkJntList.append(L_frontLeg_IkJntChild)
 
-R_frontLeg_IKJntList = pm.duplicate(R_frontFemurJnt,n='R_frontFemur_IK_JNT')
-R_frontLeg_IKJntChild = renameChildJoint(R_frontLeg_IKJntList[0],'_JNT','_IK_JNT')
-R_frontLeg_IKJntList.append(R_frontLeg_IKJntChild)
+R_frontLeg_IkJntList = pm.duplicate(R_frontFemurJnt,n='R_frontFemur_IK_JNT')
+R_frontLeg_IkJntChild = renameChildJoint(R_frontLeg_IkJntList[0],'_JNT','_IK_JNT')
+R_frontLeg_IkJntList.append(R_frontLeg_IkJntChild)
 
-R_hindLeg_IKJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_IK_JNT')
-R_hindLeg_IKJntChild = renameChildJoint(R_hindLeg_IKJntList[0],'_JNT','_IK_JNT')
-R_hindLeg_IKJntList.append(R_hindLeg_IKJntChild)
-
+R_hindLeg_IkJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_IK_JNT')
+R_hindLeg_IkJntChild = renameChildJoint(R_hindLeg_IkJntList[0],'_JNT','_IK_JNT')
+R_hindLeg_IkJntList.append(R_hindLeg_IkJntChild)
