@@ -9,14 +9,15 @@
 '''Quadruped Auto Rig'''
 
 import pymel.core as pm
+from ctrl_creater import *
 
 '''Placement locs '''
 
-def placementLoc(name,tx,ty,tz,colorInd):
+def placementLoc(name,tx,ty,tz,colorId=0):
 	loc = pm.spaceLocator(n=name)
 	loc.translate.set((tx,ty,tz))
 	loc.overrideEnabled.set(1)
-	loc.overrideColor.set(colorInd)
+	loc.overrideColor.set(colorId)
 	loc.getShape().localScale.set(10,10,10)
 	return loc
 	
@@ -199,42 +200,93 @@ def renameChildJoint(jnt,oldStr,newStr):
 #create IK,FK Joint
 L_hindLeg_FkJntList = pm.duplicate(L_hindFemurJnt,n='L_hindFemur_FK_JNT')
 L_hindLeg_FkJntChild = renameChildJoint(L_hindLeg_FkJntList[0],'_JNT','_FK_JNT')
-L_hindLeg_FkJntList.append(L_hindLeg_FkJntChild)
+for obj in L_hindLeg_FkJntChild:
+	L_hindLeg_FkJntList.append(obj)
 
 L_frontLeg_FkJntList = pm.duplicate(L_frontFemurJnt,n='L_frontFemur_FK_JNT')
 L_frontLeg_FkJntChild = renameChildJoint(L_frontLeg_FkJntList[0],'_JNT','_FK_JNT')
-L_frontLeg_FkJntList.append(L_frontLeg_FkJntChild)
+for obj in L_frontLeg_FkJntChild:
+	L_frontLeg_FkJntList.append(obj)
 
 R_frontLeg_FkJntList = pm.duplicate(R_frontFemurJnt,n='R_frontFemur_FK_JNT')
 R_frontLeg_FkJntChild = renameChildJoint(R_frontLeg_FkJntList[0],'_JNT','_FK_JNT')
-R_frontLeg_FkJntList.append(R_frontLeg_FkJntChild)
+for obj in R_frontLeg_FkJntChild:
+	R_frontLeg_FkJntList.append(obj)
 
 R_hindLeg_FkJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_FK_JNT')
 R_hindLeg_FkJntChild = renameChildJoint(R_hindLeg_FkJntList[0],'_JNT','_FK_JNT')
-R_hindLeg_FkJntList.append(R_hindLeg_FkJntChild)
+for obj in R_hindLeg_FkJntChild:
+	R_hindLeg_FkJntList.append(obj)
 
 L_hindLeg_IkJntList = pm.duplicate(L_hindFemurJnt,n='L_hindFemur_IK_JNT')
 L_hindLeg_IkJntChild = renameChildJoint(L_hindLeg_IkJntList[0],'_JNT','_IK_JNT')
-L_hindLeg_IkJntList.append(L_hindLeg_IkJntChild)
+for obj in L_hindLeg_IkJntChild:
+	L_hindLeg_IkJntList.append(obj)
 
 L_frontLeg_IkJntList = pm.duplicate(L_frontFemurJnt,n='L_frontFemur_IK_JNT')
 L_frontLeg_IkJntChild = renameChildJoint(L_frontLeg_IkJntList[0],'_JNT','_IK_JNT')
-L_frontLeg_IkJntList.append(L_frontLeg_IkJntChild)
+for obj in L_frontLeg_IkJntChild:
+	L_frontLeg_IkJntList.append(obj)
 
 R_frontLeg_IkJntList = pm.duplicate(R_frontFemurJnt,n='R_frontFemur_IK_JNT')
 R_frontLeg_IkJntChild = renameChildJoint(R_frontLeg_IkJntList[0],'_JNT','_IK_JNT')
-R_frontLeg_IkJntList.append(R_frontLeg_IkJntChild)
+for obj in R_frontLeg_IkJntChild:
+	R_frontLeg_IkJntList.append(obj)
 
 R_hindLeg_IkJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_IK_JNT')
 R_hindLeg_IkJntChild = renameChildJoint(R_hindLeg_IkJntList[0],'_JNT','_IK_JNT')
-R_hindLeg_IkJntList.append(R_hindLeg_IkJntChild)
+for obj in R_hindLeg_IkJntChild:
+	R_hindLeg_IkJntList.append(obj)
 
 def pointMatch(obj1,obj2):
-	nod = pm.pointConstraint(obj1,obj2)
+	nod = pm.pointConstraint(obj2,obj1)
 	pm.delete(nod)
 	pm.select(cl=1)
 	
 def parentMatch(obj1,obj2):
-	nod = pm.parentConstraint(obj1,obj2)
+	nod = pm.parentConstraint(obj2,obj1)
 	pm.delete(nod)
 	pm.select(cl=1)
+
+###creare L hind IK###
+
+L_hindLegIk = pm.ikHandle(name='L_hindLeg_IK',sj=L_hindLeg_IkJntList[0],ee=L_hindLeg_IkJntList[-3],solver='ikRPsolver')
+
+L_hindIkCtrl = ctrlCreater('L_hindLeg_IK_Ctrl',ik_CurInfo,6)
+L_hindIkCtrl_Grp = pm.group(L_hindIkCtrl,n='L_hindLeg_IK_Ctrl_GRP')
+
+pointMatch(L_hindIkCtrl_Grp,L_hindLegIk[0])
+pm.parent(L_hindLegIk[0],L_hindIkCtrl)
+pm.aimConstraint(L_hindIkCtrl,L_hindLeg_IkJntList[0],n='l_femur_aim_towards_footCtrl',mo=True,wu=[0,0,0])
+
+###creare R hind IK###
+
+R_hindLegIk = pm.ikHandle(name='R_hindLeg_IK',sj=R_hindLeg_IkJntList[0],ee=R_hindLeg_IkJntList[-3],solver='ikRPsolver')
+
+R_hindIkCtrl = ctrlCreater('R_hindLeg_IK_Ctrl',ik_CurInfo,13)
+R_hindIkCtrR_Grp = pm.group(R_hindIkCtrl,n='R_hindLeg_IK_Ctrl_GRP')
+
+pointMatch(R_hindIkCtrR_Grp,R_hindLegIk[0])
+pm.parent(R_hindLegIk[0],R_hindIkCtrl)
+pm.aimConstraint(R_hindIkCtrl,R_hindLeg_IkJntList[0],n='R_femur_aim_towards_footCtrl',mo=True,wu=[0,0,0])
+
+###creare L front IK###
+
+L_frontLegIk = pm.ikHandle(name='L_frontLeg_IK',sj=L_frontLeg_IkJntList[0],ee=L_frontLeg_IkJntList[-3],solver='ikRPsolver')
+
+L_frontIkCtrl = ctrlCreater('L_frontLeg_IK_Ctrl',ik_CurInfo,6)
+L_frontIkCtrl_Grp = pm.group(L_frontIkCtrl,n='L_frontLeg_IK_Ctrl_GRP')
+
+pointMatch(L_frontIkCtrl_Grp,L_frontLegIk[0])
+pm.parent(L_frontLegIk[0],L_frontIkCtrl)
+
+
+###creare R front IK###
+
+R_frontLegIk = pm.ikHandle(name='R_frontLeg_IK',sj=R_frontLeg_IkJntList[0],ee=R_frontLeg_IkJntList[-3],solver='ikRPsolver')
+
+R_frontIkCtrl = ctrlCreater('R_frontLeg_IK_Ctrl',ik_CurInfo,13)
+R_frontIkCtrR_Grp = pm.group(R_frontIkCtrl,n='R_frontLeg_IK_Ctrl_GRP')
+
+pointMatch(R_frontIkCtrR_Grp,R_frontLegIk[0])
+pm.parent(R_frontLegIk[0],R_frontIkCtrl)
