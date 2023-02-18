@@ -228,3 +228,13 @@ R_frontLeg_IkJntList.append(R_frontLeg_IkJntChild)
 R_hindLeg_IkJntList = pm.duplicate(R_hindFemurJnt,n='R_hindFemur_IK_JNT')
 R_hindLeg_IkJntChild = renameChildJoint(R_hindLeg_IkJntList[0],'_JNT','_IK_JNT')
 R_hindLeg_IkJntList.append(R_hindLeg_IkJntChild)
+
+def pointMatch(obj1,obj2):
+	nod = pm.pointConstraint(obj1,obj2)
+	pm.delete(nod)
+	pm.select(cl=1)
+	
+def parentMatch(obj1,obj2):
+	nod = pm.parentConstraint(obj1,obj2)
+	pm.delete(nod)
+	pm.select(cl=1)
