@@ -11,8 +11,8 @@ import sys
 sys.path.append(r'G:\Code\Python\quadrupedRigging')
 from ctrl_creater import *
 import pymel.core as pm
-'''Placement locs '''
 
+'''-----------------------------------------------Placement locs----------------------------------------------- '''
 def placementLoc(name,tx,ty,tz,colorId=0):
 	loc = pm.spaceLocator(n=name)
 	loc.translate.set((tx,ty,tz))
@@ -99,7 +99,7 @@ mainLocGrp = pm.group(
                      )
 mainLocGrp.zeroTransformPivots()
 
-### Creat Joint
+'''--------------------------------------------Creat Joint---------------------------------------------'''
 
 def placementJoint(jointName,targetObj):
 	pm.select(cl=True)
@@ -248,7 +248,7 @@ def parentMatch(obj1,obj2):
 	pm.delete(nod)
 	pm.select(cl=1)
 
-'''---------------------------------Create IK---------------------------------'''
+'''-----------------------------------------------------Create IK------------------------------------------------------------'''
 ###create L hind IK###
 
 L_hindLegIk = pm.ikHandle(name='L_hindLeg_IK',sj=L_hindLeg_IkJntList[0],ee=L_hindLeg_IkJntList[-3],solver='ikRPsolver')
@@ -335,3 +335,14 @@ IkCtrlGrp = pm.group(poleVectorGrp,
 					L_hindIkCtrl_Grp,R_hindIkCtrR_Grp,L_frontIkCtrl_Grp,R_frontIkCtrR_Grp,
 					L_frontLegRoCtrlGrp,R_frontLegRoCtrlGrp,n='IK_Ctrl_Grp')
 IkCtrlGrp.zeroTransformPivots()
+
+#crtl scale founction
+'''
+def scaleCurShap(cvName,scaleVal=1.1):
+	cvList = pm.ls('{}.cv[*]'.format(cvName))
+	pm.scale(cvList,scaleVal,scaleVal,scaleVal,objectCenterPivot=True,relative=True)
+
+selList = pm.selected()
+for obj in selList:
+	scaleCurShap(obj,1.25)
+'''
