@@ -1,39 +1,10 @@
 {
-    "python.autoComplete.extraPaths": [
-        "c:\\Users\\Administrator\\.vscode\\extensions\\fxtd-odyssey.mayapy-1.0.4\\mayaSDK",
-        "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
-    ],
-    "python.analysis.extraPaths": [
-        "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
-    ],
-    "editor.fontSize": 20,
-    "editor.renderWhitespace": "all",
-    "json.schemas": [
-        
-    
-    ],
-    "security.workspace.trust.untrustedFiles": "open",
-    "workbench.editorAssociations": {
-        "*.mll": "default"
-    },
-    "[python]": {
-        "editor.formatOnType": true
-    },
-    "git.autofetch": true
-}
-
-
-
-
-{"python.autoComplete.extraPaths": [
+"python.autoComplete.extraPaths": [
     "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
-],
+    ],
 "python.pythonPath":
-"C:\\Program Files\\Autodesk\\Maya2020\\bin\\mayapy.exe",
+    "C:\\Program Files\\Autodesk\\Maya2020\\bin\\mayapy.exe",
 "python.analysis.extraPaths": [
    "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
-],
-"editor.codeActionsOnSave": {
-    
-}
+    ]
 }

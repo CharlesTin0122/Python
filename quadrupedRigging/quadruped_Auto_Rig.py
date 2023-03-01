@@ -176,16 +176,27 @@ parentJoint(R_hindLeg_jontList)
 
 #set last joint
 lastjoint = [L_frontToeJnt,L_hindToeJnt,R_frontToeJnt,R_hindToeJnt]
+endjnt = []
 for jnt in lastjoint:
 	dupJnt=pm.duplicate(jnt,n='{}_last'.format(jnt))
 	pm.parent(dupJnt[0],jnt)
 	dupJnt[0].tz.set(1)
 	dupJnt[0].v.set(0)
+	endjnt.append(dupJnt)
+
+L_frontLeg_JntList = [L_frontFemurJnt,L_frontUpperKneeJnt,L_frontkneeJnt,
+		      			L_frontAnkleJnt,L_frontToeJnt,endjnt[0]]
+L_hindLeg_JntList = [L_hindFemurJnt,L_hindUpperKneeJnt,L_hindkneeJnt,
+		     			L_hindAnkleJnt,L_hindToeJnt,endjnt[1]]
+R_frontLeg_JntList = [R_frontFemurJnt,R_frontUpperKneeJnt,R_frontkneeJnt,
+		      			R_frontAnkleJnt,R_frontToeJnt,endjnt[2]]
+R_hindLeg_JntList = [R_hindFemurJnt,R_hindUpperKneeJnt,R_hindkneeJnt,
+		     			R_hindAnkleJnt,R_hindToeJnt,endjnt[3]]
 
 #set joint orient
 topJoint = [L_frontFemurJnt,L_hindFemurJnt,R_frontFemurJnt,R_hindFemurJnt]
 for jnt in topJoint:
-	pm.joint(jnt,zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='yup')
+	pm.joint(jnt,zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='zup')
 
 #create Rename Function
 
@@ -330,10 +341,12 @@ R_frontIkPoleCtrlGrp.tz.set(0)
 pm.poleVectorConstraint(R_frontIkPoleCtrl,R_frontLegIk[0])
 
 #Group IK Items
-poleVectorGrp = pm.group(L_frontIkPoleCtrlGrp,R_frontIkPoleCtrlGrp,L_hindIkPoleCtrlGrp,R_hindIkPoleCtrlGrp,n='pole_Vector_GRP')
-IkCtrlGrp = pm.group(poleVectorGrp,
-					L_hindIkCtrl_Grp,R_hindIkCtrR_Grp,L_frontIkCtrl_Grp,R_frontIkCtrR_Grp,
-					L_frontLegRoCtrlGrp,R_frontLegRoCtrlGrp,n='IK_Ctrl_Grp')
+
+L_hindIkVis_Grp = pm.group(L_hindIkCtrl_Grp,L_hindIkPoleCtrlGrp,n='L_hind_leg_Ik_Vis_GRP')
+L_frontIkVis_Grp = pm.group(L_frontIkCtrl_Grp,L_frontLegRoCtrlGrp,L_frontIkPoleCtrlGrp,n='L_front_leg_Ik_Vis_GRP')
+R_hindIkVis_Grp = pm.group(R_hindIkCtrR_Grp,R_hindIkPoleCtrlGrp,n='R_hind_leg_Ik_Vis_GRP')
+R_frontIkVis_Grp = pm.group(R_frontIkCtrR_Grp,R_frontLegRoCtrlGrp,R_frontIkPoleCtrlGrp,n='R_front_leg_Ik_Vis_GRP')
+IkCtrlGrp = pm.group(L_hindIkVis_Grp,L_frontIkVis_Grp,R_hindIkVis_Grp,R_frontIkVis_Grp,n='IK_Ctrl_GRP')
 IkCtrlGrp.zeroTransformPivots()
 
 #crtl scale founction
@@ -346,4 +359,107 @@ selList = pm.selected()
 for obj in selList:
 	scaleCurShap(obj,1.25)
 '''
-'''-----------------------------------------------------Create FK------------------------------------------------------------'''
+'''-----------------------------------------------------Create FK Ctrl------------------------------------------------------------'''
+def fkCtrlCreater(jntList,colorId):
+	CTRL_list=[]
+	GRP_list=[]
+	for i in range(len(jntList)-1):
+		tempCtrl = ctrlCreater(jntList[i].replace('_JNT','_Ctrl'),fk_CurInfo,colorId)
+		tempGrp = pm.group(tempCtrl,n='{}_GRP'.format(tempCtrl))
+		parentMatch(tempGrp,jntList[i])
+		pm.parentConstraint(tempCtrl,jntList[i],weight=1)
+		CTRL_list.append(tempCtrl)
+		GRP_list.append(tempGrp)
+	for i in range(len(GRP_list)-1):
+		pm.parent(GRP_list[i+1],CTRL_list[i])
+	return CTRL_list, GRP_list
+
+L_hindLeg_FkList = fkCtrlCreater(L_hindLeg_FkJntList,6)
+L_frontLeg_FkList = fkCtrlCreater(L_frontLeg_FkJntList,6)
+R_hindLeg_FkList = fkCtrlCreater(R_hindLeg_FkJntList,13)
+R_frontLeg_FkList = fkCtrlCreater(R_frontLeg_FkJntList,13)
+leg_fk_Grp = pm.group(
+	L_hindLeg_FkList[1][0],L_frontLeg_FkList[1][0],
+	R_hindLeg_FkList[1][0],R_frontLeg_FkList[1][0],
+	n='FK_Ctrl_GRP'
+	)
+leg_fk_Grp.zeroTransformPivots()
+
+'''--------------------------------------------------------IK FK Switch-----------------------------------------------------'''
+#L_hind_leg_Switch
+L_hindSwitchCtrl = ctrlCreater('L_hind_switch_Ctrl',switch_CurInfo,6)
+pm.rotate(pm.ls('{}.cv[*]'.format(L_hindSwitchCtrl))[0],(0,-90,0),ocp=True,os=True)
+pm.move(pm.ls('{}.cv[*]'.format(L_hindSwitchCtrl))[0],(0,0,-32),os=True,r=True)
+L_hindSwitchGrp = pm.group(L_hindSwitchCtrl,n='{}_GRP'.format(L_hindSwitchCtrl))
+L_hindSwitchGrp.zeroTransformPivots()
+pointMatch(L_hindSwitchGrp,L_hindAnkleJnt)
+pm.parentConstraint(L_hindAnkleJnt,L_hindSwitchGrp,mo=True)
+L_hindSwitchCtrl_att = L_hindSwitchCtrl.listAnimatable()
+for att in L_hindSwitchCtrl_att[:-1]:
+	pm.setAttr(att, lock=True, channelBox=False, keyable=False)
+pm.addAttr(L_hindSwitchCtrl,longName='IK_FK',at='float',k=True,min=0,max=1)
+
+#L_front_leg_Switch
+L_frontSwitchCtrl = ctrlCreater('L_front_switch_Ctrl',switch_CurInfo,6)
+pm.rotate(pm.ls('{}.cv[*]'.format(L_frontSwitchCtrl))[0],(0,-90,0),ocp=True,os=True)
+pm.move(pm.ls('{}.cv[*]'.format(L_frontSwitchCtrl))[0],(0,0,-32),os=True,r=True)
+L_frontSwitchGrp = pm.group(L_frontSwitchCtrl,n='{}_GRP'.format(L_frontSwitchCtrl))
+L_frontSwitchGrp.zeroTransformPivots()
+pointMatch(L_frontSwitchGrp,L_frontAnkleJnt)
+pm.parentConstraint(L_frontAnkleJnt,L_frontSwitchGrp,mo=True)
+L_frontSwitchCtrl_att = L_frontSwitchCtrl.listAnimatable()
+for att in L_frontSwitchCtrl_att[:-1]:
+	pm.setAttr(att, lock=True, channelBox=False, keyable=False)
+pm.addAttr(L_frontSwitchCtrl,longName='IK_FK',at='float',k=True,min=0,max=1)
+
+#R_hind_leg_Switch
+R_hindSwitchCtrl = ctrlCreater('R_hind_switch_Ctrl',switch_CurInfo,13)
+pm.rotate(pm.ls('{}.cv[*]'.format(R_hindSwitchCtrl))[0],(0,-90,0),ocp=True,os=True)
+pm.move(pm.ls('{}.cv[*]'.format(R_hindSwitchCtrl))[0],(0,0,-32),os=True,r=True)
+R_hindSwitchGrp = pm.group(R_hindSwitchCtrl,n='{}_GRP'.format(R_hindSwitchCtrl))
+R_hindSwitchGrp.zeroTransformPivots()
+pointMatch(R_hindSwitchGrp,R_hindAnkleJnt)
+pm.parentConstraint(R_hindAnkleJnt,R_hindSwitchGrp,mo=True)
+R_hindSwitchCtrl_att = R_hindSwitchCtrl.listAnimatable()
+for att in R_hindSwitchCtrl_att[:-1]:
+	pm.setAttr(att, lock=True, channelBox=False, keyable=False)
+pm.addAttr(R_hindSwitchCtrl,longName='IK_FK',at='float',k=True,min=0,max=1)
+
+#R_front_leg_Switch
+R_frontSwitchCtrl = ctrlCreater('R_front_switch_Ctrl',switch_CurInfo,13)
+pm.rotate(pm.ls('{}.cv[*]'.format(R_frontSwitchCtrl))[0],(0,-90,0),ocp=True,os=True)
+pm.move(pm.ls('{}.cv[*]'.format(R_frontSwitchCtrl))[0],(0,0,-32),os=True,r=True)
+R_frontSwitchGrp = pm.group(R_frontSwitchCtrl,n='{}_GRP'.format(R_frontSwitchCtrl))
+R_frontSwitchGrp.zeroTransformPivots()
+pointMatch(R_frontSwitchGrp,R_frontAnkleJnt)
+pm.parentConstraint(R_frontAnkleJnt,R_frontSwitchGrp,mo=True)
+R_frontSwitchCtrl_att = R_frontSwitchCtrl.listAnimatable()
+for att in R_frontSwitchCtrl_att[:-1]:
+	pm.setAttr(att, lock=True, channelBox=False, keyable=False)
+pm.addAttr(R_frontSwitchCtrl,longName='IK_FK',at='float',k=True,min=0,max=1)
+
+switchCtrlGrp = pm.group(
+	L_hindSwitchGrp,L_frontSwitchGrp,
+	R_hindSwitchGrp,R_frontSwitchGrp,
+	n='IK_switch_Ctrl_GRP'
+	)
+
+#set IK_FK Switch connect
+def connectIKFKToSkinJnt(fkJnt,ikJnt,skinJnt,ctrlName,fkCtrlGrp,ikCtrlGrp):
+	parentConstraintNode = []
+	for i in range(len(fkJnt)):
+		parCon = pm.parentConstraint(fkJnt[i],ikJnt[i],skinJnt[i],w=1)
+		reverseNode = pm.createNode('reverse')
+		pm.connectAttr('{}.IK_FK'.format(ctrlName),'{}.{}W0'.format(parCon,fkJnt[i]),force =True)
+		pm.connectAttr('{}.{}W0'.format(parCon,fkJnt[i]),'{}.inputX'.format(reverseNode),force =True)
+		pm.connectAttr('{}.outputX'.format(reverseNode),'{}.{}W1'.format(parCon,ikJnt[i]))
+	
+	visReverseNode = pm.createNode('reverse')
+	pm.connectAttr('{}.IK_FK'.format(ctrlName),'{}.inputX'.format(visReverseNode),force =True)
+	pm.connectAttr('{}.IK_FK'.format(ctrlName),'{}.v'.format(fkCtrlGrp),force =True)
+	pm.connectAttr('{}.outputX'.format(visReverseNode),'{}.v'.format(ikCtrlGrp),force =True)
+
+connectIKFKToSkinJnt(L_hindLeg_FkJntList,L_hindLeg_IkJntList,L_hindLeg_JntList,L_hindSwitchCtrl,L_hindLeg_FkList[1][0],L_hindIkVis_Grp)
+connectIKFKToSkinJnt(L_frontLeg_FkJntList,L_frontLeg_IkJntList,L_frontLeg_JntList,L_frontSwitchCtrl,L_frontLeg_FkList[1][0],L_frontIkVis_Grp)
+connectIKFKToSkinJnt(R_hindLeg_FkJntList,R_hindLeg_IkJntList,R_hindLeg_JntList,R_hindSwitchCtrl,R_hindLeg_FkList[1][0],R_hindIkVis_Grp)
+connectIKFKToSkinJnt(R_frontLeg_FkJntList,R_frontLeg_IkJntList,R_frontLeg_JntList,R_frontSwitchCtrl,R_frontLeg_FkList[1][0],R_frontIkVis_Grp)
