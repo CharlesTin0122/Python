@@ -463,3 +463,35 @@ connectIKFKToSkinJnt(L_hindLeg_FkJntList,L_hindLeg_IkJntList,L_hindLeg_JntList,L
 connectIKFKToSkinJnt(L_frontLeg_FkJntList,L_frontLeg_IkJntList,L_frontLeg_JntList,L_frontSwitchCtrl,L_frontLeg_FkList[1][0],L_frontIkVis_Grp)
 connectIKFKToSkinJnt(R_hindLeg_FkJntList,R_hindLeg_IkJntList,R_hindLeg_JntList,R_hindSwitchCtrl,R_hindLeg_FkList[1][0],R_hindIkVis_Grp)
 connectIKFKToSkinJnt(R_frontLeg_FkJntList,R_frontLeg_IkJntList,R_frontLeg_JntList,R_frontSwitchCtrl,R_frontLeg_FkList[1][0],R_frontIkVis_Grp)
+
+'''--------------------------------------------------Create neck joint --------------------------------------------------'''
+#测量两点之间距离函数1
+def getDisVal(point1,point2):
+	Ax,Ay,Az = point1.getTranslation(space='world')
+	Bx,By,Bz = point2.getTranslation(space='world')
+	distance = ((Ax-Bx)**2+(Ay-By)**2+(Az-Bz)**2)**0.5
+	return distance
+#测量两点之间距离函数2
+def getDisVal2(point1,point2):
+	startPoint = point1.getTranslation(space='world')
+	endPoint = point2.getTranslation(space='world')
+	disShape = pm.distanceDimension(sp=startPoint,ep=endPoint)
+	disVal = disShape.distance.get()
+	pm.delete(disShape.getParent())
+	return disVal
+#创建尾部骨骼
+'''
+def createjntchain(point1,point2,jointCount,chainName,direction=1):
+	disVal = getDisVal(point1,point2)
+	jntChainList = []
+	for i in range(jointCount):
+		tempJnt = pm.joint(n='{}_{}_JNT'.format(chainName,i+1),p=(0,0,(disVal/(jointCount-1)*i*direction)))
+		jntChainList.append(tempJnt)
+	pm.joint(jntChainList[0],zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='yup')
+	pm.joint(jntChainList[-1],zso=1,e=1, oj='none')
+	pm.select(cl=True)
+	return jntChainList
+tailChainList = createjntchain(tailRoot,tailEnd,5,'tail',-1)
+pointMatch(tailChainList[0],tailRoot)
+
+'''
