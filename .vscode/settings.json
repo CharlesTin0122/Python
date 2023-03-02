@@ -1,10 +1,8 @@
 {
     "python.autoComplete.extraPaths": [
-        "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
+        "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py",
         ],
-    "python.pythonPath":[
-        "C:\\Program Files\\Autodesk\\Maya2020\\bin\\mayapy.exe"],
     "python.analysis.extraPaths": [
-       "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
+        "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
         ]
 }
