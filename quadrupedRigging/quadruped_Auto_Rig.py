@@ -168,11 +168,14 @@ R_frontLeg_jontList = [R_frontToeJnt,R_frontAnkleJnt,R_frontkneeJnt,
 						R_frontUpperKneeJnt,R_frontFemurJnt,frontPelvisJnt]
 R_hindLeg_jontList = [R_hindToeJnt,R_hindAnkleJnt,R_hindkneeJnt,
 						R_hindUpperKneeJnt,R_hindFemurJnt,hindPelvisJnt]
-
+tail_jointList = [tailEndJnt,tailRootJnt,hindPelvisJnt]
+neckSpine_jointList = [neckEndJnt,neckRootJnt,frontPelvisJnt,hindPelvisJnt]
 parentJoint(L_frontLeg_jontList)
 parentJoint(L_hindLeg_jontList)
 parentJoint(R_frontLeg_jontList)
 parentJoint(R_hindLeg_jontList)
+parentJoint(tail_jointList)
+parentJoint(neckSpine_jointList)
 
 #set last joint
 lastjoint = [L_frontToeJnt,L_hindToeJnt,R_frontToeJnt,R_hindToeJnt]
@@ -194,7 +197,7 @@ R_hindLeg_JntList = [R_hindFemurJnt,R_hindUpperKneeJnt,R_hindkneeJnt,
 		     			R_hindAnkleJnt,R_hindToeJnt,endjnt[3]]
 
 #set joint orient
-topJoint = [L_frontFemurJnt,L_hindFemurJnt,R_frontFemurJnt,R_hindFemurJnt]
+topJoint = [L_frontFemurJnt,L_hindFemurJnt,R_frontFemurJnt,R_hindFemurJnt,neckRootJnt,tailRootJnt]
 for jnt in topJoint:
 	pm.joint(jnt,zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='zup')
 
@@ -464,34 +467,24 @@ connectIKFKToSkinJnt(L_frontLeg_FkJntList,L_frontLeg_IkJntList,L_frontLeg_JntLis
 connectIKFKToSkinJnt(R_hindLeg_FkJntList,R_hindLeg_IkJntList,R_hindLeg_JntList,R_hindSwitchCtrl,R_hindLeg_FkList[1][0],R_hindIkVis_Grp)
 connectIKFKToSkinJnt(R_frontLeg_FkJntList,R_frontLeg_IkJntList,R_frontLeg_JntList,R_frontSwitchCtrl,R_frontLeg_FkList[1][0],R_frontIkVis_Grp)
 
-'''--------------------------------------------------Create neck joint --------------------------------------------------'''
-#测量两点之间距离函数1
-def getDisVal(point1,point2):
-	Ax,Ay,Az = point1.getTranslation(space='world')
-	Bx,By,Bz = point2.getTranslation(space='world')
-	distance = ((Ax-Bx)**2+(Ay-By)**2+(Az-Bz)**2)**0.5
-	return distance
-#测量两点之间距离函数2
-def getDisVal2(point1,point2):
-	startPoint = point1.getTranslation(space='world')
-	endPoint = point2.getTranslation(space='world')
-	disShape = pm.distanceDimension(sp=startPoint,ep=endPoint)
-	disVal = disShape.distance.get()
-	pm.delete(disShape.getParent())
-	return disVal
-#创建尾部骨骼
-'''
-def createjntchain(point1,point2,jointCount,chainName,direction=1):
-	disVal = getDisVal(point1,point2)
-	jntChainList = []
+'''--------------------------------------------------Create tail joint --------------------------------------------------'''
+def insertJointTool(rootJoint,jointCount,jointName):
+	rootJointPos = rootJoint.getTranslation(space='world')
+	endJointPos = rootJoint.getChildren()[0].getTranslation(space='world')
+	difVal = endJointPos - rootJointPos
+	segmentVal = difVal / (jointCount+1)
+	pm.select(rootJoint)
 	for i in range(jointCount):
-		tempJnt = pm.joint(n='{}_{}_JNT'.format(chainName,i+1),p=(0,0,(disVal/(jointCount-1)*i*direction)))
-		jntChainList.append(tempJnt)
-	pm.joint(jntChainList[0],zso=1, ch=1, e=1, oj='xyz', secondaryAxisOrient='yup')
-	pm.joint(jntChainList[-1],zso=1,e=1, oj='none')
+		targetJoint = pm.selected()[0]
+		targetJointPos = targetJoint.getTranslation(space='world')
+		newJoint = pm.insertJoint(targetJoint)
+		pm.joint(newJoint,component=True,edit=True,p=(targetJointPos+segmentVal))
+	pm.select(rootJoint,hi=True)
+	jntChainList = pm.selected()
+	for j in range(len(jntChainList)):
+		jntChainList[j].rename('{}_{}_JNT'.format(jointName,j+1))
+	pm.joint(jntChainList[-1],zso=1, ch=1, e=1, oj='none')
 	pm.select(cl=True)
 	return jntChainList
-tailChainList = createjntchain(tailRoot,tailEnd,5,'tail',-1)
-pointMatch(tailChainList[0],tailRoot)
 
-'''
+insertJointTool(tailRootJnt,5,'tail')
