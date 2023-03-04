@@ -8,7 +8,7 @@
 
 '''Quadruped Auto Rig'''
 import sys
-sys.path.append(r'G:\Code\Python\quadrupedRigging')
+sys.path.append(r'I:\Code\Python\quadrupedRigging')
 from ctrl_creater import *
 import pymel.core as pm
 
@@ -91,12 +91,12 @@ tailLocGrp.zeroTransformPivots()
 
 ### Finalize Placement Loc Module
 mainLocGrp = pm.group(
-                     hindLocGrp,
-                     frontLocGrp,
-                     neckLocGrp,
-                     tailLocGrp,
-                     n='mainPlacementLoc_GRP'
-                     )
+					 hindLocGrp,
+					 frontLocGrp,
+					 neckLocGrp,
+					 tailLocGrp,
+					 n='mainPlacementLoc_GRP'
+					 )
 mainLocGrp.zeroTransformPivots()
 
 '''--------------------------------------------Creat Joint---------------------------------------------'''
@@ -188,13 +188,13 @@ for jnt in lastjoint:
 	endjnt.append(dupJnt)
 
 L_frontLeg_JntList = [L_frontFemurJnt,L_frontUpperKneeJnt,L_frontkneeJnt,
-		      			L_frontAnkleJnt,L_frontToeJnt,endjnt[0]]
+			  			L_frontAnkleJnt,L_frontToeJnt,endjnt[0]]
 L_hindLeg_JntList = [L_hindFemurJnt,L_hindUpperKneeJnt,L_hindkneeJnt,
-		     			L_hindAnkleJnt,L_hindToeJnt,endjnt[1]]
+			 			L_hindAnkleJnt,L_hindToeJnt,endjnt[1]]
 R_frontLeg_JntList = [R_frontFemurJnt,R_frontUpperKneeJnt,R_frontkneeJnt,
-		      			R_frontAnkleJnt,R_frontToeJnt,endjnt[2]]
+			  			R_frontAnkleJnt,R_frontToeJnt,endjnt[2]]
 R_hindLeg_JntList = [R_hindFemurJnt,R_hindUpperKneeJnt,R_hindkneeJnt,
-		     			R_hindAnkleJnt,R_hindToeJnt,endjnt[3]]
+			 			R_hindAnkleJnt,R_hindToeJnt,endjnt[3]]
 
 #set joint orient
 topJoint = [L_frontFemurJnt,L_hindFemurJnt,R_frontFemurJnt,R_hindFemurJnt,neckRootJnt,tailRootJnt]
@@ -254,6 +254,11 @@ for obj in R_hindLeg_IkJntChild:
 
 def pointMatch(obj1,obj2):
 	nod = pm.pointConstraint(obj2,obj1)
+	pm.delete(nod)
+	pm.select(cl=1)
+
+def orientMatch(obj1,obj2):
+	nod =pm.orientConstraint(obj2,obj1)
 	pm.delete(nod)
 	pm.select(cl=1)
 	
@@ -469,22 +474,49 @@ connectIKFKToSkinJnt(R_frontLeg_FkJntList,R_frontLeg_IkJntList,R_frontLeg_JntLis
 
 '''--------------------------------------------------Create tail joint --------------------------------------------------'''
 def insertJointTool(rootJoint,jointCount,jointName):
-	rootJointPos = rootJoint.getTranslation(space='world')
-	endJointPos = rootJoint.getChildren()[0].getTranslation(space='world')
-	difVal = endJointPos - rootJointPos
-	segmentVal = difVal / (jointCount+1)
-	pm.select(rootJoint)
+	rootJointPos = rootJoint.getTranslation(space='world') #获取首根骨骼的位置
+	endJointPos = rootJoint.getChildren()[0].getTranslation(space='world')#获取末端骨骼的位置
+	difVal = endJointPos - rootJointPos #获取首尾骨骼位置的差值
+	segmentVal = difVal / (jointCount+1)#获取每段新骨骼的差值
+	pm.select(rootJoint) #选择首根骨骼
 	for i in range(jointCount):
-		targetJoint = pm.selected()[0]
-		targetJointPos = targetJoint.getTranslation(space='world')
-		newJoint = pm.insertJoint(targetJoint)
-		pm.joint(newJoint,component=True,edit=True,p=(targetJointPos+segmentVal))
+		targetJoint = pm.selected()[0] #获取所选骨骼为目标骨骼
+		targetJointPos = targetJoint.getTranslation(space='world') #获取目标骨骼位置
+		newJoint = pm.insertJoint(targetJoint)#在目标骨骼上插入新骨骼
+		pm.joint(newJoint,component=True,edit=True,p=(targetJointPos+segmentVal))#调整新骨骼位置
 	pm.select(rootJoint,hi=True)
 	jntChainList = pm.selected()
 	for j in range(len(jntChainList)):
-		jntChainList[j].rename('{}_{}_JNT'.format(jointName,j+1))
-	pm.joint(jntChainList[-1],zso=1, ch=1, e=1, oj='none')
-	pm.select(cl=True)
-	return jntChainList
+		jntChainList[j].rename('{}_{}_JNT'.format(jointName,j+1)) #骨骼链重命名
+	pm.joint(jntChainList[-1],zso=1, ch=1, e=1, oj='none')#调整骨骼方向
+	pm.select(cl=True)#取消选择
+	return jntChainList#返回骨骼链列表
 
-insertJointTool(tailRootJnt,5,'tail')
+tail_jointList = insertJointTool(tailRootJnt,5,'tail')
+#Create Spline IK
+tailSpineIk = pm.ikHandle(sol='ikSplineSolver',ns=6,
+			  sj=tail_jointList[0],ee=tail_jointList[-1],n='tail_spline_IK') #创建线性IK
+tailSpineIkGrp = pm.group(tailSpineIk[0],tailSpineIk[2],n='tail_spline_IK_GRP')#线性IK手柄和曲线打组
+tailSpineIkGrp.inheritsTransform.set(0) #取消继承transform,防止双重位移
+tailSpineIk[2].rename('tail_splineIK_curve') #曲线重命名
+tailSpineIkCVList = pm.ls('{}.cv[*]'.format(tailSpineIk[2]),fl=True) #获取曲线上的点
+tailSpineIkCVNum = len(tailSpineIkCVList)#获取曲线上点数量
+tailClusterList = [pm.cluster(tailSpineIkCVList[0],rel=True,n='tail_Cluster1')[1]]#第一个点创建簇
+tailClusterGrpList = [pm.group(tailClusterList[0],n='{}_GRP'.format(tailClusterList[0]))]#给簇打组
+for i in range((tailSpineIkCVNum-1)/2): #创建剩下的簇，两两打簇
+	tempCluster = pm.cluster(tailSpineIkCVList[(i+1)*2:(i*2)+3],rel=True,n='tail_Cluster{}'.format(i+2))[1]
+	tempClusterGrp = pm.group(tempCluster,n='{}_GRP'.format(tempCluster))
+	tailClusterList.append(tempCluster)
+	tailClusterGrpList.append(tempClusterGrp)
+
+tailIKCtrlList = []
+tailIKCtrlGrpList = []
+for cluster in tailClusterList: #为线性IK 创建控制器
+	tailIKCtrl = ctrlCreater('{}_Ctrl'.format(cluster),ik_CurInfo,17)
+	tailIKCtrlGrp = pm.group(tailIKCtrl,n='{}_GRP'.format(tailIKCtrl))
+	pointMatch(tailIKCtrlGrp,cluster)
+	orientMatch(tailIKCtrlGrp,tailRootJnt)
+	pm.parentConstraint(tailIKCtrl,cluster)
+	tailIKCtrlList.append(tailIKCtrl)
+	tailIKCtrlGrpList.append(tailIKCtrlGrp)
+#Create Tail FK Ctrl
