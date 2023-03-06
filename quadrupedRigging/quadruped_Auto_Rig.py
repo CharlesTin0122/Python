@@ -8,7 +8,7 @@
 
 '''Quadruped Auto Rig'''
 import sys
-sys.path.append(r'I:\Code\Python\quadrupedRigging')
+sys.path.append(r'G:\Code\Python\quadrupedRigging')
 from ctrl_creater import *
 import pymel.core as pm
 
