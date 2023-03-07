@@ -161,43 +161,43 @@ def reParent():
 		pm.delete('TempLocator')
 		
 	if not pm.objExists("reParent_sets"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="reParent_sets")
+		createSetResult=pm.sets(em=1, name="reParent_sets")
 		#Create Sets
 		
 	if pm.objExists("All_Sessions_reParentControls_set"):
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		pm.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="All_Sessions_reParentControls_set")
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="All_Sessions_reParentControls_set")
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	if pm.objExists("Last_Session_reParentControls_set"):
 		pm.delete('Last_Session_reParentControls_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	pm.select(cl=1)
 	if pm.objExists("Last_Session_reParentLocator_set"):
 		pm.delete('Last_Session_reParentLocator_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	if not pm.objExists("All_Session_reParentLocator_set"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="All_Session_reParentLocator_set")
-		pm.pm.cmds.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(em=1, name="All_Session_reParentLocator_set")
+		pm.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	for SelCtrl in SelectedControls:
 		pm.select(SelCtrl, r=1)
@@ -208,8 +208,8 @@ def reParent():
 		pm.select(SelCtrl, r=1)
 		pm.mel.reParentLocatorSize()
 		# create Last_Session_reParentLocator_set
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
 		pm.select(SelCtrl, 'TempLocator', r=1)
 		print (PinButton)
 		if PinButton == 0:
@@ -318,43 +318,43 @@ def reParentManualStarter():
 		pm.delete('TempLocator')
 		
 	if not pm.objExists("reParent_sets"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="reParent_sets")
+		createSetResult=pm.sets(em=1, name="reParent_sets")
 		#Create Sets
 		
 	if pm.objExists("All_Sessions_reParentControls_set"):
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		pm.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="All_Sessions_reParentControls_set")
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="All_Sessions_reParentControls_set")
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	if pm.objExists("Last_Session_reParentControls_set"):
 		pm.delete('Last_Session_reParentControls_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	pm.select(cl=1)
 	if pm.objExists("Last_Session_reParentLocator_set"):
 		pm.delete('Last_Session_reParentLocator_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	if not pm.objExists("All_Session_reParentLocator_set"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="All_Session_reParentLocator_set")
-		pm.pm.cmds.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(em=1, name="All_Session_reParentLocator_set")
+		pm.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	for SelCtrl in SelectedControls:
 		pm.select(SelCtrl, r=1)
@@ -364,8 +364,8 @@ def reParentManualStarter():
 		pm.matchTransform('TempLocator', SelectedControls[0])
 		pm.select(SelCtrl, r=1)
 		pm.mel.reParentLocatorSize()
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
 		pm.select(SelCtrl, 'TempLocator', r=1)
 		temps=pm.pointConstraint(weight=1, offset=(0, 0, 0))
 		pm.delete(temps)
@@ -534,43 +534,43 @@ def reParentRelative():
 		pm.delete('TempLocator')
 		
 	if not pm.objExists("reParent_sets"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="reParent_sets")
+		createSetResult=pm.sets(em=1, name="reParent_sets")
 		#Create Sets
 		
 	if pm.objExists("All_Sessions_reParentControls_set"):
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		pm.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="All_Sessions_reParentControls_set")
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="All_Sessions_reParentControls_set")
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	if pm.objExists("Last_Session_reParentControls_set"):
 		pm.delete('Last_Session_reParentControls_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	pm.select(cl=1)
 	if pm.objExists("Last_Session_reParentLocator_set"):
 		pm.delete('Last_Session_reParentLocator_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	if not pm.objExists("All_Session_reParentLocator_set"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="All_Session_reParentLocator_set")
-		pm.pm.cmds.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(em=1, name="All_Session_reParentLocator_set")
+		pm.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	amountOfAllCtrls=len(SelectedControls)
 	for r in range(0,amountOfAllCtrls - 1):
@@ -580,8 +580,8 @@ def reParentRelative():
 		pm.matchTransform('TempLocator', SelectedControls[r])
 		pm.select(SelectedControls[r], r=1)
 		pm.mel.reParentLocatorSize()
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='All_Session_reParentLocator_set')
 		pm.group('TempLocator', name=(SelectedControls[r] + "_ReParent_grp"))
 		pm.parentConstraint(SelectedControls[amountOfAllCtrls - 1], 
 			(SelectedControls[r] + "_ReParent_grp"), 
@@ -686,30 +686,30 @@ def reParentStayHere():
 	currentL=int(pm.playbackOptions(q=1, max=1))
 	#Create Sets
 	if not pm.objExists("reParent_sets"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="reParent_sets")
+		createSetResult=pm.sets(em=1, name="reParent_sets")
 		
 	if pm.objExists("TempLocator"):
 		pm.delete('TempLocator')
 		
 	if pm.objExists("Last_Session_reParentControls_set"):
 		pm.delete('Last_Session_reParentControls_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	pm.select(cl=1)
 	if pm.objExists("Last_Session_reParentLocator_set"):
 		pm.delete('Last_Session_reParentLocator_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
 		
 	amount+=20
 	#progressBar	
@@ -723,7 +723,7 @@ def reParentStayHere():
 		pm.matchTransform('TempLocator', SelectedControls[0], rot=1, pos=1)
 		pm.select(SelCtrl, r=1)
 		pm.mel.reParentLocatorSize()
-		pm.pm.cmds.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
+		pm.sets('TempLocator', edit=1, forceElement='Last_Session_reParentLocator_set')
 		pm.select(SelCtrl, 'TempLocator', r=1)
 		pm.select(SelCtrl, 'TempLocator', r=1)
 		pm.orientConstraint(mo=1, weight=1, n='TempOrientConst')
@@ -825,42 +825,42 @@ def IKmode():
 	pm.melGlobals.initVar('string[]', 'UpHierarchyObject')
 	#Create Sets
 	if not pm.objExists("reParent_sets"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="reParent_sets")
+		createSetResult=pm.sets(em=1, name="reParent_sets")
 		
 	if pm.objExists("All_Sessions_reParentControls_set"):
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		pm.sets(SelectedControls, edit=1, forceElement='All_Sessions_reParentControls_set')
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="All_Sessions_reParentControls_set")
-		pm.pm.cmds.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="All_Sessions_reParentControls_set")
+		pm.sets('All_Sessions_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	if pm.objExists("Last_Session_reParentControls_set"):
 		pm.delete('Last_Session_reParentControls_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets(SelectedControls, edit=1, forceElement='Last_Session_reParentControls_set')
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentControls_set")
-		pm.pm.cmds.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentControls_set")
+		pm.sets('Last_Session_reParentControls_set', edit=1, fe='reParent_sets')
 		
 	pm.select(cl=1)
 	if pm.objExists("Last_Session_reParentLocator_set"):
 		pm.delete('Last_Session_reParentLocator_set')
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	
 	else:
-		createSetResult=pm.pm.cmds.sets(name="Last_Session_reParentLocator_set")
-		pm.pm.cmds.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(name="Last_Session_reParentLocator_set")
+		pm.sets('Last_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	if not pm.objExists("All_Session_reParentLocator_set"):
-		createSetResult=pm.pm.cmds.sets(em=1, name="All_Session_reParentLocator_set")
-		pm.pm.cmds.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
+		createSetResult=pm.sets(em=1, name="All_Session_reParentLocator_set")
+		pm.sets('All_Session_reParentLocator_set', edit=1, fe='reParent_sets')
 		
 	# create locators for Joints
 	for i in range(0,3):
@@ -1137,13 +1137,13 @@ def IKmode():
 		1)
 	pm.setAttr((SelectedControls[1] + "_reParentIKPoleShape.overrideColor"), 
 		13)
-	pm.pm.cmds.sets((SelectedControls[2] + "_reParentIKlocator"), 
+	pm.sets((SelectedControls[2] + "_reParentIKlocator"), 
 		edit=1, forceElement='Last_Session_reParentLocator_set')
-	pm.pm.cmds.sets((SelectedControls[2] + "_reParentIKlocator"), 
+	pm.sets((SelectedControls[2] + "_reParentIKlocator"), 
 		edit=1, forceElement='All_Session_reParentLocator_set')
-	pm.pm.cmds.sets((SelectedControls[1] + "_reParentIKPole"), 
+	pm.sets((SelectedControls[1] + "_reParentIKPole"), 
 		edit=1, forceElement='Last_Session_reParentLocator_set')
-	pm.pm.cmds.sets((SelectedControls[1] + "_reParentIKPole"), 
+	pm.sets((SelectedControls[1] + "_reParentIKPole"), 
 		edit=1, forceElement='All_Session_reParentLocator_set')
 	pm.select((SelectedControls[2] + "_reParentIKlocator"), 
 		r=1)
@@ -1247,6 +1247,3 @@ def reParentLocatorSize():
 			(locatorSize / 1))
 		pm.setAttr("TempLocatorShape.localScaleZ", 
 			(locatorSize / 1))
-		
-	
-
