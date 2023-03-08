@@ -1,18 +1,22 @@
-class Human():
+class Animal:
+	def speak(self):
+		pass
+	
+class Dog(Animal):
+	def speak(self):
+		print('wof wof wof !')
 
-    def __init__(self,name,age,sex): #构造函数 初始化函数
-        self.name = name #成员变量
-        self.age = age
-        self.sex = sex
+class Cat(Animal):
+	def speak(self):
+		print('meo meo meo !')
 
-    def info(self): #类方法，成员函数
-        print("My name is {}, {} years old and I'm a {}".format(self.name, self.age, self.sex))
 
-Xiaoming = Human("xiao ming", 17, "male") #实例化
-Xiaohong = Human("xiao hong", 19, "female")
 
-print(Xiaoming.name)
-Xiaohong.info()
+dog = Dog()
+cat = Cat()
 
-def sayHello():
-    print("Hello in class02!")
+def make_noise(animal:Animal):
+	animal.speak()
+
+make_noise(dog)
+make_noise(cat)
