@@ -1,3 +1,4 @@
+'''类的继承和多态'''
 class Animal:
 	def speak(self):
 		pass
@@ -20,3 +21,28 @@ def make_noise(animal:Animal):
 
 make_noise(dog)
 make_noise(cat)
+ 
+
+'''类的工厂模式'''
+class Person:
+	pass
+class Worker(Person):
+	pass
+class Student(Person):
+	pass
+class Teacher(Person):
+	pass
+
+class Factory:
+	def get_person(self,type):
+		if type == 'w':
+			return Worker()
+		elif type == 's':
+			return Student()
+		else:
+			return Teacher()
+		
+factory = Factory()
+worker = factory.get_person('w')
+stu = factory.get_person('s')
+teacher = factory.get_person('t')
