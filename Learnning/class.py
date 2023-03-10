@@ -1,5 +1,5 @@
 #类 Class 面向对象 面向过程
-class Player():
+class Player:
     def __init__(self,id,pos,speed,heal):
         self.Id = id
         self.Position = pos
@@ -15,7 +15,7 @@ print(pl2.Position)
 
 #案例2
 
-class Human():
+class Human:
 
     def __init__(self,name,age,sex): #构造函数 初始化函数
         self.name = name #成员变量
@@ -32,7 +32,7 @@ print(Xiaoming.name)
 Xiaohong.info()
 
 
-class Human():
+class Human:
 
 	def __init__(self,name,age,sex): #构造函数 初始化函数
 		self.name = name #成员变量
