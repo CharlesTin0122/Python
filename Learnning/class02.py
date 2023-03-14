@@ -21,7 +21,24 @@ def make_noise(animal:Animal):
 
 make_noise(dog)
 make_noise(cat)
- 
+
+
+'''类的单例模式'''
+#创建类和变量来获取类
+class StrTools:
+	pass
+str_tool = StrTools()
+#在另一个模块中导入另一个文件的类变量
+from class02 import str_tool
+#创建变量来获取导入的类变量
+s1 = str_tool()
+s2 = str_tool()
+#这时两个类变量为同一个内存地址，
+print(id(s1))
+print(id(s2))
+
+
+
 
 '''类的工厂模式'''
 class Person:

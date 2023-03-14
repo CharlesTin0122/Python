@@ -31,3 +31,12 @@ polyCubeDict = {
     } 
 for k, v in polyCubeDict.items():
     print("key:{},value:{}".format(k,v))
+
+
+'''枚举循环'''
+import pymel.core as pm
+
+obj = pm.selected()
+#枚举
+for index,data in enumerate(obj):
+    print(index,data)
