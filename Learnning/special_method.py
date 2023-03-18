@@ -10,7 +10,7 @@ class A:
 	def __init__(self,x):
 		self.x = x
 		print('__init__')
-#delete销毁实例化对象
+#delete销毁实例化对象，对应实例化后del()命令
 	def __del__(self):
 		print('__del__')
 #representation，返回更详细的字符串
