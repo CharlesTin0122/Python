@@ -8,7 +8,7 @@
 
 '''Quadruped Auto Rig'''
 import sys
-sys.path.append(r'G:\Code\Python\quadrupedRigging')
+sys.path.append(r'I:\Code\Python\quadrupedRigging')
 from ctrl_creater import *
 import pymel.core as pm
 
@@ -520,3 +520,26 @@ for cluster in tailClusterList: #为线性IK 创建控制器
 	tailIKCtrlList.append(tailIKCtrl)
 	tailIKCtrlGrpList.append(tailIKCtrlGrp)
 #Create Tail FK Ctrl
+tailRootFkCtrl = ctrlCreater('tail_root_FK_Ctrl',fk_CurInfo,17)
+tailRootFkCtrlGrp = pm.group(tailRootFkCtrl,n='{}_GRP'.format(tailRootFkCtrl))
+tailMidFkCtrl = ctrlCreater('tail_mid_FK_Ctrl',fk_CurInfo,17)
+tailMidFkCtrlGrp = pm.group(tailMidFkCtrl,n='{}_GRP'.format(tailMidFkCtrl))
+tailEndFkCtrl = ctrlCreater('tail_end_FK_Ctrl',fk_CurInfo,17)
+tailEndFkCtrlGrp = pm.group(tailEndFkCtrl,n='{}_GRP'.format(tailEndFkCtrl))
+
+tailRootFkCtrlGrp.t.set(tailSpineIkCVList[0].getPosition())
+tailMidFkCtrlGrp.t.set(tailSpineIkCVList[4].getPosition())
+tailEndFkCtrlGrp.t.set(tailSpineIkCVList[7].getPosition())
+
+orientMatch(tailRootFkCtrlGrp,tailRoot)
+orientMatch(tailMidFkCtrlGrp,tailRoot)
+orientMatch(tailEndFkCtrlGrp,tailRoot)
+
+pm.parent(tailIKCtrlGrpList[-1],tailIKCtrlGrpList[-2],tailEndFkCtrl)
+pm.parent(tailIKCtrlGrpList[-3],tailMidFkCtrl)
+pm.parent(tailIKCtrlGrpList[0],tailIKCtrlGrpList[1],tailRootFkCtrl)
+
+pm.parent(tailEndFkCtrlGrp,tailMidFkCtrl)
+pm.parent(tailMidFkCtrlGrp,tailRootFkCtrl)
+
+pm.parent(tailMidFkCtrlGrp,tailRootFkCtrl)
