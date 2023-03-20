@@ -97,3 +97,16 @@ p.speak()
 #delattr()
 delattr(p,'age')
 p.age()
+
+#对模块进行反射
+import sys
+# for k, v in sys.modules.items():
+# 	print(k,v)
+print(sys.modules['__main__'])
+mod = sys.modules[__name__]#获取当前模块
+print(mod)
+#进行反射
+if hasattr(mod,'p'):
+	o = getattr(mod,'p')
+	print(o)
+print(p)
