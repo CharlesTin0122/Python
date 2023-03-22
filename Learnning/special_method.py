@@ -13,12 +13,14 @@ class A:
 #delete销毁实例化对象，对应实例化后del()命令
 	def __del__(self):
 		print('__del__')
+#改变对象的字符串显示格式
 #representation，返回更详细的字符串
 	def __repr__(self):
 		return '<A>'
 #string,返回人类更容易理解的字符串
 	def __str__(self):
 		return '<A>'
+	
 #format字符串格式化魔术方法
 	def __format__(self, spec):
 		if spec == 'x':
@@ -124,3 +126,133 @@ if x:
 	print('True')
 if not x:
 	print('False')
+
+'''-------------------对象属性相关的魔术方法-------------------'''
+class A:
+	def __init__(self):
+		self.exist = 'abc'
+		self.counter = 0
+	#当实例化对象调用的属性不存在的时候，希望她做点什么
+	def __getAttr__(self,name):
+		print('getting{}'.format(name))
+		#raise手动设置异常
+		raise AttributeError
+	#只要你尝试去读取它的属性，就会被调用
+	def __getattribute__(self, name):
+		if name == 'data':
+			self.counter +=1
+		return super().__getattribute__(name)
+	
+o=A()
+#o.test属性并不存在
+print(o.test)
+print(o.data)
+print(o.counter)
+
+'''------------------item系列魔术方法----------------------'''
+#把一个对象变成字典，像字典一样增删改查
+class Human:
+	def __init__(self,name):
+		self.name = name 
+	#把一个对象变成字典
+	def __getitem__(self,item):
+		#打印对象属性的键值对
+		print(self.__dict__)
+		print('获取key',item)
+		#打印属性的值
+		print(self.__dict__[item])
+	#可以让对象设置属性
+	def __setitem__(self,key,value):
+		print('设置key',key)
+		self.__dict__[key] = value
+	#可以让对象删除属性
+	def __delitem__(self,key):
+		print('del obj[key]时，我执行')
+		self.__dict__.pop(key)
+	def __delattr__(self, item):
+		print('del obj.key时,我执行')
+		self.__dict__.pop(item)
+
+#实例化对象
+b= Human('abc')
+#查看属性的值	
+b['name']
+#修改属性的值
+b['name'] = 'cde'
+print(b.name)
+
+#设置属性的值
+b['age'] = 64
+#打印属性的值
+print(b.age)
+#删除属性
+del b['name']
+del b.age
+'''-------------------------------重要的魔术方法-------------------------'''
+#str，repr改变对象的字符串显示格式，del 析构方法
+class School:
+	def __init__(self,name,addr,type):
+		self.name = name
+		self.addr = addr
+		self.type = type
+	def __repr__(self) -> str:
+		return 'School({},{})'.format(self.name,self.addr)
+	def __str__(self) -> str:
+		return '({},{})'.format(self.name,self.addr)
+	def __del__(self):
+		print('对象被释放了...')
+	
+s1 = School('yinshanhu','suzhou','xiaoxue')
+print(repr(s1))
+print(str(s1))
+print(s1)
+del s1
+'''
+str函数或print函数调用时--->__str__()
+repr函数或交互式解释器调用时--->—__repr__()
+如果__str__没有被定义,那么就会使用__repr__代替输出
+这两个方法的返回值必须是字符串，否则会抛出异常
+'''
+#__new__方法，在__init__之前执行
+class Student(object):
+	def __init__(self,name) -> None:
+		self.name = name
+		print('init')
+	#__new__是从一个class建立一个object的过程,负责执行__init__,进行实例初始化之前的工作
+	def __new__(cls,*args,**kwargs):
+		print(cls,args,kwargs)
+		#必须返回，执行父类的__new__放法,否则__init__不执行
+		return object.__new__(cls)
+		# return super().__new__(cls)
+	
+p = Student('xiaoming')
+p.name
+
+#范例,单例模式
+class Printer(object):
+	tasks = []
+	instance = None #存放第一个实例对象
+	def __init__(self,name) -> None:
+		self.name = name
+
+	def add_tasks(self,job):
+		self.tasks.append(job)
+		print('{} 添加任务 {}到打印机，总任务数{}'.format(self.name,job,len(self.tasks)))
+	#只有第一次实例化的时候正常进行，后面每次实例化，并不真的创建一个新实例
+	def __new__(cls,*args,**kwargs):
+		#正常进行实例化，并把实例化后的对象 存在cls.instance里面
+		if cls.instance is None:
+			obj = object.__new__(cls) #实例化过程
+			print(obj)
+			cls.instance = obj #把实例化好的对象存下来
+		#以后每次实例化，直接返回第一次存的实例对象，在上一次实例对象基础上，再执行__init__
+		return cls.instance 
+	
+p1 = Printer('word app')
+p2 = Printer('ppt app')
+p3 = Printer('excel app')
+
+p1.add_tasks('word file')
+p2.add_tasks('ppt file')
+p3.add_tasks('excel file')
+print(p1.name,p2.name,p3.name)
