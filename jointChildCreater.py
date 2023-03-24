@@ -9,7 +9,12 @@
 import pymel.core as pm
 
 def childJntCreater(jnt,childJntname):
-	
+	"""给骨骼创建子骨骼，并传递权重给子骨骼
+
+	Args:
+		jnt (str): 骨骼名称
+		childJntname (str): 子骨骼名称
+	"""
 	pm.select(cl=True) #取消所有选择
 	childJnt = pm.duplicate(jnt,name=childJntname,parentOnly=True)[0] #复制骨骼为子骨骼并重命名
 	pm.parent(childJnt,jnt) #设置子骨骼父子关系
