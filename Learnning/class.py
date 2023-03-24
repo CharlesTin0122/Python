@@ -1,4 +1,4 @@
-#类 Class 面向对象 面向过程
+'''-----------------------类 Class 面向对象-------------------------'''
 class Player:
 	def __init__(self,id,pos,speed,heal):
 		self.Id = id
@@ -31,27 +31,43 @@ Xiaohong = Human("xiao hong", 19, "female")
 print(Xiaoming.name)
 Xiaohong.info()
 
+'''----------------------------类的继承------------------------------------'''
+class Human(object):
+    
+    def __init__(self, name, age):
+        self.firstName = name.split()[0]
+        self.lastName = name.split()[-1]
+        self.age = age
 
-class Human:
+    def greet(self):
+        print ("Hello, my name is %s. I am %s years old." % (self.firstName, self.age))
 
-	def __init__(self,name,age,sex): #构造函数 初始化函数
-		self.name = name #成员变量
-		self.age = age
-		self.sex = sex
+    def walk(self, steps=1):
+        print ("%s walked %s steps" % (self.firstName, steps))
 
-	def info(self): #类方法，成员函数
-		print("My name is {}, {} years old and I'm a {}".format(self.name, self.age, self.sex))
+class Canadian(Human):
+    
+    def __init__(self, name, age, city):
+		# super()方法可以调用父类Human的函数，此案例中调用了父类父类Human的__init__函数。
+        super(Canadian, self).__init__(name, age)
+        self.city = city
 
-Xiaoming = Human("xiao ming", 17, "male") #实例化
-Xiaohong = Human("xiao hong", 19, "female")
+    def greet(self):
+        print ("Hi, I'm %s from %s. I am %s years old eh!") % (self.firstName, self.city, self.age)
 
-print(Xiaoming.name)
-Xiaohong.info()
 
+# Here are some examples of using a class
+bob = Canadian('Bob Boberton', 45, 'Vancouver')
+bob.greet() # Hi I'm Bob from Vancouver. I am 45 years old eh!
+bob.walk(5) # Bob walked 5 steps
+ 
+bob.age = 50
+bob.greet() # Hi I'm Bob from Vancouver. I am 50 years old eh!
+'''类的模块导入'''
 def sayHello():
 	print("Hello in class02!")
 
-
+'''私有属性和私有方法'''
 class Phone:
 	__current_voltage = None #私有变量（不可被外部调用）
 	def __keep(self): #私有方法（不可被外部调用）
