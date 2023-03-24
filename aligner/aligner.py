@@ -137,11 +137,6 @@ def align(nodes=None, axis='x', mode='mid'):
         cmds.xform(node, translation=ws, ws=True)
 
 class Aligner(object):
-    """_summary_
-
-    Args:
-        object (_type_): _description_
-    """
 
     def __init__(self):
         # Create the window and make sure only one exists at a time

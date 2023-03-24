@@ -2,7 +2,16 @@ import pymel.core as pm
 
 jntChain = []
 clusterList = []
-def creatJoint(jntCount,jntLength):
+def creatJoint(jntCount:int,jntLength:float) -> list:
+	"""创建骨骼链工具
+
+	Args:
+		jntCount (int): 要创建的骨骼数量
+		jntLength (float): 要创建的每节骨骼长度
+
+	Returns:
+		list: 骨骼列表
+	"""
 	global jntChain
 	for i in range(jntCount):
 		jnt = pm.joint(name='jnt_{}'.format(i+1),
@@ -12,7 +21,16 @@ def creatJoint(jntCount,jntLength):
 	
 
 
-def creatSplineIK(jntChain,numSpans):
+def creatSplineIK(jntChain:list,numSpans:int) -> list:
+	"""_创建线性IK工具_
+
+	Args:
+		jntChain (list): _骨骼列表_
+		numSpans (int): _线性IK曲线段数_
+
+	Returns:
+		list: 簇列表
+	"""
 	jntsplineIK = pm.ikHandle(sol='ikSplineSolver',name='tail_spline_IK',
 												ns=numSpans,sj=jntChain[0],ee=jntChain[-1])
 	jntsplineIK[2].rename('splineIK_curve')
@@ -21,7 +39,7 @@ def creatSplineIK(jntChain,numSpans):
 	for i in range(splineIKCVListNum):
 		cvcluster = pm.cluster(splineIKCVList[i],n='cv_cluster{}'.format(i+1))[1]
 		clusterList.append(cvcluster)
-			
+	return clusterList
 def stretchSplineIKIKJnt(jntChain,splineIKCurve):
 	pass
 	
