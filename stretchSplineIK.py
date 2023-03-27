@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+'''
+@FileName    :   stretchSplineIK.py
+@DateTime    :   2023/03/27 09:48:20
+@Author  :   Tian Chao 
+@Contact :   tianchao0533@163.com
+'''
+
 import pymel.core as pm
 
 jntChain = []# 骨骼链列表
@@ -23,7 +31,34 @@ def creatJoint(jntCount,jntLength):
 		jntChain.append(jnt)
 	return  jntChain # 返回骨骼链
 	
+def insertJointTool(rootJoint,jointCount,jointName):
+	"""两节骨骼之间插入一定数量骨骼
 
+	Args:
+		rootJoint (str): 需要插入骨骼的根骨骼
+		jointCount (int):要插入的骨骼数量
+		jointName (str): 骨骼名称
+
+	Returns:
+		list: 骨骼链列表
+	"""
+	rootJointPos = rootJoint.getTranslation(space='world') #获取首根骨骼的位置
+	endJointPos = rootJoint.getChildren()[0].getTranslation(space='world')#获取末端骨骼的位置
+	difVal = endJointPos - rootJointPos #获取首尾骨骼位置的差值
+	segmentVal = difVal / (jointCount+1)#获取每段新骨骼的差值
+	pm.select(rootJoint) #选择首根骨骼
+	for i in range(jointCount):
+		targetJoint = pm.selected()[0] #获取所选骨骼为目标骨骼
+		targetJointPos = targetJoint.getTranslation(space='world') #获取目标骨骼位置
+		newJoint = pm.insertJoint(targetJoint)#在目标骨骼上插入新骨骼
+		pm.joint(newJoint,component=True,edit=True,p=(targetJointPos+segmentVal))#调整新骨骼位置
+	pm.select(rootJoint,hi=True)
+	jntChainList = pm.selected()
+	for j in range(len(jntChainList)):
+		jntChainList[j].rename('{}_{}_JNT'.format(jointName,j+1)) #骨骼链重命名
+	pm.joint(jntChainList[-1],zso=1, ch=1, e=1, oj='none')#调整骨骼方向
+	pm.select(cl=True)#取消选择
+	return jntChainList#返回骨骼链列表
 
 def creatSplineIK(jntChain,numSpans):
 	"""创建线性IK工具
