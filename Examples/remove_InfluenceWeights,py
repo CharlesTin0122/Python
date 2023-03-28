@@ -19,3 +19,5 @@ for vtx in objVtx:
 #移除面部子骨骼蒙皮
 for jnt in faceJnt[1:]:	
 	pm.skinCluster(skClu, e=1, ri=jnt)
+#移除微小权重
+pm.skinPercent(skClu, obj, pruneWeights=0.1)
