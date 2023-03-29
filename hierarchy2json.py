@@ -39,6 +39,37 @@ def hierarchy2json(parents,dump2json=True,tree=None,init=True,):
 print((hierarchy2json(pm.selected())))
 
 
+
+def getRelParent(jnt_list,root):
+	"""
+	getRelParent 根据长名称获取骨骼列表的父子关系
+
+	Args:
+		jnt_list (	list): 蒙皮骨骼列表
+		root (Joint): 根骨骼
+
+	Returns:
+		dict: 骨骼的父子关系
+	"""
+	jnt_parent = {} #创建父子关系字典
+	#遍历骨骼列表中的每个骨骼
+	for jnt in jnt_list:
+		hi_tree = jnt.longName().split("|")[1:-1]
+		parent = None
+		while parent not in jnt_list:
+			if not hi_tree: 
+				parent = root
+				break
+			parent = pm.PyNode(hi_tree.pop())
+		jnt_parent[jnt] = parent if parent != root else parent
+	return jnt_parent
+	
+jnt_list = pm.ls(sl=True)
+root = jnt_list[0]
+a = getRelParent(jnt_list,root)
+
+
+
 '''-----------------------------------------------------------------------方法2-------------------------------------------------------------------------'''
 
 import maya.cmds as mc
