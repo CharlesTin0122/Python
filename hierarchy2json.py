@@ -9,7 +9,7 @@ def hierarchy2json(parents,dump2json=True,tree=None,init=True,):
 		parents (_type_): _description_
 		dump2json (bool, optional): _description_. Defaults to True.
 		tree (_type_, optional): _description_. Defaults to None.
-		init (bool, optional): 是否写入json. Defaults to True.
+		init (bool, optional): _description_. Defaults to True.
 
 	Returns:
 		_type_: _description_
@@ -31,8 +31,7 @@ def hierarchy2json(parents,dump2json=True,tree=None,init=True,):
 
 print((hierarchy2json(pm.selected())))
 
-
-
+#方法2
 import maya.cmds as mc
 
 def hierarchyTree(parent, tree):

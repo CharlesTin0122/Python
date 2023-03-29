@@ -1,0 +1,217 @@
+{
+    "root": {
+        "pelvis": {
+            "thigh_r": {
+                "thigh_twist_01_r": {},
+                "calf_r": {
+                    "calf_twist_01_r": {},
+                    "foot_r": {
+                        "ball_r": {}
+                    }
+                }
+            },
+            "spine_01": {
+                "spine_02": {
+                    "spine_03": {
+                        "clavicle_r": {
+                            "upperarm_r": {
+                                "upperarm_twist_01_r": {},
+                                "lowerarm_r": {
+                                    "hand_r": {
+                                        "middle_01_r": {
+                                            "middle_02_r": {
+                                                "middle_03_r": {}
+                                            }
+                                        },
+                                        "ring_01_r": {
+                                            "ring_02_r": {
+                                                "ring_03_r": {}
+                                            }
+                                        },
+                                        "Weapon_R": {},
+                                        "pinky_01_r": {
+                                            "pinky_02_r": {
+                                                "pinky_03_r": {}
+                                            }
+                                        },
+                                        "thumb_01_r": {
+                                            "thumb_02_r": {
+                                                "thumb_03_r": {}
+                                            }
+                                        },
+                                        "index_01_r": {
+                                            "index_02_r": {
+                                                "index_03_r": {}
+                                            }
+                                        }
+                                    },
+                                    "lowerarm_twist_01_r": {}
+                                }
+                            }
+                        },
+                        "Weapon_Back": {},
+                        "neck_01": {
+                            "head": {
+                                "facebase": {
+                                    "face_t": {
+                                        "eyebase_l": {
+                                            "eyelid_b_003_l": {},
+                                            "eyelid_t_003_l": {},
+                                            "eyelid_b_002_l": {},
+                                            "eyecanthus_001_l": {},
+                                            "eyecanthus_002_l": {},
+                                            "eye_l": {},
+                                            "eyelid_b_001_l": {},
+                                            "eyelid_t_002_l": {},
+                                            "eyelid_t_001_l": {}
+                                        },
+                                        "browbase_r": {
+                                            "brow_t_003_r": {},
+                                            "brow_t_002_r": {},
+                                            "brow_t_001_r": {}
+                                        },
+                                        "zygoma_001_l": {},
+                                        "eyebase_r": {
+                                            "eyelid_t_001_r": {},
+                                            "eyelid_b_001_r": {},
+                                            "eyelid_t_002_r": {},
+                                            "eye_r": {},
+                                            "eyecanthus_002_r": {},
+                                            "eyelid_t_003_r": {},
+                                            "eyelid_b_002_r": {},
+                                            "eyelid_b_003_r": {},
+                                            "eyecanthus_001_r": {}
+                                        },
+                                        "earbase_l": {
+                                            "ear_003_l": {},
+                                            "ear_002_l": {},
+                                            "ear_001_l": {}
+                                        },
+                                        "nosebridge_001_l": {},
+                                        "earbase_r": {
+                                            "ear_001_r": {},
+                                            "ear_003_r": {},
+                                            "ear_002_r": {}
+                                        },
+                                        "browbase_l": {
+                                            "brow_t_001_l": {},
+                                            "brow_t_003_l": {},
+                                            "brow_t_002_l": {}
+                                        },
+                                        "forehead_001": {},
+                                        "forehead_002": {},
+                                        "nosebridge_001_r": {},
+                                        "nosenasion_001": {},
+                                        "zygoma_001_r": {},
+                                        "temporal_001": {}
+                                    },
+                                    "nosebase": {
+                                        "philtrum_001": {},
+                                        "nosetip_001_l": {},
+                                        "nosewing_001_l": {},
+                                        "nosewing_001_r": {},
+                                        "nosetip_001_r": {},
+                                        "nosebridge_001": {},
+                                        "nosetip_001": {}
+                                    },
+                                    "face_b": {
+                                        "cheek_001_l": {},
+                                        "jaw_t_001_r": {},
+                                        "jaw_t_001_l": {},
+                                        "lipbase": {
+                                            "lipbase_t": {
+                                                "lip_t1_001_r": {},
+                                                "lip_t_001": {},
+                                                "lip_t1_001_l": {}
+                                            },
+                                            "teeth_t": {},
+                                            "lip_001_l": {},
+                                            "lip_001_r": {},
+                                            "lipbase_b": {
+                                                "lip_b_001": {},
+                                                "lip_b1_001_r": {},
+                                                "chin_001": {},
+                                                "lip_b1_001_l": {}
+                                            }
+                                        },
+                                        "mouth_001": {
+                                            "tongue_001": {
+                                                "tongue_002": {
+                                                    "tongue_003": {}
+                                                }
+                                            },
+                                            "jawbase_001": {
+                                                "jaw_b_001_r": {},
+                                                "jaw_b_001_l": {},
+                                                "jaw_b_001": {},
+                                                "chin_002": {}
+                                            },
+                                            "teeth_b": {}
+                                        },
+                                        "cheek_001_r": {}
+                                    }
+                                }
+                            }
+                        },
+                        "clavicle_l": {
+                            "upperarm_l": {
+                                "lowerarm_l": {
+                                    "hand_l": {
+                                        "index_01_l": {
+                                            "index_02_l": {
+                                                "index_03_l": {}
+                                            }
+                                        },
+                                        "thumb_01_l": {
+                                            "thumb_02_l": {
+                                                "thumb_03_l": {}
+                                            }
+                                        },
+                                        "pinky_01_l": {
+                                            "pinky_02_l": {
+                                                "pinky_03_l": {}
+                                            }
+                                        },
+                                        "ring_01_l": {
+                                            "ring_02_l": {
+                                                "ring_03_l": {}
+                                            }
+                                        },
+                                        "Weapon_L": {},
+                                        "middle_01_l": {
+                                            "middle_02_l": {
+                                                "middle_03_l": {}
+                                            }
+                                        }
+                                    },
+                                    "lowerarm_twist_01_l": {}
+                                },
+                                "upperarm_twist_01_l": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "Weapon_Pelvis_L": {},
+            "thigh_l": {
+                "calf_l": {
+                    "calf_twist_01_l": {},
+                    "foot_l": {
+                        "ball_l": {}
+                    }
+                },
+                "thigh_twist_01_l": {}
+            }
+        },
+        "ik_hand_root": {
+            "ik_hand_gun": {
+                "ik_hand_l": {},
+                "ik_hand_r": {}
+            }
+        },
+        "ik_foot_root": {
+            "ik_foot_r": {},
+            "ik_foot_l": {}
+        }
+    }
+}
