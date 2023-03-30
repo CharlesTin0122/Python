@@ -1,10 +1,10 @@
-import maya.cmds as mc
-import pymel.core as pm
-import pymel.core.nodetypes as nt
-import json
+import maya.cmds as mc      # 引入Maya命令模块，命名为mc
+import pymel.core as pm     # 引入Pymel核心模块，命名为pm
+import pymel.core.nodetypes as nt  # 引入Pymel节点类型模块，命名为nt
+import json                 # 引入JSON模块，用于转换字典为JSON字符串
 
 
-def hierarchy2json(parents, dump2json=True, tree=None, init=True,):
+def hierarchy2json(parents, dump2json=True, tree=None, init=True):
 	"""
 	该函数的作用是将指定的父节点列表转换为 JSON 格式的层级结构。具体实现方法为：
 	遍历每个父节点，初始化一个子字典，然后递归处理其子节点，并将子节点添加到子字典中。
@@ -12,55 +12,62 @@ def hierarchy2json(parents, dump2json=True, tree=None, init=True,):
 	其中，如果指定了 dump2json 参数为 True,则将结果转换为 JSON 格式并返回；否则返回字典格式的结果。
 
 	Args:
-		parents (list): 是指定的父节点列表
+		parents (list): 要转换的节点
 		dump2json (bool, optional): 是否将结果转换为 JSON 格式并返回
 		tree (dict, optional): 指定的目标字典
-		init (bool, optional): 是否为根节点
+		init (bool, optional): 是否是首次调用函数
 
 	Returns:
 			dict or json: 字典
 	"""
-	# 如果 parents 不是列表类型，则转换为列表类型
-	if isinstance(parents, list):
-		parents = parents
-	else:
-		parents = [parents]
+	# 定义一个将节点层次结构转换为JSON字符串的函数，接受四个参数：要转换的节点，是否转换为JSON字符串，节点层次结构的字典，是否是首次调用函数
+	if isinstance(parents, list):   # 如果parents是列表
+		parents = parents          # 直接使用该列表
+	else:                           # 否则
+		parents = [parents]         # 将它转换为仅有一个元素的列表
 
-	# 如果 tree 不是字典类型，则初始化一个字典
-	if not isinstance(tree, dict):
-		for p in parents:
-			if isinstance(p, nt.Transform):
-				_tree = {str(p): {}}
+	if not isinstance(tree, dict):  # 如果tree不是字典
+		for p in parents:           # 遍历parents中的节点
+			if isinstance(p, nt.Transform):   # 如果节点是Transform类型
+				_tree = {str(p): {}}           # 创建以该节点为根节点的空字典
 			else:
-				_tree = {str(p): {p.type()}}
-	else:
-		_tree = tree
+				_tree = {str(p): {p.type()}}   # 否则创建以该节点为根节点，节点类型为值的字典
+	else:                           # 否则，即tree是字典
+		_tree = tree                # 直接使用该字典
 
-	# 遍历每个父节点
-	for parent in parents:
-	 # 如果不是根节点，则使用指定的 tree 字典
-		if init:
-			tree = _tree[str(parent)]
-		else:
-			tree = _tree
+	for parent in parents:          # 遍历所有父节点
+		if init:                    # 如果是首次调用该函数
+			tree = _tree[str(parent)]   # 使用该节点为根节点的字典
+		else:                       # 否则
+			tree = _tree            # 使用输入的字典
 
-		# 遍历每个子节点
-		for child in parent.getChildren():
-			# 初始化子节点的字典
-			if isinstance(child, nt.Transform):
-				tree[str(child)] = {}
+		for child in parent.getChildren():   # 遍历该节点的所有子节点
+			if isinstance(child, nt.Transform):  # 如果子节点是Transform类型
+				tree[str(child)] = {}           # 将该子节点作为键，添加空字典作为值
 			else:
-				tree[str(child)] = child.type()
+				tree[str(child)] = child.type() # 将该子节点作为键，添加节点类型作为值
 
-			hierarchy2json(child, tree=tree[str(child)], init=False)  # 递归处理子节点
-	# 如果是根节点，则返回处理结果（可以选择将结果转换为 JSON 格式）
-	if init:
-		return json.dumps(_tree) if dump2json else _tree
+			hierarchy2json(child, tree=tree[str(child)], init=False)  # 递归遍历该子节点的所有子节点
 
-
-# for sel in pm.selected():
-#     print(json.dumps(hierarchy2json(sel)))
+	if init:                # 如果是首次调用该函数
+		return json.dumps(_tree) if dump2json else _tree   # 返回转换为JSON字符串的字典或字典本身
+	
 print((hierarchy2json(pm.selected())))
+'''
+这是一个将Maya场景中节点层次结构转换为JSON字符串的Python脚本。它通过递归遍历层次结构并构建嵌套字典来实现这一功能。
+
+该脚本使用Maya Python API获取节点层次结构，并使用Python内置的JSON库将其转换为JSON字符串。
+
+hierarchy2json函数接受两个参数：parents是要从中开始层次结构的Maya节点列表，dump2json是一个布尔标志，指示输出是否应该是JSON字符串还是Python字典。
+
+该函数首先检查parents是否为列表，如果不是，则将其转换为具有单个元素的列表。然后，它使用顶层节点作为层次结构的根节点初始化输出字典。
+
+然后，它递归遍历层次结构，将每个节点及其子节点添加到输出字典中。如果节点是Transform节点（即组节点），它会为其子节点添加一个空字典。否则，它将该节点的类型（例如“mesh”，“camera”）作为字符串添加到字典中。
+
+最后，如果init为True，表示这是对函数的第一次调用，则如果dump2json为True，则将输出作为JSON字符串返回，否则将其作为Python字典返回。否则，它不返回任何内容（因为输出已经添加到父字典中）。
+
+脚本的最后一行调用hierarchy2json函数，并使用当前在Maya场景中选择的节点作为参数，并打印结果。
+'''
 
 '''
 函数首先将输入物体转换为列表（如果它们还不是列表），然后创建一个名为 _tree 的空字典。
