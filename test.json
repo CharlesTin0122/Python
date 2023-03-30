@@ -1,217 +1,213 @@
 {
-    "root": {
-        "pelvis": {
-            "thigh_r": {
-                "thigh_twist_01_r": {},
-                "calf_r": {
-                    "calf_twist_01_r": {},
-                    "foot_r": {
-                        "ball_r": {}
+    "NameMatcher:root": {
+        "NameMatcher:pelvis": {
+            "NameMatcher:thigh_l": {
+                "thigh_l_parentConstraint1": {},
+                "NameMatcher:calf_l": {
+                    "NameMatcher:foot_l": {
+                        "NameMatcher:ball_l": {
+                            "ball_l_parentConstraint1": {}
+                        },
+                        "foot_l_parentConstraint1": {}
+                    },
+                    "calf_l_parentConstraint1": {},
+                    "NameMatcher:calf_twist_01_l": {
+                        "calf_twist_01_l_parentConstraint1": {}
                     }
+                },
+                "NameMatcher:thigh_twist_01_l": {
+                    "thigh_twist_01_l_parentConstraint1": {}
                 }
             },
-            "spine_01": {
-                "spine_02": {
-                    "spine_03": {
-                        "clavicle_r": {
-                            "upperarm_r": {
-                                "upperarm_twist_01_r": {},
-                                "lowerarm_r": {
-                                    "hand_r": {
-                                        "middle_01_r": {
-                                            "middle_02_r": {
-                                                "middle_03_r": {}
-                                            }
-                                        },
-                                        "ring_01_r": {
-                                            "ring_02_r": {
-                                                "ring_03_r": {}
-                                            }
-                                        },
-                                        "Weapon_R": {},
-                                        "pinky_01_r": {
-                                            "pinky_02_r": {
-                                                "pinky_03_r": {}
-                                            }
-                                        },
-                                        "thumb_01_r": {
-                                            "thumb_02_r": {
-                                                "thumb_03_r": {}
-                                            }
-                                        },
-                                        "index_01_r": {
-                                            "index_02_r": {
-                                                "index_03_r": {}
-                                            }
-                                        }
-                                    },
-                                    "lowerarm_twist_01_r": {}
-                                }
-                            }
+            "NameMatcher:Weapon_Pelvis_R": {},
+            "pelvis_parentConstraint1": {},
+            "NameMatcher:spine_01": {
+                "spine_01_parentConstraint1": {},
+                "NameMatcher:spine_02": {
+                    "spine_02_parentConstraint1": {},
+                    "NameMatcher:spine_03": {
+                        "spine_03_parentConstraint1": {},
+                        "NameMatcher:neck_01": {
+                            "NameMatcher:head": {
+                                "head_parentConstraint1": {}
+                            },
+                            "neck_01_parentConstraint1": {}
                         },
-                        "Weapon_Back": {},
-                        "neck_01": {
-                            "head": {
-                                "facebase": {
-                                    "face_t": {
-                                        "eyebase_l": {
-                                            "eyelid_b_003_l": {},
-                                            "eyelid_t_003_l": {},
-                                            "eyelid_b_002_l": {},
-                                            "eyecanthus_001_l": {},
-                                            "eyecanthus_002_l": {},
-                                            "eye_l": {},
-                                            "eyelid_b_001_l": {},
-                                            "eyelid_t_002_l": {},
-                                            "eyelid_t_001_l": {}
+                        "NameMatcher:Weapon_Back": {},
+                        "NameMatcher:clavicle_l": {
+                            "clavicle_l_parentConstraint1": {},
+                            "NameMatcher:upperarm_l": {
+                                "upperarm_l_parentConstraint1": {},
+                                "NameMatcher:lowerarm_l": {
+                                    "NameMatcher:hand_l": {
+                                        "NameMatcher:Weapon_L": {
+                                            "Weapon_L_parentConstraint1": {}
                                         },
-                                        "browbase_r": {
-                                            "brow_t_003_r": {},
-                                            "brow_t_002_r": {},
-                                            "brow_t_001_r": {}
-                                        },
-                                        "zygoma_001_l": {},
-                                        "eyebase_r": {
-                                            "eyelid_t_001_r": {},
-                                            "eyelid_b_001_r": {},
-                                            "eyelid_t_002_r": {},
-                                            "eye_r": {},
-                                            "eyecanthus_002_r": {},
-                                            "eyelid_t_003_r": {},
-                                            "eyelid_b_002_r": {},
-                                            "eyelid_b_003_r": {},
-                                            "eyecanthus_001_r": {}
-                                        },
-                                        "earbase_l": {
-                                            "ear_003_l": {},
-                                            "ear_002_l": {},
-                                            "ear_001_l": {}
-                                        },
-                                        "nosebridge_001_l": {},
-                                        "earbase_r": {
-                                            "ear_001_r": {},
-                                            "ear_003_r": {},
-                                            "ear_002_r": {}
-                                        },
-                                        "browbase_l": {
-                                            "brow_t_001_l": {},
-                                            "brow_t_003_l": {},
-                                            "brow_t_002_l": {}
-                                        },
-                                        "forehead_001": {},
-                                        "forehead_002": {},
-                                        "nosebridge_001_r": {},
-                                        "nosenasion_001": {},
-                                        "zygoma_001_r": {},
-                                        "temporal_001": {}
-                                    },
-                                    "nosebase": {
-                                        "philtrum_001": {},
-                                        "nosetip_001_l": {},
-                                        "nosewing_001_l": {},
-                                        "nosewing_001_r": {},
-                                        "nosetip_001_r": {},
-                                        "nosebridge_001": {},
-                                        "nosetip_001": {}
-                                    },
-                                    "face_b": {
-                                        "cheek_001_l": {},
-                                        "jaw_t_001_r": {},
-                                        "jaw_t_001_l": {},
-                                        "lipbase": {
-                                            "lipbase_t": {
-                                                "lip_t1_001_r": {},
-                                                "lip_t_001": {},
-                                                "lip_t1_001_l": {}
-                                            },
-                                            "teeth_t": {},
-                                            "lip_001_l": {},
-                                            "lip_001_r": {},
-                                            "lipbase_b": {
-                                                "lip_b_001": {},
-                                                "lip_b1_001_r": {},
-                                                "chin_001": {},
-                                                "lip_b1_001_l": {}
-                                            }
-                                        },
-                                        "mouth_001": {
-                                            "tongue_001": {
-                                                "tongue_002": {
-                                                    "tongue_003": {}
+                                        "NameMatcher:ring_01_l": {
+                                            "NameMatcher:ring_02_l": {
+                                                "ring_02_l_parentConstraint1": {},
+                                                "NameMatcher:ring_03_l": {
+                                                    "ring_03_l_parentConstraint1": {}
                                                 }
                                             },
-                                            "jawbase_001": {
-                                                "jaw_b_001_r": {},
-                                                "jaw_b_001_l": {},
-                                                "jaw_b_001": {},
-                                                "chin_002": {}
-                                            },
-                                            "teeth_b": {}
+                                            "ring_01_l_parentConstraint1": {}
                                         },
-                                        "cheek_001_r": {}
+                                        "NameMatcher:index_01_l": {
+                                            "index_01_l_parentConstraint1": {},
+                                            "NameMatcher:index_02_l": {
+                                                "NameMatcher:index_03_l": {
+                                                    "index_03_l_parentConstraint1": {}
+                                                },
+                                                "index_02_l_parentConstraint1": {}
+                                            }
+                                        },
+                                        "hand_l_parentConstraint1": {},
+                                        "NameMatcher:middle_01_l": {
+                                            "middle_01_l_parentConstraint1": {},
+                                            "NameMatcher:middle_02_l": {
+                                                "NameMatcher:middle_03_l": {
+                                                    "middle_03_l_parentConstraint1": {}
+                                                },
+                                                "middle_02_l_parentConstraint1": {}
+                                            }
+                                        },
+                                        "NameMatcher:pinky_01_l": {
+                                            "NameMatcher:pinky_02_l": {
+                                                "pinky_02_l_parentConstraint1": {},
+                                                "NameMatcher:pinky_03_l": {
+                                                    "pinky_03_l_parentConstraint1": {}
+                                                }
+                                            },
+                                            "pinky_01_l_parentConstraint1": {}
+                                        },
+                                        "NameMatcher:thumb_01_l": {
+                                            "NameMatcher:thumb_02_l": {
+                                                "NameMatcher:thumb_03_l": {
+                                                    "thumb_03_l_parentConstraint1": {}
+                                                },
+                                                "thumb_02_l_parentConstraint1": {}
+                                            },
+                                            "thumb_01_l_parentConstraint1": {}
+                                        }
+                                    },
+                                    "lowerarm_l_parentConstraint1": {},
+                                    "NameMatcher:lowerarm_twist_01_l": {
+                                        "lowerarm_twist_01_l_parentConstraint1": {}
                                     }
+                                },
+                                "NameMatcher:upperarm_twist_01_l": {
+                                    "upperarm_twist_01_l_parentConstraint1": {}
                                 }
                             }
                         },
-                        "clavicle_l": {
-                            "upperarm_l": {
-                                "lowerarm_l": {
-                                    "hand_l": {
-                                        "index_01_l": {
-                                            "index_02_l": {
-                                                "index_03_l": {}
-                                            }
-                                        },
-                                        "thumb_01_l": {
-                                            "thumb_02_l": {
-                                                "thumb_03_l": {}
-                                            }
-                                        },
-                                        "pinky_01_l": {
-                                            "pinky_02_l": {
-                                                "pinky_03_l": {}
-                                            }
-                                        },
-                                        "ring_01_l": {
-                                            "ring_02_l": {
-                                                "ring_03_l": {}
-                                            }
-                                        },
-                                        "Weapon_L": {},
-                                        "middle_01_l": {
-                                            "middle_02_l": {
-                                                "middle_03_l": {}
-                                            }
-                                        }
-                                    },
-                                    "lowerarm_twist_01_l": {}
+                        "NameMatcher:clavicle_r": {
+                            "NameMatcher:upperarm_r": {
+                                "NameMatcher:upperarm_twist_01_r": {
+                                    "upperarm_twist_01_r_parentConstraint1": {}
                                 },
-                                "upperarm_twist_01_l": {}
-                            }
+                                "NameMatcher:lowerarm_r": {
+                                    "NameMatcher:lowerarm_twist_01_r": {
+                                        "lowerarm_twist_01_r_parentConstraint1": {}
+                                    },
+                                    "lowerarm_r_parentConstraint1": {},
+                                    "NameMatcher:hand_r": {
+                                        "NameMatcher:thumb_01_r": {
+                                            "thumb_01_r_parentConstraint1": {},
+                                            "NameMatcher:thumb_02_r": {
+                                                "NameMatcher:thumb_03_r": {
+                                                    "thumb_03_r_parentConstraint1": {}
+                                                },
+                                                "thumb_02_r_parentConstraint1": {}
+                                            }
+                                        },
+                                        "NameMatcher:middle_01_r": {
+                                            "middle_01_r_parentConstraint1": {},
+                                            "NameMatcher:middle_02_r": {
+                                                "middle_02_r_parentConstraint1": {},
+                                                "NameMatcher:middle_03_r": {
+                                                    "middle_03_r_parentConstraint1": {}
+                                                }
+                                            }
+                                        },
+                                        "NameMatcher:pinky_01_r": {
+                                            "pinky_01_r_parentConstraint1": {},
+                                            "NameMatcher:pinky_02_r": {
+                                                "pinky_02_r_parentConstraint1": {},
+                                                "NameMatcher:pinky_03_r": {
+                                                    "pinky_03_r_parentConstraint1": {}
+                                                }
+                                            }
+                                        },
+                                        "NameMatcher:index_01_r": {
+                                            "NameMatcher:index_02_r": {
+                                                "index_02_r_parentConstraint1": {},
+                                                "NameMatcher:index_03_r": {
+                                                    "index_03_r_parentConstraint1": {}
+                                                }
+                                            },
+                                            "index_01_r_parentConstraint1": {}
+                                        },
+                                        "NameMatcher:ring_01_r": {
+                                            "NameMatcher:ring_02_r": {
+                                                "NameMatcher:ring_03_r": {
+                                                    "ring_03_r_parentConstraint1": {}
+                                                },
+                                                "ring_02_r_parentConstraint1": {}
+                                            },
+                                            "ring_01_r_parentConstraint1": {}
+                                        },
+                                        "NameMatcher:Weapon_R": {
+                                            "Weapon_R_parentConstraint1": {}
+                                        },
+                                        "hand_r_parentConstraint1": {}
+                                    }
+                                },
+                                "upperarm_r_parentConstraint1": {}
+                            },
+                            "clavicle_r_parentConstraint1": {}
                         }
                     }
                 }
             },
-            "Weapon_Pelvis_L": {},
-            "thigh_l": {
-                "calf_l": {
-                    "calf_twist_01_l": {},
-                    "foot_l": {
-                        "ball_l": {}
+            "NameMatcher:Weapon_Pelvis_L": {},
+            "NameMatcher:thigh_r": {
+                "NameMatcher:thigh_twist_01_r": {
+                    "thigh_twist_01_r_parentConstraint1": {}
+                },
+                "NameMatcher:calf_r": {
+                    "calf_r_parentConstraint1": {},
+                    "NameMatcher:calf_twist_01_r": {
+                        "calf_twist_01_r_parentConstraint1": {}
+                    },
+                    "NameMatcher:foot_r": {
+                        "foot_r_parentConstraint1": {},
+                        "NameMatcher:ball_r": {
+                            "ball_r_parentConstraint1": {}
+                        }
                     }
                 },
-                "thigh_twist_01_l": {}
+                "thigh_r_parentConstraint1": {}
             }
         },
-        "ik_hand_root": {
-            "ik_hand_gun": {
-                "ik_hand_l": {},
-                "ik_hand_r": {}
+        "NameMatcher:ik_hand_root": {
+            "NameMatcher:ik_hand_gun": {
+                "ik_hand_gun_parentConstraint1": {},
+                "NameMatcher:ik_hand_l": {
+                    "ik_hand_l_parentConstraint1": {}
+                },
+                "NameMatcher:ik_hand_r": {
+                    "ik_hand_r_parentConstraint1": {}
+                }
             }
         },
-        "ik_foot_root": {
-            "ik_foot_r": {},
-            "ik_foot_l": {}
-        }
+        "NameMatcher:ik_foot_root": {
+            "NameMatcher:ik_foot_l": {
+                "ik_foot_l_parentConstraint1": {}
+            },
+            "NameMatcher:ik_foot_r": {
+                "ik_foot_r_parentConstraint1": {}
+            }
+        },
+        "root_parentConstraint1": {}
     }
 }

@@ -1,7 +1,9 @@
 #案例1
 
 import json
-
+'''
+如果你要处理的是文件而不是字符串，你可以使用 json.dump() 和 json.load() 来编码和解码JSON数据
+'''
 data = {
     "abc": 123,
     "Path": "D:\Work_MobilGame\Test",
@@ -9,14 +11,14 @@ data = {
 }
 
 #写入
-with open("test.json","w") as f:
+with open("testttttt.json","w") as f:
     json.dump(data, f, indent=4)
 
 
 #读取
 with open("test.json", "r") as f:
     data = json.load(f)
-print(data["Path"])
+print(data)
 
 #案例2
 
