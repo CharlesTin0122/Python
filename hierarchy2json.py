@@ -62,6 +62,17 @@ def hierarchy2json(parents, dump2json=True, tree=None, init=True,):
 #     print(json.dumps(hierarchy2json(sel)))
 print((hierarchy2json(pm.selected())))
 
+'''
+函数首先将输入物体转换为列表（如果它们还不是列表），然后创建一个名为 _tree 的空字典。
+对于输入列表中的每个物体，函数在 _tree 中创建一个新键，键名为物体的名称（转换为字符串），
+	键值为一个空字典（如果物体是 Transform 类型），或者是该物体的类型（如果不是 Transform 类型）。
+对于每个当前物体的子物体，函数在当前物体对应的字典中创建一个新键，键名为子物体的名称（再次转换为字符串），
+	键值为一个空字典（如果子物体是 Transform 类型），或者是该子物体的类型（如果不是 Transform 类型）。
+	然后，函数以该子物体的对应字典作为新的 tree 参数递归调用自身。
+如果 init 为 True(仅在第一次调用 hierarchy2json 时为 True),则函数返回 _tree 字典的 JSON 字符串版本或 _tree 字典本身（取决于 dump2json 的值）。
+如果 init 为 False(在所有后续调用 hierarchy2json 时为 True),则函数不返回任何内容,因为层次结构信息已经被添加到前一步中的 _tree 字典中。
+'''
+
 
 def getRelParent(jnt_list, root):
 	"""
