@@ -22,7 +22,7 @@ def remove_childJoint_Influence(mesh,rootJoint,parentJoint):
 	meshVtx = pm.ls('{}.vtx[*]'.format(mesh),fl=True) #获取物体所有顶点
 	skClu = pm.listHistory(mesh,type='skinCluster')[0] #获取SkinCluster
 	# 锁定所有骨骼权重
-	joints = pm.ls('rootJoint', dag=True, type="joint") 
+	joints = pm.ls(rootJoint, dag=True, type="joint") 
 	for jnt in joints:
 		pm.setAttr('{}.liw'.format(jnt), 1)
 	#解锁所有面部骨骼权重
@@ -37,7 +37,7 @@ def remove_childJoint_Influence(mesh,rootJoint,parentJoint):
 		pm.skinCluster(skClu, e=1, removeInfluence=jnt)
 	#移除微小权重
 	pm.skinPercent(skClu, mesh, pruneWeights=0.1)
-
+	#返回骨骼链
 	return faceJnt
 
 
