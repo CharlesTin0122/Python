@@ -8,4 +8,4 @@
 
 import pymel.core as pm
 from poseTools import copyNPastePose
-copyNPastePose.mainUI()
+copyNPastePose.main_ui()

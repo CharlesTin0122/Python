@@ -28,7 +28,7 @@ def paste(*args):
             pm.setAttr(obj_attr[i], val[i])
 
 
-def mainUI():
+def main_ui():
     try:
         pm.deleteUI("pos_tool")
     except Exception as e:
@@ -41,4 +41,4 @@ def mainUI():
     pm.showWindow("pos_tool")
 
 
-mainUI()
+main_ui()
