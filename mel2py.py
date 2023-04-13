@@ -11,13 +11,15 @@ import pymel.tools.mel2py as mel2py
 
 
 def mel2pymel(*args):
-    melCmd = pm.scrollField("melcode", q=1, tx=1)
-    pyCmd = mel2py.mel2pyStr(melCmd, pymelNamespace="pm")
-    pyFixed = pyCmd.replace("pymel.all", "pymel.core")
-    pm.scrollField("pymelcode", e=1, tx=pyFixed)
+    """该函数用于调用mel2py工具将mel字符串转换为pymel字符串"""
+    melCmd = pm.scrollField("melcode", q=1, tx=1)  # 读取输入的mel语言字符串
+    pyCmd = mel2py.mel2pyStr(melCmd, pymelNamespace="pm")  #  将mel字符串转换为pymel字符串
+    pyFixed = pyCmd.replace("pymel.all", "pymel.core")  #  修正pymel字符串
+    pm.scrollField("pymelcode", e=1, tx=pyFixed)  #  将修正后的字符串写入UI
 
 
 def mel2py_ui():
+    """UI界面编写"""
     try:
         pm.deleteUI("melpy")
     except Exception as e:
@@ -33,4 +35,5 @@ def mel2py_ui():
             pm.button(label="Tanslate Mel To Pymel", w=80, h=30, c=mel2pymel)
 
 
-mel2py_ui()
+if __name__ == "__main__":
+    mel2py_ui()
