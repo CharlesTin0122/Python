@@ -12,10 +12,10 @@ import pymel.tools.mel2py as mel2py
 
 def mel2pymel(*args):
     """该函数用于调用mel2py工具将mel字符串转换为pymel字符串"""
-    melCmd = pm.scrollField("melcode", q=1, tx=1)  # 读取输入的mel语言字符串
-    pyCmd = mel2py.mel2pyStr(melCmd, pymelNamespace="pm")  #  将mel字符串转换为pymel字符串
-    pyFixed = pyCmd.replace("pymel.all", "pymel.core")  #  修正pymel字符串
-    pm.scrollField("pymelcode", e=1, tx=pyFixed)  #  将修正后的字符串写入UI
+    mel_cmd = pm.scrollField("melcode", q=1, tx=1)  # 读取输入的mel语言字符串
+    py_cmd = mel2py.mel2pyStr(mel_cmd, pymelNamespace="pm")  # 将mel字符串转换为pymel字符串
+    py_fixed = py_cmd.replace("pymel.all", "pymel.core")  # 修正pymel字符串
+    pm.scrollField("pymelcode", e=1, tx=py_fixed)  # 将修正后的字符串写入UI
 
 
 def mel2py_ui():
