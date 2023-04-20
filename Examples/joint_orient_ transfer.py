@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@FileName    :   joint_orient_translation.py
+@FileName    :   joint_orient_ transfer.py
 @DateTime    :   2023/04/20 11:12:22
 @Author  :   Tian Chao
 @Contact :   tianchao0533@163.com
@@ -8,8 +8,6 @@
 
 import json
 import pymel.core as pm
-# 获取json文件路径
-jo_json_path = r'D:\Backup\Documents\maya\scripts\joint_orient.json'
 
 
 def joint_orient_to_json(dady_joint: str, rite_json_path: str) -> dict:
@@ -72,3 +70,14 @@ def json_to_joint_orient(mesh_list: list, read_json_path: str) -> dict:
 	pm.delete(dag_pose)  # 删除所有绑定姿态
 	pm.dagPose(bindPose=True, save=True)  # 创建新绑定姿态
 	return dict_data  # 返回属性信息
+
+
+"""--------------------------------函数使用-----------------------------------------"""
+
+# dadyjoint = pm.selected()
+# jo_json_path = r'D:\Backup\Documents\maya\scripts\joint_orient.json'
+# joint_orient_to_json(dadyjoint, jo_json_path)
+
+# meshlist = pm.selected()
+# jo_json_path = r'D:\Backup\Documents\maya\scripts\joint_orient.json'
+# json_to_joint_orient(meshlist, jo_json_path)
