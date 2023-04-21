@@ -10,7 +10,7 @@ import pymel.core as pm
 
 pm.progressWindow(endProgress=1)
 pm.optionVar(intValue=('animBlendingOpt', 1))
-if (pm.window('ReParentPanel', ex=1)) == True:
+if pm.window('ReParentPanel', ex=1):
 	pm.deleteUI('ReParentPanel')
 	
 window=str(pm.window('ReParentPanel', s=0, toolbox=1, menuBar=1, t="ReParent v1.5.1 Pro", wh=(142, 159)))

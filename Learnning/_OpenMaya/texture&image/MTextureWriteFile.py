@@ -36,7 +36,7 @@ print(height,total,width)
 # manager.saveTexture(texture,r"F:\personal\img\01.tga")
 
 # NOTE ----------------------------------------------------------------
-# TODO 读取 file 节点 失败
+"""TODO 读取 file 节点 失败"""
 # NOTE ----------------------------------------------------------------
 # file_list = om.MGlobal.getSelectionListByName("file1")
 # mObj = file_list.getDependNode(0)
