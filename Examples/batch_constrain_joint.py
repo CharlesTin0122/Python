@@ -34,10 +34,9 @@ def batch_closestjoint_constrain(jntlist1: list, jntlist2: list):
                 closest_joint = other_joint  # 那么最近骨骼就是该骨骼
                 closest_distance = distance  # 最近距离就是该距离
 
-        # 父子约束到最近的骨骼
-        if closest_joint:  # 如果最近骨骼存在
-            if not pm.listConnections(closest_joint, type='parentConstraint'):  # 同时骨骼没有被约束
-                pm.parentConstraint(jnt, closest_joint, maintainOffset=True)  # 执行约束
+        # 如果最近骨骼存在,同时骨骼没有被约束,父子约束到最近的骨骼
+        if closest_joint and not pm.listConnections(closest_joint, type='parentConstraint'):
+            pm.parentConstraint(jnt, closest_joint, maintainOffset=True)  # 执行约束
 
 
 list1 = pm.ls(sl=True)  # 列出约束父对象骨骼链的所有骨骼

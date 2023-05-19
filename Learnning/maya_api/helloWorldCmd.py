@@ -5,43 +5,47 @@
 # @Time     :  2023/5/11 9:50
 # @Software : PyCharm
 # Description:
-
 import sys
 
 import maya.OpenMayaMPx as OpenMayaMPx
 
-kPluginCmdName = "spHelloWorld"
-
 
 # command
-class ScriptedCommand(OpenMayaMPx.MPxCommand):
+class HelloWorldCmd(OpenMayaMPx.MPxCommand):
+    kPluginCmdName = "spHelloWorld"
+
     def __init__(self):
         OpenMayaMPx.MPxCommand.__init__(self)
+
+    @staticmethod
+    def cmdCreator():
+        return OpenMayaMPx.asMPxPtr(HelloWorldCmd())
 
     def doIt(self, argList):
         print("Hello World!")
 
 
-# Creator
-def cmd_creator():
-    return OpenMayaMPx.asMPxPtr(ScriptedCommand())
-
-
 # Initialize the script plug-in
-def initialize_plugin(mobject):
-    mplugin = OpenMayaMPx.MFnPlugin(mobject)
+def initializePlugin(plugin):
+    pluginFn = OpenMayaMPx.MFnPlugin(plugin)
     try:
-        mplugin.registerCommand(kPluginCmdName, cmd_creator)
+        pluginFn.registerCommand(
+            HelloWorldCmd.kPluginCmdName, HelloWorldCmd.cmdCreator
+        )
     except:
-        sys.stderr.write("Failed to register command: %s\n" % kPluginCmdName)
+        sys.stderr.write(
+            "Failed to register command: %s\n" % HelloWorldCmd.kPluginCmdName
+        )
         raise
 
 
 # Uninitialize the script plug-in
-def uninitialize_plugin(mobject):
-    mplugin = OpenMayaMPx.MFnPlugin(mobject)
+def uninitializePlugin(plugin):
+    pluginFn = OpenMayaMPx.MFnPlugin(plugin)
     try:
-        mplugin.deregisterCommand(kPluginCmdName)
+        pluginFn.deregisterCommand(HelloWorldCmd.kPluginCmdName)
     except:
-        sys.stderr.write("Failed to unregister command: %s\n" % kPluginCmdName)
+        sys.stderr.write(
+            "Failed to unregister command: %s\n" % HelloWorldCmd.kPluginCmdName
+        )
         raise
