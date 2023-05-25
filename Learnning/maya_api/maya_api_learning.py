@@ -1,8 +1,15 @@
+# coding: utf-8
 import maya.OpenMaya as OpenMaya
+import maya.OpenMayaAnim as OpenMayaAnim
 
 
 # 获取选择的物体名称
 def get_selected():
+    """
+    获取选择的对象
+    Returns:None
+
+    """
     # 创建物体列表,是一个空列表
     sel = OpenMaya.MSelectionList()
     # 获取选择物体并传入sel列表
@@ -21,7 +28,15 @@ get_selected()
 
 
 # 通过名称列表选择物体
-def selected_by_name(name_list):
+def selected_by_name(name_list: list):
+    """
+    通过名称获取选择的对象
+    Args:
+        name_list: 对象名称列表
+
+    Returns:None
+
+    """
     # 创建物体列表
     sel = OpenMaya.MSelectionList()
     # 遍历提供的名称列表
@@ -35,10 +50,14 @@ def selected_by_name(name_list):
 selected_by_name(['pCube2', 'pSphere1'])
 
 
-# 通过遍历maya场景中的所有物体来筛选我们想要的物体
 def is_all():
-    # OpenMaya.MItDag用于在场景中遍历和操作 DAG（Directed Acyclic Graph）层次结构。
-    """遍历类型（Traversal Type）：指定遍历 DAG 的方式。常用的遍历类型包括：
+    """
+    通过遍历maya场景中的所有物体来筛选我们想要的物体
+    Returns:None
+
+    """
+    """OpenMaya.MItDag用于在场景中遍历和操作 DAG（Directed Acyclic Graph）层次结构。
+    遍历类型（Traversal Type）：指定遍历 DAG 的方式。常用的遍历类型包括：
 
     OpenMaya.MItDag.kDepthFirst：深度优先遍历。
     OpenMaya.MItDag.kBreadthFirst：广度优先遍历。
@@ -64,8 +83,12 @@ def is_all():
 is_all()
 
 
-# 获取父子对象
 def find_hierarchy():
+    """
+    # 获取父子对象
+    Returns:None
+
+    """
     selected = OpenMaya.MSelectionList()  # 创建对象列表实例
     OpenMaya.MGlobal.getActiveSelectionList(selected)  # 获取选择的对象装入对象列表
 
@@ -93,8 +116,13 @@ def find_hierarchy():
 find_hierarchy()
 
 
-#  创建节点
 def create_node():
+    """
+
+    创建节点
+    Returns:None
+
+    """
     parent_dag_path_fn = OpenMaya.MFnDagNode()  # 实例化MFnDagNode函数集
     parent_obj = parent_dag_path_fn.create("transform", "parent")  # 使用MFnDagNode类的方法创建节点
 
@@ -102,6 +130,8 @@ def create_node():
     # 使用MFnDagNode类的方法创建节点，三个参数，节点类型，节点名称，节点父对象
     child_obj_a = child_dag_path_fn.create("transform", "childA", parent_obj)
     child_obj_b = child_dag_path_fn.create("transform", "childB", parent_obj)
+    print(child_obj_a.apiTypeStr())
+    print(child_obj_b.apiTypeStr())
 
     OpenMaya.MGlobal.deleteNode(child_obj_a)  # 删除节点
 
@@ -109,8 +139,12 @@ def create_node():
 create_node()
 
 
-# 遍历属性
 def list_attr():
+    """
+    遍历属性
+    Returns:None
+
+    """
     selected = OpenMaya.MSelectionList()  # 通过实例化OpenMaya.MSelectionList()创建一个选择列表对象selected
     OpenMaya.MGlobal.getActiveSelectionList(selected)  # 获取当前选择对象装入选择列表
     obj = OpenMaya.MObject()  # 实例化MObject对象
@@ -127,6 +161,11 @@ list_attr()
 
 
 def get_set_attr():
+    """
+    获取和设置属性
+    Returns:None
+
+    """
     selected = OpenMaya.MSelectionList()  # 通过实例化OpenMaya.MSelectionList()创建一个选择列表对象selected
     OpenMaya.MGlobal.getActiveSelectionList(selected)  # 获取当前选择对象装入选择列表
     obj = OpenMaya.MObject()  # 实例化MObject对象
@@ -149,6 +188,11 @@ get_set_attr()
 
 
 def add_attr():
+    """
+    添加属性
+    Returns:None
+
+    """
     """以下是OpenMaya.MFnAttribute的一些常见子类：
     OpenMaya.MFnNumericAttribute: 数字类属性，用于表示数值类型的属性，如浮点数、整数、布尔值等。
     OpenMaya.MFnTypedAttribute: 类型化属性，用于表示具有固定数据类型的属性，如字符串、向量、矩阵等。
@@ -186,6 +230,11 @@ add_attr()
 
 
 def del_attr():
+    """
+    删除属性
+    Returns:None
+
+    """
     selected = OpenMaya.MSelectionList()  # 通过实例化OpenMaya.MSelectionList()创建一个选择列表对象selected
     OpenMaya.MGlobal.getActiveSelectionList(selected)  # 获取当前选择对象装入选择列表
     obj = OpenMaya.MObject()  # 实例化MObject对象
@@ -299,3 +348,116 @@ def connect_attr():
 
 
 connect_attr()
+
+
+def split_target():
+    """
+    用于执行目标网格的分割操作
+    Returns:None
+
+    """
+    """获取两个选择物体的长名称"""
+    selected = OpenMaya.MSelectionList()
+    OpenMaya.MGlobal.getActiveSelectionList(selected)
+    if selected.length() != 2:
+        return
+    """创建变量 target_path 和 base_path 用于保存两个物体的长名称（MDagPath）"""
+    target_path = OpenMaya.MDagPath()
+    base_path = OpenMaya.MDagPath()
+    """使用 getDagPath() 方法从选择列表中获取两个物体的 MDagPath"""
+    selected.getDagPath(0, target_path)
+    selected.getDagPath(1, base_path)
+
+    print(target_path.fullPathName(), base_path.fullPathName())
+    """创建 target_points 和 base_points 两个 MPointArray 对象，用于存储两个模型的点坐标"""
+    target_points = OpenMaya.MPointArray()
+    base_points = OpenMaya.MPointArray()
+    """使用 MFnMesh 类的 getPoints() 方法获取目标物体和基础物体的点坐标"""
+    target_mesh_fn = OpenMaya.MFnMesh(target_path)
+    target_mesh_fn.getPoints(target_points)
+    print(target_points.length())
+
+    base_mesh_fn = OpenMaya.MFnMesh(base_path)
+    base_mesh_fn.getPoints(base_points)
+    print(base_points.length())
+    """创建一个空列表 skin_cluster 用于存储蒙皮集群节点名称"""
+    skin_cluster = []
+    """使用 executeCommand() 方法执行 MEL 命令来查找与基础物体关联的蒙皮集群节点名称"""
+    OpenMaya.MGlobal.executeCommand("findRelatedSkinCluster " + base_path.fullPathName(), skin_cluster)
+    """检查是否找到了蒙皮集群节点，如果没有找到则返回"""
+    if len(skin_cluster) == 0:
+        return
+    skin_cluster = skin_cluster[0]
+    print(skin_cluster)
+    """创建一个 MSelectionList 对象 skin_node，并将蒙皮集群节点添加到该列表中"""
+    skin_node = OpenMaya.MSelectionList()
+    skin_node.add(skin_cluster)
+    """创建一个 MObject 对象 skin_depen_node，用于存储蒙皮集群节点的依赖节点"""
+    skin_depen_node = OpenMaya.MObject()
+    """使用 getDependNode() 方法从 skin_node 中获取蒙皮集群节点的依赖节点"""
+    skin_node.getDependNode(0, skin_depen_node)
+    """创建一个 MDagPathArray 对象 joint_path，用于存储蒙皮集群中的关节路径"""
+    joint_path = OpenMaya.MDagPathArray()
+    """使用 MFnSkinCluster 类的 influenceObjects() 方法获取蒙皮集群中的关节路径"""
+    skin_fn = OpenMayaAnim.MFnSkinCluster(skin_depen_node)
+    """循环遍历所有关节路径并打印它们的长名称"""
+    skin_fn.influenceObjects(joint_path)
+    for i in range(joint_path.length()):
+        print(joint_path[i].fullPathName())
+    """创建一个 MSelectionList 对象 base_obj_vtxs，并将基础物体的顶点列表添加到该列表中"""
+    base_obj_vtxs = OpenMaya.MSelectionList()
+    base_obj_vtxs.add(base_path.fullPathName() + ".vtx[*]")
+    """创建一个 MObject 对象 components，用于存储基础物体的顶点组件"""
+    components = OpenMaya.MObject()
+    """使用 getDagPath() 方法从 base_obj_vtxs 中获取基础物体的 MDagPath 和顶点组件"""
+    base_obj_vtxs.getDagPath(0, base_path, components)
+    """创建一个 MIntArray 对象 influenceindeices，用于存储蒙皮权重的影响索引"""
+    influenceindeices = OpenMaya.MIntArray()
+    """准备一个空的 MDoubleArray 对象 weights，用于存储蒙皮权重"""
+    weights = OpenMaya.MDoubleArray()
+    """循环遍历所有关节路径，将索引添加到 influenceindeices 中"""
+    for i in range(joint_path.length()):
+        influenceindeices.append(i)
+    """使用 getWeights() 方法获取基础物体的顶点权重,有三个参数，
+    1：对象的DagPath,
+    2：对象的组件（所有顶点的DagPath）,
+    3:影响骨骼的索引
+    4：要写入权重信息的 双精度浮点型数组 变量
+    """
+    skin_fn.getWeights(base_path, components, influenceindeices, weights)
+    print(weights.length())  # 打印权重数组的长度
+    """创建一个 MVectorArray 对象 offset，用于存储计算出的偏移值"""
+    offset = OpenMaya.MVectorArray()
+    offset.setLength(target_points.length())
+    """循环遍历目标物体的点坐标，并根据偏移值和权重计算出每个点的偏移值"""
+    for i in range(target_points.length()):
+        offset.set(target_points[i] - base_points[i], i)
+    """获取关节路径的长度，并针对每个关节进行分割操作"""
+    joint_length = joint_path.length()
+    for jnt_id in range(joint_length):
+        """使用 MEL 命令复制目标物体，并将复制的物体保存在 duplicate_obj 列表中"""
+        duplicate_obj = []
+        OpenMaya.MGlobal.executeCommand("duplicate " + target_path.fullPathName(), duplicate_obj)
+        """创建一个 MSelectionList 对象 dup_sel_list，并将复制的物体添加到该列表中"""
+        dup_sel_list = OpenMaya.MSelectionList()
+        dup_sel_list.add(duplicate_obj[0])
+        """创建一个 MDagPath 对象 dup_path，用于存储复制物体的 MDagPath"""
+        dup_path = OpenMaya.MDagPath()
+        """使用 getDagPath() 方法从 dup_sel_list 中获取复制物体的 MDagPath"""
+        dup_sel_list.getDagPath(0, dup_path)
+        """创建一个 MFnMesh 对象 dup_mesh_fn，用于操作复制物体的网格数据"""
+        dup_mesh_fn = OpenMaya.MFnMesh(dup_path)
+        """创建一个 MPointArray 对象 split_point，用于存储分割后的点坐标"""
+        split_point = OpenMaya.MPointArray()
+        split_point.setLength(base_points.length())
+        """循环遍历目标物体的顶点，并根据偏移值和权重计算分割点的位置，并存储到 split_point 中"""
+        for vtx_id in range(target_points.length()):
+            split_point.set(
+                base_points[vtx_id] + offset[vtx_id] * weights[vtx_id * joint_path.length() + jnt_id],
+                vtx_id
+            )
+            """使用 setPoints() 方法将分割后的点坐标应用到复制物体的网格上"""
+        dup_mesh_fn.setPoints(split_point)
+
+
+split_target()

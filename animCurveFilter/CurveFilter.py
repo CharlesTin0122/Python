@@ -1,36 +1,20 @@
-# uncompyle6 version 3.5.0
-# Python bytecode 2.7 (62211)
-# Decompiled from: Python 2.7.5 (default, Nov 16 2020, 22:23:17) 
-# [GCC 4.8.5 20150623 (Red Hat 4.8.5-44)]
-# Embedded file name: C:/Users/Lumos/Documents/maya/scripts\Filter\CurveFilter.py
-# Compiled at: 2018-04-25 11:52:02
-import Filter.CurveFilterFunctions as CF
-import maya.cmds as cmds
 import os
+import CurveFilterFunctions as CF
+import maya.cmds as cmds
+from PySide2 import QtCore
+from PySide2 import QtUiTools
 
-reload(CF)
-qtVersion = cmds.about(qtVersion=True)
-if qtVersion.startswith('4') or type(qtVersion) not in [str, unicode]:
-    from PySide import QtCore
-    from PySide import QtUiTools
-else:
-    from PySide2 import QtCore
-    from PySide2 import QtUiTools
 user_path = os.getenv('HOME')
-print
-user_path
-uifile_path = os.path.join(user_path, 'maya/scripts/Filter/Filter_UI2.ui')
+uifile_path = os.path.join(os.path.dirname(__file__), 'Filter_UI2.ui')
 
 
 def loadui(uifile_path):
     uifile = QtCore.QFile(uifile_path)
-    print
-    uifile
+    print(uifile)
     uifile.open(QtCore.QFile.ReadOnly)
     uiWindow = QtUiTools.QUiLoader().load(uifile)
     uifile.close()
-    print
-    'load ui'
+    print('load ui')
     return uiWindow
 
 
@@ -112,7 +96,9 @@ class MainWindow:
         CF.resampleDrag(value, 100)
 
     def buffer_swap(self):
-        mykeys = cmds.keyframe(sl=True, query=True, valueChange=True, absolute=True) or []
+        if not cmds.keyframe(sl=True, query=True, valueChange=True, absolute=True):
+            pass
+        mykeys = []
         if len(mykeys) > 0:
             cmds.bufferCurve(animation='keys', swap=True)
             self.reset_slider()
@@ -125,8 +111,7 @@ class MainWindow:
 
     def create_buffer(self):
         cmds.bufferCurve(animation='keys', overwrite=True)
-        print
-        'buffer created'
+        print('buffer created')
 
     def show_buffer(self):
         cmds.animCurveEditor('graphEditor1GraphEd', edit=True, showBufferCurves='on')
@@ -141,27 +126,31 @@ class MainWindow:
         self.reset_slider()
 
     def selectChange_event(self):
-        mykeys = cmds.keyframe(sl=True, query=True, valueChange=True, absolute=True) or []
+        if not cmds.keyframe(sl=True, query=True, valueChange=True, absolute=True):
+            pass
+        mykeys = []
         if len(mykeys) > 0:
-            if mykeys[0] != cmds.optionVar(q='jjs') or mykeys[(-1)] != cmds.optionVar(q='jje'):
+            if mykeys[0] != cmds.optionVar(q='jjs') or mykeys[-1] != cmds.optionVar(q='jje'):
                 self.create_buffer()
                 if self.ui.combo.currentText() == 'Simplify':
                     CF.record()
+
             cmds.optionVar(fv=('jjs', mykeys[0]))
-            cmds.optionVar(fv=('jje', mykeys[(-1)]))
+            cmds.optionVar(fv=('jje', mykeys[-1]))
         else:
             self.reset_slider()
 
     def create_job(self):
-        self.jjob = cmds.scriptJob(e=['SelectionChanged', self.selectChange_event])
+        self.jjob = cmds.scriptJob(e=[
+            'SelectionChanged',
+            self.selectChange_event])
         cmds.optionVar(fv=('job_id', self.jjob))
 
     def kill_job(self):
         job_id = cmds.optionVar(q='job_id')
         if job_id:
             cmds.scriptJob(kill=job_id, force=True)
-            print
-            'kkkkkkkkkkkkkkkkkkkilll scriptjob'
+            print('kkkkkkkkkkkkkkkkkkkilll scriptjob')
 
     def show(self):
         self.ui.show()
