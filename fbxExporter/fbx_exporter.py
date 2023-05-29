@@ -93,7 +93,13 @@ class FbxExporterUI(object):
             pm.select(self.objList)
             pm.bakeResults(t=(pm.env.getMaxTime(), pm.env.getMinTime()), bol=True)
             pm.select(self.objList)
-            pm.exportSelected(os.path.join(self.exportPath, exp_name), force=True)
+            pm.exportSelected(
+                os.path.join(self.exportPath, exp_name),
+                force=True, type='FBX export',
+                constructionHistory=False,
+                constraints=False,
+                expressions=False
+            )
             pm.delete('BakeResultsContainer')
         pm.informBox(title='Export Complete', message='All selected objects have been exported successfully.')
 

@@ -6,7 +6,6 @@
 # @Software : PyCharm
 # Description:
 import os
-
 import pymel.core as pm
 
 
@@ -14,6 +13,8 @@ class AdvAnimToolsUI:
     def __init__(self):
         self.fbxList = []
         self.savePath = None
+        self.fbx_field = None
+        self.path_field = None
 
     def create_ui(self):
         try:
@@ -26,7 +27,7 @@ class AdvAnimToolsUI:
                 with pm.frameLayout(label='Import multiple FBX'):
                     with pm.columnLayout(adj=1):
                         pm.button(label="Load All fbx", c=self.load)
-                    with pm.scrollLayout(w=200, h=150, bgc=(0.5, 0.5, 0.5)):
+                    with pm.scrollLayout(w=200, h=150, bgc=(0.5, 0.5, 0.5)) as self.fbx_field:
                         pm.text('fbx Name:')
                     with pm.rowLayout(numberOfColumns=3,
                                       columnWidth3=(55, 140, 5),
@@ -35,7 +36,7 @@ class AdvAnimToolsUI:
                                       columnAttach=[(1, 'both', 0), (2, 'both', 0), (3, 'both', 0)]
                                       ):
                         pm.text(label='Save Path:')
-                        pm.textField("ImporterTextField")
+                        self.path_field = pm.textField("ImporterTextField")
                         pm.button(label='...', w=30, h=20, c=self.select_path)
                     with pm.columnLayout(adj=1):
                         pm.button(label="Import fbx And Save File !!!", c=self.import_and_save)
@@ -53,18 +54,21 @@ class AdvAnimToolsUI:
 
         for fbxPath in self.fbxList:
             fbx_name = os.path.basename(fbxPath)
-            print(fbx_name)
+            with self.fbx_field:
+                pm.text(label=fbx_name)
 
     def select_path(self, *args):
         save_path = pm.fileDialog2(fileFilter='*folder', fileMode=2)
         if save_path:
             self.savePath = save_path[0]
-            pm.textField("ImporterTextField", e=True, text=self.savePath)
+            pm.textField(self.path_field, e=True, text=self.savePath)
 
     def import_and_save(self, *args):
         if not self.fbxList:
             pm.PopupError('Nothing To Import')
             return
+
+        pm.currentUnit(time='ntsc')  # 30 fps
 
         fkik_attr = [
             "FKIKArm_L.FKIKBlend",
@@ -78,8 +82,9 @@ class AdvAnimToolsUI:
 
         for fbxPath in self.fbxList:
             pm.duplicate("NameMatcher:root")
-            pm.select("root", hi=True)
-            pm.delete(constraints=True)
+            root_jnt = pm.PyNode("root")
+            constarins = pm.ls(root_jnt, dag=True, type="constraint")  # 列出骨骼链的所有约束节点，注意参数dag
+            pm.delete(constarins)
 
             pm.parentConstraint("root", "root_ctrl", mo=True)
             pm.parentConstraint("root", "Main", mo=True)
@@ -138,9 +143,11 @@ class AdvAnimToolsUI:
                 'IKLeg_L',
                 'PoleLeg_L', 'IKToes_L', 'RollToes_L', 'RollToesEnd_L', 'RollHeel_L', 'IKLeg_R', 'FKWeaponAS_L'
             ]
-            pm.select(ctrl_bk)
-            pm.bakeResults(time=(first_frame, last_frame))
-            pm.filterCurve()
+            pm.bakeResults(ctrl_bk, simulation=True, time=(first_frame, last_frame), sampleBy=1, oversamplingRate=1,
+                           disableImplicitControl=True, preserveOutsideKeys=True, sparseAnimCurveBake=False,
+                           removeBakedAttributeFromLayer=False, removeBakedAnimFromLayer=False,
+                           bakeOnOverrideLayer=False, minimizeRotation=True, controlPoints=False, shape=True)
+            pm.filterCurve(ctrl_bk)
             pm.delete('root')
             print("Done")
 

@@ -1,3 +1,0 @@
-import animation_retargeting_tool
-
-animation_retargeting_tool.start()

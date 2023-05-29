@@ -58,7 +58,7 @@ def clear_menu(menu):
     Clear the specified menu of its current contents
     """
     try:
-        [mc.deleteUI(i) for i in mc.menu(menu,q=True, ia=True)]
+        [mc.deleteUI(i) for i in mc.menu(menu, q=True, ia=True)]
     except:
         pass
 
