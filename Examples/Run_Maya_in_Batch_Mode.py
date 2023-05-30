@@ -29,6 +29,8 @@ print('\n'.join(sys.path))
 
 maya.standalone.initialize()(name='python')
 
+cmds.loadPlugin("fbxmaya")
+
 
 def export_fbx(_input_folder, _output_folder):
     # 获取指定文件夹内的所有.mb文件

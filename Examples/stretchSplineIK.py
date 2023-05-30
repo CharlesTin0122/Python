@@ -17,13 +17,13 @@ ctrl_list = []  # 控制器列表
 def creatJoint(jntCount, jntLength):
     """创建骨骼链工具
 
-	Args:
-		jntCount (int): 要创建的骨骼数量
-		jntLength (float): 要创建的每节骨骼长度
+    Args:
+        jntCount (int): 要创建的骨骼数量
+        jntLength (float): 要创建的每节骨骼长度
 
-	Returns:
-		list: 骨骼列表
-	"""
+    Returns:
+        list: 骨骼列表
+    """
     global jntChain  # 全局变量
     # 遍历骨骼数量创建骨骼
     for i in range(jntCount):
@@ -36,14 +36,14 @@ def creatJoint(jntCount, jntLength):
 def insertJointTool(rootJoint, jointCount, jointName):
     """两节骨骼之间插入一定数量骨骼
 
-	Args:
-		rootJoint (str): 需要插入骨骼的根骨骼
-		jointCount (int):要插入的骨骼数量
-		jointName (str): 骨骼名称
+    Args:
+        rootJoint (str): 需要插入骨骼的根骨骼
+        jointCount (int):要插入的骨骼数量
+        jointName (str): 骨骼名称
 
-	Returns:
-		list: 骨骼链列表
-	"""
+    Returns:
+        list: 骨骼链列表
+    """
     rootJointPos = rootJoint.getTranslation(space='world')  # 获取首根骨骼的位置
     endJointPos = rootJoint.getChildren()[0].getTranslation(space='world')  # 获取末端骨骼的位置
     difVal = endJointPos - rootJointPos  # 获取首尾骨骼位置的差值
@@ -66,13 +66,13 @@ def insertJointTool(rootJoint, jointCount, jointName):
 def creatSplineIK(jntChain, numSpans):
     """创建线性IK工具
 
-	Args:
-		jntChain (list): 骨骼列表
-		numSpans (int): 线性IK曲线段数
+    Args:
+        jntChain (list): 骨骼列表
+        numSpans (int): 线性IK曲线段数
 
-	Returns:
-		list: SplineIK列表
-	"""
+    Returns:
+        list: SplineIK列表
+    """
     global clusterList, ctrl_list, IKCurve  # 全局变量
     # 创建线性IK
     jntsplineIK = pm.ikHandle(sol='ikSplineSolver', name='tail_spline_IK',
@@ -98,10 +98,10 @@ def creatSplineIK(jntChain, numSpans):
 def stretchSplineIKIKJnt(jntChain, splineIKCurve):
     """创建可拉伸线性IK
 
-	Args:
-		jntChain (list): 要创建拉伸的骨骼链
-		splineIKCurve (str): 要创建拉伸的splineIK曲线
-	"""
+    Args:
+        jntChain (list): 要创建拉伸的骨骼链
+        splineIKCurve (str): 要创建拉伸的splineIK曲线
+    """
     cvShape = splineIKCurve.getShape()  # 获取曲线的形节点
     cvInfo = pm.createNode('curveInfo', n='{}_info'.format(splineIKCurve))  # 创建curveInfo节点
     cvShape.worldSpace[0] >> cvInfo.inputCurve  # 链接曲线的worldSpace[0]到cvInfo.inputCurve，获取曲线长度
