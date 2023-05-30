@@ -16,14 +16,14 @@ class FbxClass(object):
         """
         FBX Scene Object
         """
-        self.filename = filename
-        self.scene = None
-        self.sdk_manager = None
-        self.sdk_manager, self.scene = FbxCommon.InitializeSdkObjects()
-        FbxCommon.LoadScene(self.sdk_manager, self.scene, filename)
+        self.filename = filename  # 获取fbx文件名称
+        self.scene = None  # 设置fbx场景
+        self.sdk_manager = None  # 设置sdk管理器
+        self.sdk_manager, self.scene = FbxCommon.InitializeSdkObjects()  # 初始化sdk对象，并获取bx场景和sdk管理器
+        FbxCommon.LoadScene(self.sdk_manager, self.scene, filename)  # 通过fbx场景和sdk管理器,fbx文件名称载入场景
 
-        self.root_node = self.scene.GetRootNode()
-        self.scene_nodes = self.get_scene_nodes()
+        self.root_node = self.scene.GetRootNode()  # 获取场景根节点
+        self.scene_nodes = self.get_scene_nodes()  # 获取场景节点
 
     def close(self):
         """
@@ -32,7 +32,7 @@ class FbxClass(object):
         # destroy objects created by the sdk
         self.sdk_manager.Destroy()
 
-    def __get_scene_nodes_recursive(self, node):
+    def __get_scene_nodes_recursive(self, node):  # 递归获得场景节点
         """
         Rescursive method to get all scene nodes
         this should be private, called by get_scene_nodes()
@@ -44,7 +44,7 @@ class FbxClass(object):
     @staticmethod
     def __cast_property_type(fbx_property):
         """
-        Cast a property to type to properly get the value
+        将属性转换为类型以正确获取值
         """
         casted_property = None
 
@@ -119,7 +119,7 @@ class FbxClass(object):
     @staticmethod
     def get_property(node, property_string):
         """
-        Gets a property from an Fbx node
+        Gets a property from a Fbx node
         export_property = fbx_file.get_property(node, 'no_export')
         """
         fbx_property = node.FindProperty(property_string)
@@ -127,7 +127,7 @@ class FbxClass(object):
 
     def get_property_value(self, node, property_string):
         """
-        Gets the property value from an Fbx node
+        Gets the property value from a Fbx node
         property_value = fbx_file.get_property_value(node, 'no_export')
         """
         fbx_property = node.FindProperty(property_string)
@@ -165,7 +165,7 @@ class FbxClass(object):
 
     def remove_node_property(self, node, property_string):
         """
-        Remove a property from an Fbx node
+        Remove a property from a Fbx node
         remove_property = fbx_file.remove_property(node, 'UDP3DSMAX')
         """
         node_property = self.get_property(node, property_string)
