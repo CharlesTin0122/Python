@@ -32,4 +32,3 @@ $ \pm \times \div \mid $
 import pymel.core as pm
 pm.setAttr()
 ```
-

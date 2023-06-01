@@ -3,7 +3,21 @@
 This is a helper FBX class useful in accessing and modifying the FBX Scene
 Documentation for the FBX SDK
 http://help.autodesk.com/view/FBX/2015/ENU/?guid=__cpp_ref_index_html
-
+Examples:
+# instantiate the class, as seen below with a path to an FBX file
+fbx_file = FBX_Class(r'c:\\my_path\\character.fbx')
+#get all the scene nodes
+all_fbx_nodes = fbx_file.file.scene_nodes()
+# remove namespaces from all the nodes
+fbx_file.remove_namespace()
+# get the display layer objects
+display_layer_nodes = fbx_file.get_type_nodes( u'DisplayLayer' )
+geometry_nodes = fbx_file.get_class_nodes( fbx_file.FbxGeometry.ClassId )
+# save the file that was given
+fbx_file.save_scene()
+# cleanly close the fbx scene.
+# YOU SHOULD ALWAYS CLOSE WHEN FINISHED WITH THE FILE
+fbx_file.close()
 """
 
 import FbxCommon
@@ -14,28 +28,29 @@ class FbxClass(object):
 
     def __init__(self, filename):
         """
-        FBX Scene Object
+         构造方法用于初始化FbxClass对象。它接受一个文件名作为参数，初始化FBX SDK管理器和场景，并加载指定文件名的FBX文件
         """
-        self.filename = filename  # 获取fbx文件名称
-        self.scene = None  # 设置fbx场景
-        self.sdk_manager = None  # 设置sdk管理器
-        self.sdk_manager, self.scene = FbxCommon.InitializeSdkObjects()  # 初始化sdk对象，并获取bx场景和sdk管理器
-        FbxCommon.LoadScene(self.sdk_manager, self.scene, filename)  # 通过fbx场景和sdk管理器,fbx文件名称载入场景
+        self.filename = filename
+        self.scene = None
+        self.sdk_manager = None
+        self.sdk_manager, self.scene = FbxCommon.InitializeSdkObjects()
+        FbxCommon.LoadScene(self.sdk_manager, self.scene, filename)
 
-        self.root_node = self.scene.GetRootNode()  # 获取场景根节点
-        self.scene_nodes = self.get_scene_nodes()  # 获取场景节点
+        self.root_node = self.scene.GetRootNode()
+        self.scene_nodes = self.get_scene_nodes()
 
     def close(self):
         """
-        You need to run this to close the FBX scene safely
+        这个方法用于安全地关闭FBX场景。它销毁FBX SDK创建的对象
         """
         # destroy objects created by the sdk
         self.sdk_manager.Destroy()
 
-    def __get_scene_nodes_recursive(self, node):  # 递归获得场景节点
+    def __get_scene_nodes_recursive(self, node):
         """
         Rescursive method to get all scene nodes
         this should be private, called by get_scene_nodes()
+        这是一个私有递归方法，由get_scene_nodes()在内部使用，用于获取FBX文件中的所有场景节点。
         """
         self.scene_nodes.append(node)
         for i in range(node.GetChildCount()):
@@ -44,7 +59,8 @@ class FbxClass(object):
     @staticmethod
     def __cast_property_type(fbx_property):
         """
-        将属性转换为类型以正确获取值
+        Cast a property to type to properly get the value
+        这是一个静态方法，用于将FBX属性强制转换为适当的类型，以便获取其值。它支持各种属性类型，例如布尔型、双精度浮点型、字符串等。
         """
         casted_property = None
 
@@ -83,6 +99,7 @@ class FbxClass(object):
     def get_scene_nodes(self):
         """
         Get all nodes in the fbx scene
+        获取FBX场景中的所有节点
         """
         self.scene_nodes = []
         for i in range(self.root_node.GetChildCount()):
@@ -93,6 +110,7 @@ class FbxClass(object):
         """
         Get nodes from the scene with the given type
         display_layer_nodes = fbx_file.get_type_nodes( u'DisplayLayer' )
+        获取具有给定类型的节点
         """
         nodes = []
         num_objects = self.scene.RootProperty.GetSrcObjectCount()
@@ -107,6 +125,7 @@ class FbxClass(object):
         """
         Get nodes in the scene with the given classid
         geometry_nodes = fbx_file.get_class_nodes( fbx.FbxGeometry.ClassId )
+        获取具有给定Class ID的节点
         """
         nodes = []
         num_nodes = self.scene.RootProperty.GetSrcObjectCount(fbx.FbxCriteria.ObjectType(class_id))
@@ -121,14 +140,16 @@ class FbxClass(object):
         """
         Gets a property from a Fbx node
         export_property = fbx_file.get_property(node, 'no_export')
+        从FBX节点获取属性
         """
         fbx_property = node.FindProperty(property_string)
         return fbx_property
 
     def get_property_value(self, node, property_string):
         """
-        Gets the property value from a Fbx node
+        Gets the property value from an Fbx node
         property_value = fbx_file.get_property_value(node, 'no_export')
+        获取FBX节点的属性值
         """
         fbx_property = node.FindProperty(property_string)
         if fbx_property.IsValid():
@@ -141,6 +162,7 @@ class FbxClass(object):
     def get_node_by_name(self, name):
         """
         Get the fbx node by name
+        根据名称获取FBX节点
         """
         self.get_scene_nodes()
         # right now this is only getting the first one found
@@ -153,6 +175,7 @@ class FbxClass(object):
         """
         Remove all namespaces from all nodes
         This is not an ideal method but
+        从所有节点中移除命名空间
         """
         self.get_scene_nodes()
         for node in self.scene_nodes:
@@ -167,6 +190,7 @@ class FbxClass(object):
         """
         Remove a property from a Fbx node
         remove_property = fbx_file.remove_property(node, 'UDP3DSMAX')
+        从FBX节点中移除属性
         """
         node_property = self.get_property(node, property_string)
         if node_property.IsValid():
@@ -176,8 +200,10 @@ class FbxClass(object):
 
     def remove_nodes_by_names(self, names):
         """
-        Remove nodes from the fbx file from a list of names         = ['object1','shape2','joint3']
+        Remove nodes from the fbx file from a list of name
+        names = ['object1','shape2','joint3']
         remove_nodes = fbx_file.remove_nodes_by_names(names)
+        从FBX文件中移除指定名称的节点
         """
 
         if names is None or len(names) == 0:
@@ -194,36 +220,37 @@ class FbxClass(object):
     def save(self, filename=None):
         """
         Save the current fbx scene as the incoming filename .fbx
+        将当前的FBX场景保存为指定的文件名
         """
-        if filename is None:
-            FbxCommon.SaveScene(self.sdk_manager, self.scene, self.filename)
         # save as a different filename
-        else:
+        if filename is not None:
             FbxCommon.SaveScene(self.sdk_manager, self.scene, filename)
+        else:
+            FbxCommon.SaveScene(self.sdk_manager, self.scene, self.filename)
         self.close()
-        return filename
+        return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # instantiate the class, as seen below with a path to an FBX file
-    fbx_file = FbxClass(r'c:\my_path\character.fbx')
+    fbx_file = FbxClass(r"c:\my_path\character.fbx")
     # get all  the scene nodes
     all_fbx_nodes = fbx_file.get_scene_nodes()
     # get node by name
-    node = fbx_file.get_node_by_name('head')
+    node = fbx_file.get_node_by_name("head")
     # remove nodes by names
-    remove_node = fbx_file.remove_nodes_by_names('hair_a_01')
+    remove_node = fbx_file.remove_nodes_by_names("hair_a_01")
     # remove namespaces from all  the nodes
     fbx_file.remove_namespace()
     # get the display layer objects
-    display_layer_nodes = fbx_file.get_type_nodes(u'DisplayLayer')
+    display_layer_nodes = fbx_file.get_type_nodes("DisplayLayer")
     # node_property = fbx_file.get_property(node1, 'no_export')
     # node_property_value = fbx_file.get_property_value(node2, 'no_export')
     # remove_property = fbx_file.remove_node_property(node3, 'no_anim_export')
     geometry_nodes = fbx_file.get_class_nodes(fbx.FbxGeometry.ClassId)
     # save the file that was given
     fbx_file.save()
-    save_file = fbx_file.save(filename=r'd:\temp.fbx')
+    save_file = fbx_file.save(filename=r"d:\temp.fbx")
     # cleanly close the fbx scene.
     # YOU SHOULD ALWAYS CLOSE WHEN FINISHED WITH THE FILE
     fbx_file.close()
