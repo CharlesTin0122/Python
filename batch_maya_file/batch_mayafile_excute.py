@@ -68,9 +68,10 @@ class BatchMayaFile:
             pm.PopupError('Nothing To Batch')
             return
 
-        pm.currentUnit(time='ntsc')  # 30 fps
 
         """--------------------------之下为批量执行代码-------------------------------------"""
+
+        pm.currentUnit(time='ntsc')  # 30 fps
 
         for file in self.file_list:
             pm.openFile(file, force=True)
