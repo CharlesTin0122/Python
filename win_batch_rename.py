@@ -39,4 +39,4 @@ if __name__ == '__main__':
     path1 = r"D:\Work_MobilGame\outsourcing\Submissions\modify"
 
     batch_rename(replace_str1, find_str1, path1)
-
+    

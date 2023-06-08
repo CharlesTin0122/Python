@@ -749,13 +749,13 @@ def _getAttributes(driverAttrs, drivenAttrs):
 
     driverAttrs = str(_getSelectedNodeAttributes("driver"))
     if not len(driverAttrs):
-        pm.pm.mel.error("No driver attributes selected")
+        pm.mel.error("No driver attributes selected")
         return 0
 
     elif pm.melGlobals["gWeightDriverDriverAttrCount"] != 0 and pm.melGlobals[
         "gWeightDriverDriverAttrCount"
     ] != len(driverAttrs):
-        pm.pm.mel.error(
+        pm.mel.error(
             "The driver attribute count is different from the already existing poses"
         )
         return 0
@@ -765,13 +765,13 @@ def _getAttributes(driverAttrs, drivenAttrs):
 
     drivenAttrs = str(_getSelectedNodeAttributes("driven"))
     if not len(drivenAttrs):
-        pm.pm.mel.error("No driven attributes selected")
+        pm.mel.error("No driven attributes selected")
         return 0
 
     elif pm.melGlobals["gWeightDriverDrivenAttrCount"] != 0 and pm.melGlobals[
         "gWeightDriverDrivenAttrCount"
     ] != len(drivenAttrs):
-        pm.pm.mel.error(
+        pm.mel.error(
             "The driven attribute count is different from the already existing poses"
         )
         return 0
