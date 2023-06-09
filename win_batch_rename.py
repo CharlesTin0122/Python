@@ -33,10 +33,9 @@ def batch_rename(replace_str: str, find_str: str, path: str) -> list:
     return all_renamed_path
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     replace_str1 = "_Sword_"
     find_str1 = "_bow_"
     path1 = r"D:\Work_MobilGame\outsourcing\Submissions\modify"
 
     batch_rename(replace_str1, find_str1, path1)
-    

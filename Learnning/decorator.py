@@ -1,30 +1,98 @@
-# 类的单例模式
-class Printer(object):
-    tasks = []
-    instance = None  # 存放第一个实例对象
-
-    def __init__(self, name) -> None:
-        self.name = name
-
-    def add_tasks(self, job):
-        self.tasks.append(job)
-        print("{} 添加任务 {}到打印机，总任务数{}".format(self.name, job, len(self.tasks)))
-
-    # 只有第一次实例化的时候正常进行，后面每次实例化，并不真的创建一个新实例
-    def __new__(cls, *args, **kwargs):
-        # 正常进行实例化，并把实例化后的对象 存在cls.instance里面
-        if cls.instance is None:
-            obj = object.__new__(cls)  # 实例化过程
-            print(obj)
-            cls.instance = obj  # 把实例化好的对象存下来
-        # 以后每次实例化，直接返回第一次存的实例对象，在上一次实例对象基础上，再执行__init__
-        return cls.instance
+"""------------------------装饰器案例-----------------------------"""
 
 
-p1 = Printer("word app")
-p2 = Printer("ppt app")
-p3 = Printer("excel app")
-p1.add_tasks("word file")
-p2.add_tasks("ppt file")
-p3.add_tasks("excel file")
-print(p1.name, p2.name, p3.name)
+def a_new_decorator(a_func):
+    def wrapTheFunction():
+        print("I am doing some boring work before executing a_func()")
+
+        a_func()
+
+        print("I am doing some boring work after executing a_func()")
+
+    return wrapTheFunction
+
+
+def a_function_requiring_decoration1():
+    print("I am the function which needs some decoration to remove my foul smell")
+
+
+a_function_requiring_decoration1()
+# outputs: "I am the function which needs some decoration to remove my foul smell"
+a_function_requiring_decoration = a_new_decorator(a_function_requiring_decoration1)
+# now a_function_requiring_decoration is wrapped by wrapTheFunction()
+a_function_requiring_decoration()
+# outputs:I am doing some boring work before executing a_func()
+#        I am the function which needs some decoration to remove my foul smell
+#        I am doing some boring work after executing a_func()
+
+"""-----------------与以上代码块等价--------------------"""
+
+
+@a_new_decorator
+def a_function_requiring_decoration2():
+    """Hey you! Decorate me!"""
+    print("I am the function which needs some decoration to "
+          "remove my foul smell")
+
+
+a_function_requiring_decoration2()
+# outputs: I am doing some boring work before executing a_func()
+#         I am the function which needs some decoration to remove my foul smell
+#         I am doing some boring work after executing a_func()
+
+# the @a_new_decorator is just a short way of saying:
+a_function_requiring_decoration2 = a_new_decorator(a_function_requiring_decoration1)
+
+''' 
+print(a_function_requiring_decoration.__name__)
+# Output: wrapTheFunction
+这并不是我们想要的！Ouput输出应该是"a_function_requiring_decoration"。
+这里的函数被warpTheFunction替代了。它重写了我们函数的名字和注释文档(docstring)。
+幸运的是Python提供给我们一个简单的函数来解决这个问题，那就是functools.wraps。我们修改上一个例子来使用functools.wraps：
+'''
+
+
+def a_new_decorator(a_func):
+    @wraps(a_func)
+    def wrapTheFunction():
+        print("I am doing some boring work before executing a_func()")
+        a_func()
+        print("I am doing some boring work after executing a_func()")
+
+    return wrapTheFunction
+
+
+@a_new_decorator
+def a_function_requiring_decoration():
+    """Hey yo! Decorate me!"""
+    print("I am the function which needs some decoration to "
+          "remove my foul smell")
+
+
+print(a_function_requiring_decoration.__name__)
+# Output: a_function_requiring_decoration
+
+"""-----------------------------蓝本规范-----------------------------------"""
+
+from functools import wraps
+
+
+def decorator_name(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        print("run befor Function")
+        func(*args, **kwargs)
+        print("run after Function")
+
+    return decorated
+
+
+@decorator_name
+def func_print():
+    print("Function is running")
+
+
+func_print()
+
+
+
