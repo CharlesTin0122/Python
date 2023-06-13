@@ -12,7 +12,7 @@ data = {
 
 #  写入
 with open("testttttt.json", "w") as f:
-    json.dump(data, f, indent=4)
+    json.dump(data, f, indent=4, sort_key=True)  # indent=4 意为缩进空格数量,sort_key按字母顺序排序
 
 
 #  读取
