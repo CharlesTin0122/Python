@@ -201,10 +201,27 @@ class MainWindow(QWidget, Ui_Form):
                 sourceChar = cmds.menuItem(item, query=True, label=True)
                 if sourceChar.find("target", 0, len(sourceChar)) != -1:
                     cmds.optionMenu(optMenu, edit=True, select=i)
+
+                    """综合来说，这四行代码的作用是确保HumanIK插件的用户界面和角色信息处于正确的状态，以便后续的角色绑定和动画控制操作能够准确进行。
+                    它们保证了用户界面的同步性和一致性，使得操作更加方便和准确。"""
+
+                    #这行代码调用了hikUpdateCurrentCharacterFromUI函数，它的作用是从用户界面更新当前角色的信息。
+                    #具体来说，它会根据用户在HumanIK控制面板中的选择更新当前角色，以便后续的操作针对正确的角色进行
+
                     mel.eval('hikUpdateCurrentCharacterFromUI()')
+
+                    #这行代码调用了hikUpdateContextualUI函数，它的作用是更新HumanIK插件的上下文用户界面。
+                    #它会根据当前的角色和上下文信息，动态更新HumanIK控制面板中的相关选项和控件，以提供正确的操作环境。
+
                     mel.eval('hikUpdateContextualUI()')
+
+                    #这行代码调用了hikUpdateCharacterMenu函数，它的作用是更新HumanIK插件中的角色菜单。
+                    #角色菜单用于选择要操作的角色，通过更新角色菜单，确保菜单中显示的角色列表与当前场景中的角色一致。
+
                     mel.eval('hikUpdateCharacterMenu()')
-                    # 位于hikCallbackOperations.mel
+
+                    # 这行代码调用了hikUpdateCharacterControlsUICallback函数，它的作用是更新HumanIK插件的控制面板用户界面回调函数。
+                    # 这个回调函数会在用户界面发生变化时触发，以便及时更新相关的控件和状态。
                     mel.eval('hikUpdateCharacterControlsUICallback()')
                     break
 
@@ -221,9 +238,16 @@ class MainWindow(QWidget, Ui_Form):
                 # 注意source选项前面有空格
                 if sourceChar == " Character1":
                     cmds.optionMenu(optMenu, edit=True, select=i)
+                    """综合来说，这三行代码的作用是确保HumanIK插件中源（Source）角色的用户界面和信息处于正确的状态，以便后续的角色绑定和动画控制操作能够准确进行。
+                    它们保证了用户界面的同步性和一致性，使得操作源角色的过程更加方便和准确。"""
+                    #这行代码调用了hikUpdateCurrentSourceFromUI函数，它的作用是从用户界面更新当前源角色的信息。
+                    # 类似于第一组代码中的函数，这个函数根据用户在HumanIK控制面板中的选择更新当前源角色的信息，以确保后续操作针对正确的源角色进行。
                     mel.eval('hikUpdateCurrentSourceFromUI()')
+                    #这行代码调用了hikUpdateContextualUI函数，同样是更新HumanIK插件的上下文用户界面。
+                    # 它会根据当前的源角色和上下文信息，动态更新HumanIK控制面板中的相关选项和控件，以提供正确的操作环境。
                     mel.eval('hikUpdateContextualUI()')
-                    # 位于hikCallbackOperations.mel
+                    #这行代码调用了hikControlRigSelectionChangedCallback函数，它是一个控制面板用户界面的回调函数。
+                    # 当用户在控制面板中选择不同的控制骨骼时，该回调函数会被触发，以便更新相关的控件和状态，确保界面与用户选择的控制骨骼保持一致。
                     mel.eval('hikControlRigSelectionChangedCallback()')
                     break
 
