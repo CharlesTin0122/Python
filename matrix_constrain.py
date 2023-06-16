@@ -13,8 +13,8 @@ def matrix_offset_constrain(parent_obj: nt.Transform, child_obj: nt.Transform):
     """
     矩阵偏移父子约束
     Args:
-        parent_obj: 约束父对象
-        child_obj: 约束子对象
+        parent_obj(nt.Transform): 约束父对象
+        child_obj(nt.Transform): 约束子对象
 
     Returns:None
 
