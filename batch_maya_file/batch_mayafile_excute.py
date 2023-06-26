@@ -22,7 +22,7 @@ class BatchMayaFile:
         except Exception as e:
             print(e)
 
-        with pm.window('Batch Tool', title='advAnimtools') as win:
+        with pm.window('Batch Tool', title='Maya Batch Tool') as win:
             with pm.columnLayout(rowSpacing=5, adj=True):
                 with pm.frameLayout(label='Load Maya File'):
                     with pm.columnLayout(adj=1):
@@ -67,7 +67,6 @@ class BatchMayaFile:
         if not self.file_list:
             pm.PopupError('Nothing To Batch')
             return
-
 
         """--------------------------之下为批量执行代码-------------------------------------"""
 

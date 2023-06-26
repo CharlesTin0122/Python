@@ -4,5 +4,9 @@
     ],
     "python.analysis.extraPaths": [
         "c:\\Users\\Administrator\\.vscode\\extensions\\fxtd-odyssey.mayapy-1.0.4\\mayaSDK"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
 }
