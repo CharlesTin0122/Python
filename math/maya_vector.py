@@ -38,6 +38,8 @@ print(length)
 # get vector distance
 distance = vec.distanceTo(other_vec)
 print(distance)
+# projection On to 投影到
+projection_vec = vec.projectionOnto(other_vec)
 # get normalized vector
 vec_normalized1 = vec.normal()  # 返回一个向量归一化副本
 vec.normalize()  # 直接修改向量为归一化向量

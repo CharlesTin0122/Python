@@ -5,39 +5,44 @@
 # @Time     :  2023/6/25 12:06
 # @Software : PyCharm
 # Description:利用向量来计算极向量约束控制器的位置
-import pymel.core.nodetypes as nt
+import pymel.core as pm
 
 
-def get_pole_vector_position(jnt1_name, jnt2_name, jnt3_name, pole_vector_ctrl):
+def get_pole_vector_position(jnt1, jnt2, jnt3, pv_ctrl, ctrl_length_scale=1.0):
     """
     利用向量来计算极向量约束控制器的位置
     Args:
-        jnt1_name (str): 第一节骨骼名称
-        jnt2_name (str): 第二节骨骼名称
-        jnt3_name (str): 第三节骨骼名称
-        pole_vector_ctrl (str): 极向量控制器名称
+        jnt1 (nt.Joint): 第一节骨骼名称
+        jnt2 (nt.Joint): 第二节骨骼名称
+        jnt3 (nt.Joint): 第三节骨骼名称
+        pv_ctrl (nt.Transform): 极向量控制器名称
+        ctrl_length_scale (float): 极向量控制器和骨骼距离的缩放值
 
-    Returns:None
+    Returns: Vector
 
     """
-    pv = nt.Transform(pole_vector_ctrl)
-
-    hip_jnt = nt.Joint(jnt1_name)
-    hip_pose = hip_jnt.getTranslation(ws=True)
-    knee_jnt = nt.Joint(jnt2_name)
-    knee_pose = knee_jnt.getTranslation(ws=True)
-    foot_jnt = nt.Joint(jnt3_name)
-    foot_pose = foot_jnt.getTranslation(ws=True)
-
-    hip_to_foot = foot_pose - hip_pose  # 通过脚部向量和胯部向量之差得到脚胯之间的向量
-    hip_to_foot_scaled = hip_to_foot / 2  # 向量差除以二，得到脚胯之间向量的中点，此时向量起点为原点
-    mid_point = hip_pose + hip_to_foot_scaled  # 通过向量和，将脚胯之间向量的一半移动到脚胯之间
-    mid_point_to_knee = knee_pose - mid_point  # 通过膝盖向量和脚胯之间向量的一半只差，得到脚胯之间向量的一半到膝盖的向量
-    mid_point_to_knee_scaled = mid_point_to_knee * 2  # 放大该向量为原来的两倍
-    mid_point_to_knee_point = mid_point + mid_point_to_knee_scaled  # 将缩放后的向量移动到正确的位置
-
-    pv.setTranslation(mid_point_to_knee_point)
+    # 获取参数，并转换为Pymel对象
+    jnt1_vec = jnt1.getTranslation(ws=True)
+    jnt2_vec = jnt2.getTranslation(ws=True)
+    jnt3_vec = jnt3.getTranslation(ws=True)
+    # 获取胯骨指向脚的向量
+    leg_foot_vec = jnt3_vec - jnt1_vec
+    # 获取胯骨指向膝盖的向量的向量
+    leg_knee_vec = jnt2_vec - jnt1_vec
+    # 将胯膝向量向腿脚向量投影，获得该投影位置
+    knee_projection_vec = leg_knee_vec.projectionOnto(leg_foot_vec)
+    # 将投影向量移动到腿上，之前向量起点为原点
+    mid_position = jnt1_vec + knee_projection_vec
+    # 获得投影点指向膝盖点的向量，再乘以一个缩放系数，得到极向量，再讲极向量移动到膝盖点
+    ctrl_position = jnt2_vec + (jnt2_vec - mid_position) * ctrl_length_scale
+    # 设置控制器位置
+    pv_ctrl.setTranslation(ctrl_position)
+    return ctrl_position
 
 
 if __name__ == '__main__':
-    get_pole_vector_position("hip", "knee", "ankle", "pv")
+    """依次选择三个骨骼对象和一个控制器对象，然后执行脚本，
+    控制器就被摆放在正确的位置上,通过ctrl_length_scale数值来调整控制器和骨骼距离。
+    """
+    jnt_1, jnt_2, jnt_3, ctrl_pv = pm.selected()
+    get_pole_vector_position(jnt_1, jnt_2, jnt_3, ctrl_pv, 1.5)
