@@ -1,5 +1,6 @@
 import json
 import os
+
 # 系统相关内容
 print(os.name)  # 系统名称
 print(os.environ)  # 环境变量
@@ -23,8 +24,6 @@ def main():
     with open("path.json", "r") as f:
         data = json.load(f)
     print(data)
-
-
 
 
 # 删除文件

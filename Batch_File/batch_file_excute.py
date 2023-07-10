@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
-# @FileName :  batch_mayafile_excute.py
+# @FileName :  batch_mayafile_execute.py
 # @Author   : TianChao
 # @Email    : tianchao0533@gamil.com
 # @Time     :  2023/6/1 14:58
 # @Software : PyCharm
 # Description:
 import os
+
 import pymel.core as pm
 
 
 class BatchMayaFile:
     def __init__(self):
+        self.radioCol = None
         self.file_list = []
         self.savePath = None
         self.file_field = None
+        self.py_field = None
         self.path_field = None
 
     def create_ui(self):
@@ -29,6 +32,19 @@ class BatchMayaFile:
                         pm.button(label="Load ALL Maya File", c=self.load)
                     with pm.scrollLayout(w=200, h=150, bgc=(0.5, 0.5, 0.5)) as self.file_field:
                         pm.text('File Name:')
+                    with pm.frameLayout(label="pymel"):
+                        self.py_field = pm.cmdScrollFieldExecuter(
+                            "pymelcode",
+                            h=150, w=200,
+                            sourceType="python",
+                            showTabsAndSpaces=True,
+                            showLineNumbers=True,
+                            showTooltipHelp=True
+                        )
+                    with pm.rowLayout(numberOfColumns=2, columnWidth2=(150, 125), adjustableColumn=2):
+                        self.radioCol = pm.radioCollection()
+                        pm.radioButton("rb_save", label='Save File', align='left', select=True)
+                        pm.radioButton("rb_export", label='Export File', align='right')
                     with pm.rowLayout(numberOfColumns=3,
                                       columnWidth3=(55, 140, 5),
                                       adjustableColumn=2,
@@ -68,32 +84,26 @@ class BatchMayaFile:
             pm.PopupError('Nothing To Batch')
             return
 
-        """--------------------------之下为批量执行代码-------------------------------------"""
-
-        pm.currentUnit(time='ntsc')  # 30 fps
-
+        modify_code = pm.cmdScrollFieldExecuter(self.py_field, q=True, text=True)
+        radio_btn = pm.radioCollection(self.radioCol, q=True, select=True)
         for file in self.file_list:
-            pm.openFile(file, force=True)
-            weapon_jnt = pm.PyNode("weapon_R")
-
-            translate_cv = weapon_jnt.listConnections(type="animCurveTL")
-            rotate_cv = weapon_jnt.listConnections(type="animCurveTA")
-            scale_cv = weapon_jnt.listConnections(type="animCurveTU")
-            try:
-                pm.delete(translate_cv, rotate_cv, scale_cv)
-            except Exception as e:
-                print(e)
-
-            weapon_jnt.setTranslation([8.8, 3.301, 0.259])
-            weapon_jnt.setRotation([-98.928, 14.932, -6.117])
-            pm.setKeyframe(weapon_jnt)
-
-            if self.savePath:
+            pm.openFile(file, force=True)  # 分别打开每个文件
+            pm.currentUnit(time='ntsc')  # maya环境帧率设置为30 fps
+            exec(modify_code)  # 以字符串的形式执行代码
+            # 如果为'Export File选项且存在导出路径，则执行导出命令
+            if (radio_btn == "rb_export") and self.savePath:
                 short_name = os.path.splitext(os.path.basename(file))[0]
                 file_path = os.path.join(self.savePath, short_name + ".fbx")
                 print(file_path)
                 pm.exportAll(file_path, force=True)
-        """----------------------------------之上为批量执行代码---------------------------------------"""
+            # 如果为'Save File选项且存在保存路径，则执行保存命令
+            elif (radio_btn == "rb_save") and self.savePath:
+                short_name = os.path.splitext(os.path.basename(file))[0]
+                file_path = os.path.join(self.savePath, short_name + ".mb")
+                print(file_path)
+                pm.saveAs(file_path, force=True)
+            else:
+                pm.PopupError('Please Input SavePath!')
 
         confirm = pm.confirmDialog(title='Finish', message="Done!", button=['OK', 'Open Folder'])
         if confirm == 'Open Folder' and self.savePath:
@@ -101,5 +111,5 @@ class BatchMayaFile:
 
 
 if __name__ == '__main__':
-    batchtool = BatchMayaFile()
-    batchtool.create_ui()
+    batch_tool = BatchMayaFile()
+    batch_tool.create_ui()
