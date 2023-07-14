@@ -8,10 +8,10 @@
 
 import pymel.core as pm
 
-jntChain = []  # 骨骼链列表
-clusterList = []  # 曲线簇列表
-IKCurve = None  # 曲线
-ctrl_list = []  # 控制器列表
+jntChain: list = []  # 骨骼链列表
+clusterList: list = []  # 曲线簇列表
+IKCurve: pm.nodetypes.NurbsCurve = None  # 曲线
+ctrl_list: list = []  # 控制器列表
 
 
 def creatJoint(jntCount, jntLength):
