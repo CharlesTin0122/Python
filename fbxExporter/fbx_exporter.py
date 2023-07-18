@@ -42,7 +42,7 @@ class FbxExporterUI(object):
                                   columnWidth3=(55, 140, 5),
                                   adjustableColumn=2,
                                   columnAlign=(1, 'right'),
-                                  columnAttach=[(1, 'both', 0), (2, 'both', 0), (3, 'both', 0)]
+                                  columnAttach=[(1, 'both', 0), (2, 'both', 0), (3, 'both', 0)]  # noqa: E501
                                   ):
                     pm.text(label='Export Path:', w=65)
                     self.export_path_field = pm.textField("ExporterTextField")
@@ -101,7 +101,7 @@ class FbxExporterUI(object):
                 expressions=False
             )
             pm.delete('BakeResultsContainer')
-        pm.informBox(title='Export Complete', message='All selected objects have been exported successfully.')
+        pm.informBox(title='Export Complete', message='All selected objects have been exported successfully.')  # noqa: E501
 
 
 if __name__ == '__main__':
