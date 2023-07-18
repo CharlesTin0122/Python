@@ -6,31 +6,26 @@
 # @Software : PyCharm
 # Description:
 import pymel.core as pm
-import pymel.core.nodetypes as nt
 
 
-def matrix_offset_constrain(parent_obj: nt.Transform, child_obj: nt.Transform):
+def offset_parent_matrix():
     """
     矩阵偏移父子约束
-    Args:
-        parent_obj(nt.Transform): 约束父对象
-        child_obj(nt.Transform): 约束子对象
-
+    被约束对象可变换
     Returns:None
-
     """
-    assert (isinstance(parent_obj, nt.Transform))
-    assert (isinstance(child_obj, nt.Transform))
-    pick_matrix_node = pm.createNode("pickMatrix")
+    from_obj, to_obj = pm.selected()
 
-    pm.connectAttr(parent_obj.worldMatrix[0], pick_matrix_node.inputMatrix)
-    pm.connectAttr(pick_matrix_node.outputMatrix, child_obj.offsetParentMatrix)
-    # parent_obj.worldMatrix[0] >> child_obj.offsetParentMatrix
-    pm.setAttr(pick_matrix_node.useTranslate, 1)
-    pm.setAttr(pick_matrix_node.useRotate, 1)
-    pm.setAttr(pick_matrix_node.useScale, 1)
+    offset_grp = pm.group(em=True)
+    pm.parent(offset_grp, from_obj)
+    pm.matchTransform(offset_grp, to_obj)
 
+    from_obj.worldMatrix >> to_obj.offsetParentMatrix
 
-if __name__ == '__main__':
-    parent_obj1, child_obj1 = pm.selected()
-    matrix_offset_constrain(parent_obj1, child_obj1)
+    offset_grp.translate >> to_obj.translate
+    offset_grp.rotate >> to_obj.rotate
+    offset_grp.scale >> to_obj.scale
+
+    pm.delete(offset_grp)
+
+    return None

@@ -15,6 +15,13 @@ def meshanim2jntanim():
     选中要操作的模型
     设置好要转换动画的时间栏
     执行此函数即可
+
+    Raises:
+        RuntimeError: 模型选择错误
+        TypeError: 模型类型错误
+
+    Returns:
+        list: 骨骼列表
     """
     pm.currentUnit(time="ntsc")  # 设置环境为30fps
     time_start = pm.playbackOptions(q=True, min=True)  # 获取初始帧
@@ -30,7 +37,10 @@ def meshanim2jntanim():
         raise TypeError("所选物体不是有效的模型")
     mesh_vtxs = sel_shape.vtx  # 获取所有顶点
     pm.select(clear=True)
-    root_jnt = pm.joint(name="root", radius=0.1)  # 创建根骨骼
+
+    mesh_RotatePivot = sel_mesh.getRotatePivot()
+    root_jnt = pm.joint(name="root", radius=0.1, position=mesh_RotatePivot)  # 创建根骨骼
+
     # 定义列表变量用于接收骨骼列表
     jnt_list = []
     # 给每个顶点位置创建一个骨骼，并设置根骨骼为父骨骼
@@ -44,9 +54,11 @@ def meshanim2jntanim():
         pm.currentTime(frame)
         for i, vtx in enumerate(mesh_vtxs):
             vtx_pos = vtx.getPosition()
-            jnt_list[i].setTranslation(vtx_pos)
+            pm.joint(jnt_list[i], edit=True, position=vtx_pos)
         pm.setKeyframe(jnt_list)
+
+    return jnt_list
 
 
 if __name__ == "__main__":
-    meshanim2jntanim()
+    jnt_anim = meshanim2jntanim()
