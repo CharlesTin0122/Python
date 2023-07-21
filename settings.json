@@ -1,11 +1,13 @@
 {
-"python.autoComplete.extraPaths": [
-    "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
+    "python.autoComplete.extraPaths": [
+        "c:\\Users\\Administrator\\.vscode\\extensions\\fxtd-odyssey.mayapy-1.0.4\\mayaSDK"
     ],
-"python.pythonPath":
-    "C:\\Program Files\\Autodesk\\Maya2020\\bin\\mayapy.exe",
-"python.analysis.extraPaths": [
-   "C:\\Program Files\\Autodesk\\Maya2020\\devkit\\other\\pymel\\extras\\completion\\py"
-    ]
+    "python.analysis.extraPaths": [
+        "c:\\Users\\Administrator\\.vscode\\extensions\\fxtd-odyssey.mayapy-1.0.4\\mayaSDK"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none",
+    "editor.defaultFormatter": "ms-python.black-formatter"
 }
-
