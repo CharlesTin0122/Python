@@ -16,7 +16,7 @@ class AnimCurveFilter:
     def __init__(self):
         self.filter_radioCol = None
         self.value_slider = None
-        self.default_value = None
+        self.default_value = 0
         self.keyframe_data = {}
 
     def create_ui(self):
@@ -61,8 +61,8 @@ class AnimCurveFilter:
 
         pm.showWindow(main_window)
 
-    def switch_filter(self, filter: int, *args):
-        if filter == 0:
+    def switch_filter(self, filter_type: int, *args):
+        if filter_type == 0:
             self.default_value = 0
             pm.floatSliderButtonGrp(
                 self.value_slider,
@@ -76,7 +76,7 @@ class AnimCurveFilter:
                 fieldMaxValue=100.0,
                 value=0.0,
             )
-        elif filter == 1:
+        elif filter_type == 1:
             self.default_value = 50
             pm.floatSliderButtonGrp(
                 self.value_slider,
@@ -90,7 +90,7 @@ class AnimCurveFilter:
                 fieldMaxValue=100.0,
                 value=50.0,
             )
-        elif filter == 2:
+        elif filter_type == 2:
             self.default_value = 0
             pm.floatSliderButtonGrp(
                 self.value_slider,
@@ -98,13 +98,13 @@ class AnimCurveFilter:
                 dragCommand=self.smooth_filter,
                 changeCommand=self.reset_slider,
                 buttonCommand=self.anim_curve_reverse,
-                minValue=0.0,
-                maxValue=100.0,
-                fieldMinValue=0.0,
-                fieldMaxValue=100.0,
-                value=0.0,
+                minValue=1,
+                maxValue=5,
+                fieldMinValue=1,
+                fieldMaxValue=5,
+                value=1,
             )
-        elif filter == 3:
+        elif filter_type == 3:
             self.default_value = 0
             pm.floatSliderButtonGrp(
                 self.value_slider,
@@ -118,7 +118,7 @@ class AnimCurveFilter:
                 fieldMaxValue=100.0,
                 value=0.0,
             )
-        elif filter == 4:
+        elif filter_type == 4:
             self.default_value = 50.0
             pm.floatSliderButtonGrp(
                 self.value_slider,
@@ -172,25 +172,25 @@ class AnimCurveFilter:
 
         attr_list, time_value_list, key_value_list = self.get_keyframe_data()
 
-        for i in range(1, len(attr_list) - 1):
-            attr = attr_list[i]
+        for i, attr in enumerate(attr_list):
             time_value = time_value_list[i]
             key_value = key_value_list[i]
 
             if len(key_value) >= 3:
-                pre_value = key_value[i - 1]
-                cur_value = key_value[i]
-                nex_value = key_value[i + 1]
+                for i in range(1, len(key_value) - 1):
+                    pre_value = key_value[i - 1]
+                    cur_value = key_value[i]
+                    nex_value = key_value[i + 1]
 
-                average_value = (pre_value + cur_value + nex_value) / 3
+                    average_value = (pre_value + cur_value + nex_value) / 3
 
-                pm.scaleKey(
-                    attr,
-                    time=(time_value, time_value),
-                    valuePivot=average_value,
-                    valueScale=scale_value,
-                )
-                pm.keyTangent(itt="auto", ott="auto")
+                    pm.scaleKey(
+                        attr,
+                        time=(time_value[i], time_value[i]),
+                        valuePivot=average_value,
+                        valueScale=scale_value,
+                    )
+                    pm.keyTangent(itt="auto", ott="auto")
 
     def dampon_filter(self, *args):
         filter_value = pm.floatSliderButtonGrp(self.value_slider, q=True, v=True)
@@ -200,8 +200,7 @@ class AnimCurveFilter:
 
         attr_list, time_value_list, key_value_list = self.get_keyframe_data()
 
-        for i in range(1, len(attr_list) - 1):
-            attr = attr_list[i]
+        for i, attr in enumerate(attr_list):
             time_value = time_value_list[i]
             key_value = key_value_list[i]
 
@@ -209,39 +208,40 @@ class AnimCurveFilter:
                 tangent = (key_value[-1] - key_value[0]) / abs(
                     time_value[-1] - time_value[0]
                 )
-                for key_time in time_value:
-                    scale_pivot = tangent * (key_time - time_value[0]) + key_value[0]
+                for i in range(1, len(time_value) - 1):
+                    scale_pivot = tangent * (time_value[i] - time_value[0]) + key_value[0]
                     pm.scaleKey(
                         attr,
-                        time=(key_time, key_time),
+                        time=(time_value[i], time_value[i]),
                         valuePivot=scale_pivot,
                         valueScale=scale_value,
                     )
 
     def smooth_filter(self, *args):
         filter_value = pm.floatSliderButtonGrp(self.value_slider, q=True, v=True)
-        scale_value = self.remap(0.0, 100.0, 1.0, 5.0, filter_value)
 
         pm.bufferCurve(animation="keys", overwrite=False)
 
         attr_list, time_value_list, key_value_list = self.get_keyframe_data()
 
-        for i in range(1, len(attr_list) - 1):
-            attr = attr_list[i]
+        for i, attr in enumerate(attr_list):
             time_value = time_value_list[i]
             key_value = key_value_list[i]
             if len(key_value) >= 3:
-                pre_value = key_value[i - 1]
-                cur_value = key_value[i]
-                nex_value = key_value[i + 1]
+                for i in range(1, len(key_value) - 1):
+                    pre_value = key_value[i - 1]
+                    cur_value = key_value[i]
+                    nex_value = key_value[i + 1]
 
-                average_value = (pre_value + cur_value + nex_value) / 3
+                    average_value = (pre_value + cur_value + nex_value) / 3
 
-                pm.keyframe(
-                    attr,
-                    time=(time_value, time_value),
-                    valueChange=average_value * scale_value,
-                )
+                    pm.keyframe(
+                        attr,
+                        time=(time_value[i], time_value[i]),
+                        valueChange=average_value
+                    )
+        for i in range(len(filter_value)):
+            self.smooth_filter()
 
     def simplify_filter(self, *args):
         """
@@ -254,31 +254,26 @@ class AnimCurveFilter:
             None
         """
         filter_value = pm.floatSliderButtonGrp(self.value_slider, q=True, v=True)
-        scale_value = self.remap(0.0, 100.0, 1.0, 0.0, filter_value)
+        scale_value = self.remap(0.0, 100.0, 0.0, 1.0, filter_value)
 
         pm.bufferCurve(animation="keys", overwrite=False)
 
         attr_list, time_value_list, key_value_list = self.get_keyframe_data()
 
-        for i in range(1, len(attr_list) - 1):
-            attr = attr_list[i]
+        for i, attr in enumerate(attr_list):
             time_value = time_value_list[i]
-
             # 检查属性是否有关键帧
             if len(time_value) > 0:
-                # 获取关键帧的起始时间和结束时间
-                time_start = time_value[0]
-                time_end = time_value[-1]
                 # 在给定的时间范围内简化属性的关键帧
                 pm.simplify(
                     attr,
-                    time=(time_start, time_end),
+                    time=(time_value[0], time_value[-1]),
                     timeTolerance=scale_value,
                     floatTolerance=scale_value,
                     valueTolerance=scale_value,
                 )
                 # 选择简化后的关键帧
-                pm.selectKey(attr, time=(time_start, time_end))
+                pm.selectKey(attr, time=(time_value[0], time_value[-1]))
 
     def twinner_filter(self, *args):
         filter_value = pm.floatSliderButtonGrp(self.value_slider, q=True, v=True)
@@ -286,9 +281,8 @@ class AnimCurveFilter:
 
         current_time = pm.currentTime(query=True)
         attr_list, time_value_list, key_value_list = self.get_keyframe_data()
-        for i in range(1, len(attr_list) - 1):
-            attr = attr_list[i]
 
+        for attr in attr_list:
             current_value = pm.keyframe(attr, time=current_time, query=True, eval=True)
             if current_value:
                 pre_time = pm.findKeyframe(attr, time=current_time, which="previous")
@@ -298,7 +292,7 @@ class AnimCurveFilter:
                 if pre_value and next_value:
                     if not pm.keyframe(attr, time=current_time, query=True):
                         pm.setKeyframe(attr, time=current_time)
-                    if next_value[0] != pre_value:
+                    if next_value[0] != pre_value[0]:
                         current_key_value = (
                             scale_value * (next_value[0] - pre_value[0]) + pre_value[0]
                         )
