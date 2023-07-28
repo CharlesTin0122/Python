@@ -15,3 +15,25 @@ print(myListint[0])  # 0代表第一项
 print(myListStr[-1])  # -1代表倒数第一项，-2代表倒是第二项。
 print(myListLen)
 print(newList)
+
+"""-----append和extend的区别-----
+# extend是将两个list合并成一个list，
+# 而append是将传入的参数看做一个元素，拼接到上一个list后面。"""
+
+# append()例子
+list_all = []
+list1 = [1, 2, 'cc', 'dd']
+list2 = ['e', 3]
+list_all.append(list1)
+list_all.append(list2)
+print(list_all)
+# [[1, 2, 'cc', 'dd'], ['e', 3]]
+
+# extend()例子
+list_all = []
+list1 = [1, 2, 'cc', 'dd']
+list2 = ['e', 3]
+list_all.extend(list1)
+list_all.extend(list2)
+print(list_all)
+# [1, 2, 'cc', 'dd', 'e', 3]

@@ -18,76 +18,121 @@ class BatchConstrNearestObj(object):
         self.constrain_list = []
 
     def create_ui(self):
-        try:
-            pm.deleteUI('MyWin')
-        except Exception as exc:
-            print(exc)
-
-        self.window = pm.window('MyWin', title='Batch Constrain Tool')
+        """创建UI"""
+        self._delete_existing_window()
+        self.window = pm.window("MyWin", title="Batch Constrain Tool")
         with pm.columnLayout(rowSpacing=5, adj=True):
-            with pm.frameLayout(label='BatchConstrNearestObj'):
+            with pm.frameLayout(label="BatchConstrNearestObj"):
                 with pm.columnLayout(adj=1):
-                    pm.button(label='Load Constrain Obj', w=150, h=30, c=self.load_list1_click)
-                with pm.scrollLayout(w=200, h=150, bgc=(0.5, 0.5, 0.5)) as self.list1_ui:
-                    pm.text('Obj List A:')
+                    pm.button(
+                        label="Load Constrain Obj", w=150, h=30, c=self.load_list1_click
+                    )
+                with pm.scrollLayout(
+                    w=200, h=150, bgc=(0.5, 0.5, 0.5)
+                ) as self.list1_ui:
+                    pm.text("Obj List A:")
                 with pm.columnLayout(adj=1):
-                    pm.button(label='Load be Constrained Obj', w=150, h=30, c=self.load_list2_click)
-                with pm.scrollLayout(w=200, h=150, bgc=(0.5, 0.5, 0.5)) as self.list2_ui:
-                    pm.text('Obj List B:')
+                    pm.button(
+                        label="Load be Constrained Obj",
+                        w=150,
+                        h=30,
+                        c=self.load_list2_click,
+                    )
+                with pm.scrollLayout(
+                    w=200, h=150, bgc=(0.5, 0.5, 0.5)
+                ) as self.list2_ui:
+                    pm.text("Obj List B:")
                 with pm.columnLayout(adj=1):
-                    pm.button(label='Batch Constrain !!!', w=150, h=50, c=self.batch_constrain)
+                    pm.button(
+                        label="Batch Constrain !!!", w=150, h=50, c=self.batch_constrain
+                    )
         self.window.show()
 
+    def _delete_existing_window(self):
+        """清除已存在的窗口"""
+        try:
+            pm.deleteUI("MyWin")
+        except RuntimeError as exc:
+            print(exc)
+
+    def _display_objects_in_ui(self, obj_list, ui_layout):
+        """在窗口中列出所选对象
+
+        Args:
+            obj_list (list): 所选对象列表
+            ui_layout (_type_): 要列出对象的窗口
+        """
+        with ui_layout:
+            for obj in obj_list:
+                pm.text(label=str(obj))
+
     def load_list1_click(self, *args):
+        """按钮点击函数
+
+        Returns:
+            list: 对象列表
+        """
         self.list1 = pm.selected()
         if not self.list1:
-            pm.warning('No selected obj !!!')
+            pm.warning("No selected obj !!!")
             return
-        with self.list1_ui:
-            for obj in self.list1:
-                pm.text(label=f"{obj}")
+        self._display_objects_in_ui(self.list1, self.list1_ui)
         return self.list1
 
     def load_list2_click(self, *args):
+        """按钮点击函数
+
+        Returns:
+            list: 对象列表
+        """
         self.list2 = pm.selected()
         if not self.list2:
-            pm.warning('No selected obj !!!')
+            pm.warning("No selected obj !!!")
             return
-        with self.list2_ui:
-            for obj in self.list2:
-                pm.text(label=f"{obj}")
+        self._display_objects_in_ui(self.list2, self.list2_ui)
         return self.list2
 
-    def batch_constrain(self, *args):
-        """用于在另一个对象列表中找到另一个对象列表中距离最近的对象并创建父子约束。
-        Returns:None
+    def _find_closest_object(self, obj):
+        """找到最近的对象
+
+        Args:
+            obj (_type_): 对象A
+
+        Returns:
+            _type_: 距离对象A最近的对象B
         """
-        # 遍历选定的所有对象
+        closest_obj = None
+        closest_distance = float("inf")
+        pos1 = obj.getTranslation(space="world")
+        for other_obj in self.list2:
+            if other_obj == obj:
+                continue
+            pos2 = other_obj.getTranslation(space="world")
+            distance = (pos1 - pos2).length()
+            if distance < closest_distance:
+                closest_obj = other_obj
+                closest_distance = distance
+        return closest_obj
+
+    def batch_constrain(self, *args):
+        """批量父子约束
+
+        Returns:
+            _type_: 约束列表
+        """
+        self.constrain_list = []
         for obj in self.list1:
-            closest_obj = None  # 创建最近骨骼变量
-            closest_distance = float("inf")  # 创建最近距离变量为正无穷
-            pos1 = obj.getTranslation(space='world')  # 获取骨骼位置坐标
-
-            # 遍历场景查找最近的骨骼
-            for other_obj in self.list2:
-                if other_obj == obj:  # 如果该骨骼已存在所选择骨骼
-                    continue  # 则跳过
-                pos2 = other_obj.getTranslation(space='world')  # 获取其他骨骼位置
-                distance = (pos1 - pos2).length()  # 获取选择骨骼和其他骨骼之间的距离,注意.length求两点之间的距离
-                """通过遍历所有其他骨骼和选择骨骼之间的距离，得到离选择骨骼最近的其他骨骼的距离"""
-                if distance < closest_distance:  # 如果该距离小于最近骨骼距离即正无穷
-                    closest_obj = other_obj  # 那么最近骨骼就是该骨骼
-                    closest_distance = distance  # 最近距离就是该距离
-
-            # 如果最近骨骼存在,同时骨骼没有被约束,父子约束到最近的骨骼
-            if closest_obj and not pm.listConnections(closest_obj, type='parentConstraint'):
-                pm.parentConstraint(obj, closest_obj, maintainOffset=True)  # 执行约束
+            closest_obj = self._find_closest_object(obj)
+            if closest_obj and not pm.listConnections(
+                closest_obj, type="parentConstraint"
+            ):
+                pm.parentConstraint(obj, closest_obj, maintainOffset=True)
                 constrain_list = f"{obj}->{closest_obj}"
                 self.constrain_list.append(constrain_list)
         print(self.constrain_list)
         return self.constrain_list
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ui = BatchConstrNearestObj()
     ui.create_ui()
