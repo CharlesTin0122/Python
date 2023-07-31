@@ -189,7 +189,8 @@ class AnimCurveFilter:
                 value=50.0,
             )
 
-    def get_keyframe_data(self, *args):
+    @staticmethod
+    def get_keyframe_data(*args):
         """获取所选对象的关键帧数据。
         根据所选的对象列出他们的关键帧属性名称。关键帧时间点。关键帧数值。
 
@@ -247,16 +248,16 @@ class AnimCurveFilter:
             key_value = key_value_list[i]
 
             if len(key_value) >= 3:
-                for i in range(1, len(key_value) - 1):
-                    pre_value = key_value[i - 1]
-                    cur_value = key_value[i]
-                    nex_value = key_value[i + 1]
+                for j in range(1, len(key_value) - 1):
+                    pre_value = key_value[j - 1]
+                    cur_value = key_value[j]
+                    nex_value = key_value[j + 1]
                     # 求出相邻三帧的平均值
                     average_value = (pre_value + cur_value + nex_value) / 3
                     # 以此平均值作为轴心来对第二帧对应曲线上的点进行拉伸或挤压.
                     pm.scaleKey(
                         attr,
-                        time=(time_value[i], time_value[i]),
+                        time=(time_value[j], time_value[j]),
                         valuePivot=average_value,
                         valueScale=scale_value,
                     )
@@ -289,16 +290,16 @@ class AnimCurveFilter:
                 tangent = (key_value[-1] - key_value[0]) / abs(
                     time_value[-1] - time_value[0]
                 )
-                for i in range(1, len(time_value) - 1):
+                for j in range(1, len(time_value) - 1):
                     # 根据切线和时间差计算缩放中心点
                     # 切线乘以时间差可以得到从第一个关键帧到当前关键帧的属性值变化量，然后再加上第一个关键帧的属性值，就可以得到当前关键帧的缩放中心点位置。
                     scale_pivot = (
-                        tangent * (time_value[i] - time_value[0]) + key_value[0]
+                        tangent * (time_value[j] - time_value[0]) + key_value[0]
                     )
                     # 使用缩放中心点和百分比缩放关键帧
                     pm.scaleKey(
                         attr,
-                        time=(time_value[i], time_value[i]),
+                        time=(time_value[j], time_value[j]),
                         valuePivot=scale_pivot,
                         valueScale=scale_value,
                     )
@@ -335,16 +336,16 @@ class AnimCurveFilter:
             time_value = time_value_list[i]
             key_value = key_value_list[i]
             if len(key_value) >= 3:
-                for i in range(1, len(key_value) - 1):
-                    pre_value = key_value[i - 1]
-                    cur_value = key_value[i]
-                    nex_value = key_value[i + 1]
+                for j in range(1, len(key_value) - 1):
+                    pre_value = key_value[j - 1]
+                    cur_value = key_value[j]
+                    nex_value = key_value[j + 1]
 
                     average_value = (pre_value + cur_value + nex_value) / 3
 
                     pm.keyframe(
                         attr,
-                        time=(time_value[i], time_value[i]),
+                        time=(time_value[j], time_value[j]),
                         valueChange=average_value,
                     )
         try:
@@ -423,7 +424,8 @@ class AnimCurveFilter:
                             attr, time=current_time, valueChange=current_key_value
                         )
 
-    def anim_curve_reverse(self, *args):
+    @staticmethod
+    def anim_curve_reverse(*args):
         """将动画曲线返回修改前的状态
         原理：利用maya曲线编辑器的缓存曲线（bufferCurve）
         """
@@ -444,7 +446,8 @@ class AnimCurveFilter:
         except Exception as exc:
             print(exc)
 
-    def remap(self, i_min, i_max, o_min, o_max, v):
+    @staticmethod
+    def remap(i_min, i_max, o_min, o_max, v):
         """
         将一个线性比例尺上的值重新映射到另一个线性比例尺上，结合了线性插值和反线性插值。
 
