@@ -28,7 +28,10 @@
 
     Twinner:
         和网上已有的免费工具 Twinning machine 类似. 对于手K动画很有用的添加中间帧的工具, 只需要选择控制器(可以多选), 拖动滑条能自动的K帧并且选择让这一帧的数值更偏向前一帧或者后一帧.
-        其原理是：找到当前帧数相邻的前一个Key和后一个Key, 算出数值差, 然后做百分比运算
+        其原理是：找到当前帧数相邻的前一个Key和后一个Key, 算出数值差, 然后做百分比运算.add()
+使用方法：
+    1.将此文件放入maya环境变量下路径中，一般为"\\Documents\\maya\\20xx\\scripts"
+    2.在maya中执行 curve_filter = AnimCurveFilter();curve_filter.create_ui()
 """
 
 from functools import partial
