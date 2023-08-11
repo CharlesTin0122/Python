@@ -9,6 +9,7 @@ import math
 import pymel.core as pm
 import pymel.core.datatypes as dt
 import pymel.core.nodetypes as nt
+
 # get vector
 obj = nt.Transform("locator1")
 vec = obj.getTranslation(ws=True)
@@ -57,7 +58,9 @@ print(angle)
 # rotate by vector
 radians = dt.Vector(math.radians(90), 0, 0)  # math.radians将角度转化为弧度，得到一个弧度向量radians
 rotateBy_vec_a = vec.rotateBy(radians)  # 使向量vec按照弧度向量radians旋转（x轴旋转90°）
-rotateBy_vec_b = vec.rotateBy(dt.Vector.yAxis, math.radians(90))  # 也可以只选择一个轴进行旋转，YAxis意为Y轴
+rotateBy_vec_b = vec.rotateBy(
+    dt.Vector.yAxis, math.radians(90)
+)  # 也可以只选择一个轴进行旋转，YAxis意为Y轴
 print(rotateBy_vec_a, rotateBy_vec_b)
 # rotate to vector
 rotateTo_vec = vec.rotateTo(other_vec)  # 返回的是一个四元数

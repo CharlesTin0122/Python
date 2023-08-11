@@ -156,10 +156,10 @@ class AdvAnimToolsUI:
                 file_path = os.path.join(self.savePath, short_name + ".mb")
                 print(file_path)
                 pm.saveAs(file_path, force=True)
-
-        confirm = pm.confirmDialog(title='Finish', message="Done!", button=['OK', 'Open Folder'])
-        if confirm == 'Open Folder' and self.savePath:
-            os.startfile(self.savePath)
+        if self.savePath:
+            confirm = pm.confirmDialog(title='Finish', message="Done!", button=['OK', 'Open Folder'])
+            if confirm == 'Open Folder' and self.savePath:
+                os.startfile(self.savePath)
 
 
 if __name__ == '__main__':

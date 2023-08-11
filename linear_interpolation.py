@@ -8,7 +8,8 @@
 
 
 def lerp(a: float, b: float, t: float) -> float:
-    """在给定的范围 a 到 b 上进行线性插值，使用 t 作为该范围上的插值点。
+    """
+    在给定的范围 a 到 b 上进行线性插值，使用 t 作为该范围上的插值点。
 
     Parameters:
     a (float): 起始值.
@@ -19,7 +20,7 @@ def lerp(a: float, b: float, t: float) -> float:
     float: 插值.
 
     Examples
-    --------
+
         50 == lerp(0, 100, 0.5)
         4.2 == lerp(1, 5, 0.8)
     """
