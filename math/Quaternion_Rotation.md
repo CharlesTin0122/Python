@@ -48,23 +48,26 @@ P' = q * P * q_conj
 计算 P * q_conj，得到旋转回原始坐标系的点：
 
 P_rotated = P * q_conj
-$$
+
+```math
+\begin{array}{l}
 P \underline{-} rotated = (x * i + y * j + z * k) * (cos(θ/2) - (u1 * i + u2 * j + u3 * k) * sin(θ/2))\\
 
 = x * cos(θ/2) * i + y * cos(θ/2) * j + z * cos(θ/2) * k
 
 (x * u1 + y * u2 + z * u3) * sin(θ/2) * i
 (x * u1 + y * u2 + z * u3) * sin(θ/2) * j
-(x * u1 + y * u2 + z * u3) * sin(θ/2) * k\\
+(x * u1 + y * u2 + z * u3) * sin(θ/2) * k  \\
 = (x * cos(θ/2) - (x * u1 + y * u2 + z * u3) * sin(θ/2)) * i
 
 (y * cos(θ/2) - (x * u1 + y * u2 + z * u3) * sin(θ/2)) * j
-(z * cos(θ/2) - (x * u1 + y * u2 + z * u3) * sin(θ/2)) * k\\
+(z * cos(θ/2) - (x * u1 + y * u2 + z * u3) * sin(θ/2)) * k  \\
 = (x * cos(θ/2) - dot(P, U) * sin(θ/2)) * i
-
 (y * cos(θ/2) - dot(P, U) * sin(θ/2)) * j
 (z * cos(θ/2) - dot(P, U) * sin(θ/2)) * k
-$$
+\end{array}
+```
+
 其中，dot(P, U) = x * u1 + y * u2 + z * u3 是点 P 在单位旋转向量 U 上的投影。
 
 
@@ -72,24 +75,23 @@ $$
 计算 q * P_rotated，得到旋转后的点的四元数表示：
 
 P_final = q * P_rotated
-$$
+```math
+\begin{array}{l}
 P\underline{-}final = (cos(θ/2) + (u1 * i + u2 * j + u3 * k) * sin(θ/2)) * (x_rotated * i + y_rotated * j + z_rotated * k)\\
-
 = cos(θ/2) * x_rotated * i + cos(θ/2) * y_rotated * j + cos(θ/2) * z_rotated * k
 
 (u1 * i + u2 * j + u3 * k) * sin(θ/2) * x_rotated * i
 (u1 * i + u2 * j + u3 * k) * sin(θ/2) * y_rotated * j
 (u1 * i + u2 * j + u3 * k) * sin(θ/2) * z_rotated * k\\
 = (cos(θ/2) * x_rotated + u1 * sin(θ/2) * x_rotated) * i
-
 (cos(θ/2) * y_rotated + u2 * sin(θ/2) * y_rotated) * j
 (cos(θ/2) * z_rotated + u3 * sin(θ/2) * z_rotated) * k\\
 = ((cos(θ/2) + u1 * sin(θ/2)) * x_rotated) * i
-
 ((cos(θ/2) + u2 * sin(θ/2)) * y_rotated) * j
 ((cos(θ/2) + u3 * sin(θ/2)) * z_rotated) * k\\
 = x_final * i + y_final * j + z_final * k
-$$
+\end{array}
+```
 其中，x_final、y_final、z_final 是旋转后点 P_final 的坐标。
 
 ### 最后
@@ -148,6 +150,7 @@ angle = theta
 
 point_rotated = quaternion_rotation(point, axis, angle)
 print("旋转后的点：", point_rotated)
-
-
 ```
+$$
+\sin(\theta/2)
+$$
