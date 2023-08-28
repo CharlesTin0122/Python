@@ -1,5 +1,5 @@
 # 四元数描述旋转
-
+![avatar](https://img-blog.csdnimg.cn/40010053554f4d87bd03e681a412206e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA6LCi6bG8,size_20,color_FFFFFF,t_70,g_se,x_16)
 ## 提问
 
 三维空间中，假设有一个点P = (x, y, z) 和一个向量 V = (v1, v2, v3)，将 P 绕着 V 旋转θ（弧度）得到的结果是新的点 P' = (x', y', z')。请用四元数计算P'，并给出详细的计算过程。
