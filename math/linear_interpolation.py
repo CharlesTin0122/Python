@@ -24,7 +24,8 @@ def lerp(a: float, b: float, t: float) -> float:
         50 == lerp(0, 100, 0.5)
         4.2 == lerp(1, 5, 0.8)
     """
-    return (1 - t) * a + t * b
+    return a + (b - a) * t
+    # (1 - t) * a + t * b
 
 
 def inv_lerp(a: float, b: float, v: float) -> float:
@@ -70,4 +71,5 @@ def remap(i_min: float, i_max: float, o_min: float, o_max: float, v: float) -> f
         6.2 == remap(1, 5, 3, 7, 4.2)
     """
     return lerp(o_min, o_max, inv_lerp(i_min, i_max, v))
-    # return (1 - (v - i_min) / (i_max - i_min)) * o_min + (v - i_min) / (i_max - i_min) * o_max
+    # lerp(o_min, o_max, (v - i_min)/(i_max - i_min))
+    # o_min + (o_max - o_min) * (v - i_min) / (i_max - i_min)
