@@ -761,9 +761,5 @@ pitch &= asin(2(wy - zx)) \\
 yaw &= atan2(2(wz + xy), 1 - 2(y^2 + z^2))
 \end{aligned}
 ```
-
 其中，q 是四元数，roll 是绕 x 轴的旋转角度，pitch 是绕 y 轴的旋转角度，yaw 是绕 z 轴的旋转角度。
-
 注意，这里的角度是弧度制，可以使用 math.atan2() 和 math.asin() 函数计算三角函数。
-=======
->>>>>>> c7cb81a6bba80e899fb1eb437f58a4fce7d97775
