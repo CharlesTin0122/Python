@@ -82,39 +82,48 @@ class AdvAnimToolsUI:
             pm.setAttr(a, 0)
 
         for fbxPath in self.fbxList:
-            pm.duplicate("Re:root")
+            pm.duplicate("skin:root")
             root_jnt = pm.PyNode("root")
             constarins = pm.ls(root_jnt, dag=True, type="constraint")  # 列出骨骼链的所有约束节点，注意参数dag
             pm.delete(constarins)
 
-            pm.parentConstraint("root", "root_ctrl", mo=True)
-            pm.parentConstraint("root", "Main", mo=True)
-            pm.parentConstraint("pelvis", "RootX_M", mo=True)
+            pm.parentConstraint("root", "root_main_C0_ctl", mo=True)
+            pm.parentConstraint("pelvis", "body_C0_ctl", mo=True)
 
             joint_sl = [
-                "spine_01", "spine_02", "spine_03", "neck_01", "head", "clavicle_l", "upperarm_l", "lowerarm_l",
-                "hand_l", "thumb_01_l", "thumb_02_l",
-                "thumb_03_l", "index_01_l", "index_02_l", "index_03_l", "middle_01_l", "middle_02_l", "middle_03_l",
-                "ring_01_l", "ring_02_l", "ring_03_l", "pinky_01_l",
-                "pinky_02_l", "pinky_03_l", "clavicle_r", "upperarm_r", "lowerarm_r", "hand_r", "thumb_01_r",
-                "thumb_02_r", "thumb_03_r", "index_01_r", "index_02_r",
-                "index_03_r", "middle_01_r", "middle_02_r", "middle_03_r", "ring_01_r", "ring_02_r", "ring_03_r",
-                "pinky_01_r", "pinky_02_r", "pinky_03_r", "thigh_l",
-                "thigh_r", "calf_l", "calf_r", "foot_l", "foot_r", "ball_l", "ball_r"
+                "spine_01", "spine_02", "spine_03", "neck_01", "head",
+                "clavicle_l", "upperarm_l", "lowerarm_l", "hand_l",
+                "thumb_01_l", "thumb_02_l", "thumb_03_l",
+                "index_01_l", "index_02_l", "index_03_l",
+                "middle_01_l", "middle_02_l", "middle_03_l",
+                "ring_01_l", "ring_02_l", "ring_03_l",
+                "pinky_01_l", "pinky_02_l", "pinky_03_l",
+                "clavicle_r", "upperarm_r", "lowerarm_r", "hand_r",
+                "thumb_01_r", "thumb_02_r", "thumb_03_r",
+                "index_01_r", "index_02_r", "index_03_r",
+                "middle_01_r", "middle_02_r", "middle_03_r",
+                "ring_01_r", "ring_02_r", "ring_03_r",
+                "pinky_01_r", "pinky_02_r", "pinky_03_r",
+                "thigh_l", "calf_l", "foot_l", "ball_l",
+                "thigh_r", "calf_r", "foot_r", "ball_r"
             ]
 
             ctrl_sl = [
-                "FKSpine1_M", "FKSpine2_M", "FKChest_M", "FKNeck_M", "FKHead_M", "FKScapula_L", "FKShoulder_L",
-                "FKElbow_L", "FKWrist_L", "FKThumbFinger1_L",
-                "FKThumbFinger2_L", "FKThumbFinger3_L", "FKIndexFinger1_L", "FKIndexFinger2_L", "FKIndexFinger3_L",
-                "FKMiddleFinger1_L", "FKMiddleFinger2_L", "FKMiddleFinger3_L",
-                "FKRingFinger1_L", "FKRingFinger2_L", "FKRingFinger3_L", "FKPinkyFinger1_L", "FKPinkyFinger2_L",
-                "FKPinkyFinger3_L", "FKScapula_R", "FKShoulder_R", "FKElbow_R",
-                "FKWrist_R", "FKThumbFinger1_R", "FKThumbFinger2_R", "FKThumbFinger3_R", "FKIndexFinger1_R",
-                "FKIndexFinger2_R", "FKIndexFinger3_R", "FKMiddleFinger1_R",
-                "FKMiddleFinger2_R", "FKMiddleFinger3_R", "FKRingFinger1_R", "FKRingFinger2_R", "FKRingFinger3_R",
-                "FKPinkyFinger1_R", "FKPinkyFinger2_R", "FKPinkyFinger3_R",
-                "FKHip_L", "FKHip_R", "FKKnee_L", "FKKnee_R", "FKAnkle_L", "FKAnkle_R", "IKToes_L", "IKToes_R"
+                "spine_C0_fk0_ctl", "spine_C0_fk1_ctl", "spine_C0_fk2_ctl", "neck_C0_fk0_ctl", "neck_C0_head_ctl",
+                "clavicle_L0_ctl", "arm_L0_fk0_ctl", "arm_L0_fk1_ctl", "arm_L0_fk2_ctl",
+                "thumb_L0_fk0_ctl", "thumb_L0_fk1_ctl", "thumb_L0_fk2_ctl",
+                "index_L0_fk0_ctl", "index_L0_fk1_ctl", "index_L0_fk2_ctl",
+                "middle_L0_fk0_ctl", "middle_L0_fk1_ctl", "middle_L0_fk2_ctl",
+                "ring_L0_fk0_ctl", "ring_L0_fk1_ctl", "ring_L0_fk2_ctl",
+                "pinky_L0_fk0_ctl", "pinky_L0_fk1_ctl", "pinky_L0_fk2_ctl",
+                "clavicle_R0_ctl", "arm_R0_fk0_ctl", "arm_R0_fk1_ctl", "arm_R0_fk2_ctl",
+                "thumb_R0_fk0_ctl", "thumb_R0_fk1_ctl", "thumb_R0_fk2_ctl",
+                "index_R0_fk0_ctl", "index_R0_fk1_ctl", "index_R0_fk2_ctl",
+                "middle_R0_fk0_ctl", "middle_R0_fk1_ctl", "middle_R0_fk2_ctl",
+                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "FKRingFinger3_R",
+                "FKPinkyFinger1_R", "FKPinkyFinger2_R", "ring_R0_fk2_ctl",
+                "leg_L0_fk0_ctl", "leg_L0_fk1_ctl", "leg_L0_fk2_ctl", "foot_L0_fk0_ctl",
+                "leg_R0_fk0_ctl", "leg_R0_fk1_ctl", "leg_R0_fk2_ctl", "foot_R0_fk0_ctl"
             ]
 
             for i in range(len(joint_sl)):
@@ -128,21 +137,22 @@ class AdvAnimToolsUI:
             pm.env.setMaxTime(last_frame)
 
             ctrl_bk = [
-                'FKWeaponAS_R', 'FKRingFinger3_R', 'FKRingFinger2_R', 'FKRingFinger1_R', 'FKWrist_R', 'FKElbow_R',
-                'FKShoulder_R', 'FKToes_R', 'FKAnkle_R', 'FKKnee_R', 'FKHip_R', 'FKToes_L', 'FKAnkle_L',
-                'FKKnee_L', 'FKHip_L', 'RootX_M', 'AimEye_L', 'AimEye_R', 'AimEye_M', 'FKNeck_M', 'HipSwinger_M',
-                'FKChest_M', 'FKSpine2_M', 'FKEye_R', 'FKJaw_M', 'FKHead_M', 'FKScapula_L', 'FKWeaponASB_R',
-                'FKScapula_R', 'FKEye_L', 'FKThumbFinger2_R', 'FKThumbFinger1_R', 'FKMiddleFinger3_R',
-                'FKMiddleFinger2_R', 'FKMiddleFinger1_R', 'FKThumbFinger1_L', 'FKMiddleFinger3_L', 'FKMiddleFinger2_L',
-                'FKMiddleFinger1_L', 'FKIndexFinger2_L', 'FKIndexFinger1_L', 'FKThumbFinger3_L', 'FKThumbFinger2_L',
-                'FKIndexFinger3_R', 'FKIndexFinger2_R', 'FKIndexFinger1_R', 'FKThumbFinger3_R', 'FKPinkyFinger3_R',
-                'FKPinkyFinger2_R', 'FKPinkyFinger1_R', 'FKCup_R', 'MainExtra2', 'FKSpine1_M', 'FKRoot_M', 'root_ctrl',
-                'Main', 'MainExtra1', 'FKPinkyFinger2_L', 'FKPinkyFinger1_L', 'FKCup_L', 'FKIndexFinger3_L',
-                'FKRingFinger3_L',
-                'FKRingFinger2_L', 'FKRingFinger1_L', 'FKPinkyFinger3_L', 'Fingers_L', 'Fingers_R', 'FKWrist_L',
-                'FKElbow_L', 'FKShoulder_L', 'PoleLeg_R', 'IKToes_R', 'RollToes_R', 'RollToesEnd_R', 'RollHeel_R',
-                'IKLeg_L',
-                'PoleLeg_L', 'IKToes_L', 'RollToes_L', 'RollToesEnd_L', 'RollHeel_L', 'IKLeg_R', 'FKWeaponAS_L'
+                "root_main_C0_ctl", "root_C0_ctl", "body_C0_ctl", 
+                "spine_C0_fk0_ctl", "spine_C0_fk1_ctl", "spine_C0_fk2_ctl", "neck_C0_fk0_ctl", "neck_C0_head_ctl",
+                "clavicle_L0_ctl", "arm_L0_fk0_ctl", "arm_L0_fk1_ctl", "arm_L0_fk2_ctl",
+                "thumb_L0_fk0_ctl", "thumb_L0_fk1_ctl", "thumb_L0_fk2_ctl",
+                "index_L0_fk0_ctl", "index_L0_fk1_ctl", "index_L0_fk2_ctl",
+                "middle_L0_fk0_ctl", "middle_L0_fk1_ctl", "middle_L0_fk2_ctl",
+                "ring_L0_fk0_ctl", "ring_L0_fk1_ctl", "ring_L0_fk2_ctl",
+                "pinky_L0_fk0_ctl", "pinky_L0_fk1_ctl", "pinky_L0_fk2_ctl",
+                "clavicle_R0_ctl", "arm_R0_fk0_ctl", "arm_R0_fk1_ctl", "arm_R0_fk2_ctl",
+                "thumb_R0_fk0_ctl", "thumb_R0_fk1_ctl", "thumb_R0_fk2_ctl",
+                "index_R0_fk0_ctl", "index_R0_fk1_ctl", "index_R0_fk2_ctl",
+                "middle_R0_fk0_ctl", "middle_R0_fk1_ctl", "middle_R0_fk2_ctl",
+                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "FKRingFinger3_R",
+                "FKPinkyFinger1_R", "FKPinkyFinger2_R", "ring_R0_fk2_ctl",
+                "leg_L0_fk0_ctl", "leg_L0_fk1_ctl", "leg_L0_fk2_ctl", "foot_L0_fk0_ctl",
+                "leg_R0_fk0_ctl", "leg_R0_fk1_ctl", "leg_R0_fk2_ctl", "foot_R0_fk0_ctl"
             ]
             pm.bakeResults(ctrl_bk, simulation=True, time=(first_frame, last_frame), sampleBy=1, oversamplingRate=1,
                            disableImplicitControl=True, preserveOutsideKeys=True, sparseAnimCurveBake=False,
