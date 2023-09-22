@@ -120,8 +120,8 @@ class AdvAnimToolsUI:
                 "thumb_R0_fk0_ctl", "thumb_R0_fk1_ctl", "thumb_R0_fk2_ctl",
                 "index_R0_fk0_ctl", "index_R0_fk1_ctl", "index_R0_fk2_ctl",
                 "middle_R0_fk0_ctl", "middle_R0_fk1_ctl", "middle_R0_fk2_ctl",
-                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "FKRingFinger3_R",
-                "FKPinkyFinger1_R", "FKPinkyFinger2_R", "ring_R0_fk2_ctl",
+                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "ring_R0_fk2_ctl",
+                "pinky_R0_fk0_ctl", "pinky_R0_fk1_ctl", "pinky_R0_fk2_ctl",
                 "leg_L0_fk0_ctl", "leg_L0_fk1_ctl", "leg_L0_fk2_ctl", "foot_L0_fk0_ctl",
                 "leg_R0_fk0_ctl", "leg_R0_fk1_ctl", "leg_R0_fk2_ctl", "foot_R0_fk0_ctl"
             ]
@@ -149,8 +149,8 @@ class AdvAnimToolsUI:
                 "thumb_R0_fk0_ctl", "thumb_R0_fk1_ctl", "thumb_R0_fk2_ctl",
                 "index_R0_fk0_ctl", "index_R0_fk1_ctl", "index_R0_fk2_ctl",
                 "middle_R0_fk0_ctl", "middle_R0_fk1_ctl", "middle_R0_fk2_ctl",
-                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "FKRingFinger3_R",
-                "FKPinkyFinger1_R", "FKPinkyFinger2_R", "ring_R0_fk2_ctl",
+                "ring_R0_fk0_ctl", "ring_R0_fk1_ctl", "ring_R0_fk2_ctl",
+                "pinky_R0_fk0_ctl", "pinky_R0_fk1_ctl", "pinky_R0_fk2_ctl",
                 "leg_L0_fk0_ctl", "leg_L0_fk1_ctl", "leg_L0_fk2_ctl", "foot_L0_fk0_ctl",
                 "leg_R0_fk0_ctl", "leg_R0_fk1_ctl", "leg_R0_fk2_ctl", "foot_R0_fk0_ctl"
             ]
