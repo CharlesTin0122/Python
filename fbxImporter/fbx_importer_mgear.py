@@ -131,13 +131,14 @@ class AdvAnimToolsUI:
 
             pm.importFile(fbxPath)
 
-            first_frame = pm.findKeyframe('root', which="first")
-            last_frame = pm.findKeyframe('root', which="last")
+            time_value = pm.keyframe("pelvis.rotateX", query=True, timeChange=True, absolute=True)
+            first_frame = time_value[0]
+            last_frame = time_value[-1]
             pm.env.setMinTime(first_frame)
             pm.env.setMaxTime(last_frame)
 
             ctrl_bk = [
-                "root_main_C0_ctl", "root_C0_ctl", "body_C0_ctl", 
+                "root_main_C0_ctl", "root_C0_ctl", "body_C0_ctl",
                 "spine_C0_fk0_ctl", "spine_C0_fk1_ctl", "spine_C0_fk2_ctl", "neck_C0_fk0_ctl", "neck_C0_head_ctl",
                 "clavicle_L0_ctl", "arm_L0_fk0_ctl", "arm_L0_fk1_ctl", "arm_L0_fk2_ctl",
                 "thumb_L0_fk0_ctl", "thumb_L0_fk1_ctl", "thumb_L0_fk2_ctl",
