@@ -18,6 +18,10 @@ def main():
     filePath1 = os.path.abspath('__file__')  # 当前脚本绝对路径（包含文件名）
     filePath2 = os.path.dirname(filePath1)  # 当前脚本所在的位置（不包含文件名）
 
+    currentFilePath = rf'{os.path.dirname(__file__)}'  # 获取py文件当前路径
+    json_file = os.path.join(currentFilePath, "data.json")  # 在py文件当前路径下创建json文件路径
+    print(json_file)
+
     os.chdir(filePath2)  # 切换maya执行路径
 
     print(os.getcwd())
