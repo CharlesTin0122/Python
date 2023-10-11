@@ -35,3 +35,7 @@ def smoothAnimCurve():
             pm.keyframe(cv, time=(keys[i], keys[i]), a=1, vc=dupCurVal[0])
         # 删除复制曲线
         pm.delete(dupCurve[0])
+
+
+if __name__ == "__main__":
+    smoothAnimCurve()
