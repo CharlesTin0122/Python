@@ -1,9 +1,9 @@
 {
     "python.autoComplete.extraPaths": [
-        "D:\\Backup\\Documents\\UnrealEngine\\Python\\PythonStub530"
+        "D:\\Backup\\Documents\\UnrealEngine\\Python\\PythonStub427"
     ],
     "python.analysis.extraPaths": [
-        "D:\\Backup\\Documents\\UnrealEngine\\Python\\PythonStub530"
+        "D:\\Backup\\Documents\\UnrealEngine\\Python\\PythonStub427"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"

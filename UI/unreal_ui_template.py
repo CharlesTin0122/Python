@@ -31,19 +31,19 @@ class UnrealUITemplate(QtWidgets.QWidget):
         super(UnrealUITemplate, self).__init__(parent)
 
         # load the created UI widget
-        self.widgetPath = "C:\\"
-        self.widget = QtUiTools.QUiLoader().load(
-            self.widgetPath + "mainWidget.ui"
-        )  # path to PyQt .ui file
+        self.widgetPath = "./unreal_demo.ui"
+        self.widget = QtUiTools.QUiLoader().load(self.widgetPath)  # path to PyQt .ui file
 
         # attach the widget to the instance of this class (aka self)
         self.widget.setParent(self)
 
         # find interactive elements of UI
-        self.btn_close = self.widget.findChild(QtWidgets.QPushButton, "btn_close")
+        self.pb_print_actors = self.widget.findChild(QtWidgets.QPushButton, "pb_print_actors")
+        self.pb_close = self.widget.findChild(QtWidgets.QPushButton, "pb_close")
 
         # assign clicked handler to buttons
-        self.btn_close.clicked.connect(self.closewindow)
+        self.pb_print_actors.clicked.connect(self.print_actors)
+        self.pb_close.clicked.connect(self.closewindow)
 
     """
     Your code goes here.
@@ -60,6 +60,10 @@ class UnrealUITemplate(QtWidgets.QWidget):
         Close the window.
         """
         self.destroy()
+
+    def print_actors(self):
+        for actor in unreal.EditorActorSubsystem().get_all_level_actors():
+            print(actor.get_actor_label())
 
 
 def openWindow():
