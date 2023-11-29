@@ -30,21 +30,24 @@ def main():
     print(data)
 
 
+file_path = r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt'
 # 删除文件
-os.remove(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt')
+os.remove(file_path)
 # 重命名文件
-os.rename(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt',
+os.rename(file_path,
           r'D:\Backup\Documents\maya\2020\prefs\scripts\nodelete.txt')
 # 分割文件的路径和文件名
-os.path.split(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt')
+os.path.split(file_path)
 # 获取路径
-os.path.dirname(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt')
+os.path.dirname(file_path)
 # 获取文件名
-os.path.basename(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt')
+os.path.basename(file_path)
 # 提取文件扩展名
-os.path.splitext(r'D:\Backup\Documents\maya\2020\prefs\scripts\delete.txt')
+os.path.splitext(file_path)
 #  : 将path进行组合，若其中有绝对路径，则之前的path将被删除。
 os.path.join(path1, path2)
+# 打开路径
+os.startfile(file_path)
 
 filePath = os.path.abspath('__file__')
 print(filePath)

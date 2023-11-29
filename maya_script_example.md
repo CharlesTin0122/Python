@@ -20,6 +20,7 @@
   - [关于fileDialog2](#关于filedialog2)
   - [inViewMessage](#inviewmessage)
   - [动画曲线过滤器](#动画曲线过滤器)
+  - [获取模型的点线面](#获取模型的点线面)
 # mayaPython案例
 ## 选择骨骼层级
 ```python
@@ -398,4 +399,16 @@ cmds.simplify(
     floatTolerance=value,
     valueTolerance=value,
 )
+```
+## 获取模型的点线面
+```python
+import pymel.core as pm
+
+sel_mesh = pm.selected()[0]
+sel_shape = sel_mesh.getShape()
+assert isinstance(sel_shape, pm.nodetypes.Mesh)
+sel_faces = sel_shape.faces
+sel_deges = sel_shape.edges
+sel_vtxs = sel_shape.vtx
+sel_normals = sel_shape.getNormals()
 ```
