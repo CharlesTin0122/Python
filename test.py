@@ -9,20 +9,46 @@
 """
 import pymel.core as pm
 
-sel_mesh = pm.selected()[0]
-sel_shape = sel_mesh.getShape()
-assert isinstance(sel_shape, pm.nodetypes.Mesh)
-sel_faces = sel_shape.faces
-sel_deges = sel_shape.edges
-sel_vtxs = sel_shape.vtx
 
-for vtx in sel_vtxs:
-    raySource = vtx.getPosition()
-    vtx_normal = vtx.getNormal()
-    rayDirection = raySource + vtx_normal * 1000000
-    # 此函数是pm.nodetypes.Mesh类的方法，确定给定射线是否与此多边形相交，如果是，则返回交点。交点将按照距离射线源最近的点的顺序排列
-    # 四个参数：1.射线源：点，2.射线方向：向量，3.容差：浮点，1e-10=1*10^-10，4.空间：‘transform’，‘preTransform’，‘object’，‘world’
-    # 返回值：(bool, Point list, int list)
-    intersect_point = sel_shape.intersect(
-        raySource, rayDirection, tolerance=1e-10, space="object"
-    )
+def create_joint_per_mesh(sel_obj: list):
+    """为每个选中的模型在边界框(bounding box)中心创建一个骨骼
+
+    Args:
+        sel_obj (list): 模型列表
+
+    Returns:
+        list: 骨骼列表
+    """
+    jnt_list = []
+    for obj in sel_obj:
+        pm.select(cl=True)
+        jnt = pm.joint(name=f"jnt_{obj}", position=obj.c.get())
+        jnt_list.append(jnt)
+    return jnt_list
+
+
+if __name__ == "__main__":
+    sel_obj1 = pm.selected()
+    new_jnt = create_joint_per_mesh(sel_obj1)
+
+
+def clean_mesh(obj_list: list):
+    """清理蒙皮用模型：主要过程是：
+    1.冻结变换
+    2.删除构建历史
+    3.还原旋转轴心至原点
+
+    Args:
+        obj_list (list): 要处理的模型文件列表,类型是Transform
+    """
+    for obj in obj_list:
+        pm.makeIdentity(
+            obj, apply=True, translate=1, rotate=1, scale=1, normal=0, preserveNormals=1
+        )
+        pm.delete(obj, constructionHistory=True)
+        obj.rotatePivot.set(0, 0, 0)
+
+
+if __name__ == "__main__":
+    sel_objs = pm.selected()
+    clean_mesh(sel_objs)
