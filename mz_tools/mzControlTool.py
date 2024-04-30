@@ -8,6 +8,7 @@ Description: Control Tool for mz Animal Tools
 Copyright (C) 2021 Steven Thomasson. All rights reserved.
 
 """
+
 import maya.api.OpenMaya as om
 import maya.cmds as cmds
 
@@ -718,3 +719,8 @@ class mzControlTool:
                 cmds.setAttr("%s.visibility" % displayLayer[0], 0)
             else:
                 cmds.setAttr("%s.visibility" % displayLayer[0], 1)
+
+
+if __name__ == "__main__":
+    test_ui = mzControlUI()
+    test_ui.createControlUI()
