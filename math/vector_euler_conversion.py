@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+@FileName      : vector_euler_conversion.py
+@DateTime      : 2024/06/12 20:44:24
+@Author        : Tian Chao
+@Contact       : tianchao0533@163.com
+@Software      : Maya 2024.2
+@PythonVersion : python 3.10.8
+@librarys      : pymel 1.4.0
+@Description   :
+"""
+
 import math
 import pymel.core.datatypes as dt
 
@@ -42,9 +54,7 @@ def unit_vector_to_euler_angles(unit_vector, reference_vector=(1, 0, 0)):
     # 将欧拉旋转转换为向量
     vector_rotation = euler_rotation.asVector()
     # 弧度转换为度
-    euler_angles = [
-        math.degrees(x) for x in vector_rotation
-    ]  # math.degrees将弧度转化为角度。
+    euler_angles = [math.degrees(x) for x in vector_rotation]
     # 返回欧拉角
     return euler_angles
 

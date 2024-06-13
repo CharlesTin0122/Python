@@ -1,0 +1,8 @@
+1. Unzip all files
+
+2. copy "springmagic" folder into Maya scripts path, i.e.
+    "C:\Users\YOUR_USER_NAME\Documents\maya\scripts"
+
+3. Start Maya and run command below in command bar with Python way
+    import springmagic
+    springmagic.main()
