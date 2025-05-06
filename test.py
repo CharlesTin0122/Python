@@ -1,54 +1,97 @@
-# -*- coding: utf-8 -*-
-"""
-@FileName      : test.py
-@DateTime      : 2023/08/29 10:18:49
-@Author        : Tian Chao
-@Contact       : tianchao0533@163.com
-@Software      : Maya 2023.3
-@PythonVersion : python 3.9.7
-"""
 import pymel.core as pm
 
 
-def create_joint_per_mesh(sel_obj: list):
-    """为每个选中的模型在边界框(bounding box)中心创建一个骨骼
+def get_mirrored_name(obj_name, naming_pairs=None):
+    """
+    根据命名约定生成镜像对象的名称。
 
     Args:
-        sel_obj (list): 模型列表
+        obj_name (str): 原始对象名称
+        naming_pairs (list of tuples): 命名对，例如 [('_L', '_R'), ('left', 'right')]
 
     Returns:
-        list: 骨骼列表
+        str or None: 镜像对象名称，如果无法生成则返回 None
     """
-    jnt_list = []
-    for obj in sel_obj:
-        pm.select(cl=True)
-        jnt = pm.joint(name=f"jnt_{obj}", position=obj.c.get())
-        jnt_list.append(jnt)
-    return jnt_list
+    if naming_pairs is None:
+        naming_pairs = [
+            ("_L", "_R"),
+            ("_R", "_L"),
+            ("left", "right"),
+            ("right", "left"),
+        ]
+
+    for source, target in naming_pairs:
+        if source in obj_name:
+            mirrored_name = obj_name.replace(source, target)
+            return mirrored_name
+
+    return None
 
 
-if __name__ == "__main__":
-    sel_obj1 = pm.selected()
-    new_jnt = create_joint_per_mesh(sel_obj1)
-
-
-def clean_mesh(obj_list: list):
-    """清理蒙皮用模型：主要过程是：
-    1.冻结变换
-    2.删除构建历史
-    3.还原旋转轴心至原点
+def mirror_selection(naming_pairs=None, clear_if_none=True, verbose=True):
+    """
+    镜像选择对象：将包含特定命名（如 _L）的对象替换为对应命名（如 _R）的对象。
 
     Args:
-        obj_list (list): 要处理的模型文件列表,类型是Transform
+        naming_pairs (list of tuples): 命名对，例如 [('_L', '_R'), ('left', 'right')]
+        clear_if_none (bool): 如果没有镜像对象，是否清空选择
+        verbose (bool): 是否打印详细的警告和信息
+
+    Returns:
+        list: 成功选择的镜像对象列表
     """
-    for obj in obj_list:
-        pm.makeIdentity(
-            obj, apply=True, translate=1, rotate=1, scale=1, normal=0, preserveNormals=1
-        )
-        pm.delete(obj, constructionHistory=True)
-        obj.rotatePivot.set(0, 0, 0)
+    # 获取当前选择
+    selected = pm.selected()
+
+    if not selected:
+        if verbose:
+            pm.warning("没有选择任何对象！")
+        if clear_if_none:
+            pm.select(clear=True)
+        return []
+
+    # 用于存储镜像对象
+    mirrored_objects = []
+    failed_objects = []
+
+    for obj in selected:
+        obj_name = obj.name()
+        mirrored_name = get_mirrored_name(obj_name, naming_pairs)
+
+        if not mirrored_name:
+            failed_objects.append(obj_name)
+            continue
+
+        # 检查镜像对象是否存在
+        if pm.objExists(mirrored_name):
+            mirrored_objects.append(pm.PyNode(mirrored_name))
+        else:
+            failed_objects.append(obj_name)
+            if verbose:
+                pm.warning(f"镜像对象 {mirrored_name} 不存在")
+
+    # 选择镜像对象
+    if mirrored_objects:
+        pm.select(mirrored_objects, replace=True)
+    elif clear_if_none:
+        pm.select(clear=True)
+
+    # 打印总结信息
+    if verbose and failed_objects:
+        pm.warning(f"以下对象无法镜像选择: {', '.join(failed_objects)}")
+
+    return mirrored_objects
 
 
+# 示例用法
 if __name__ == "__main__":
-    sel_objs = pm.selected()
-    clean_mesh(sel_objs)
+    # 默认命名对
+    default_naming_pairs = [
+        ("_L", "_R"),
+        ("_R", "_L"),
+        ("left", "right"),
+        ("right", "left"),
+    ]
+    mirror_selection(
+        naming_pairs=default_naming_pairs, clear_if_none=True, verbose=True
+    )
